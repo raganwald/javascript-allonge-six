@@ -2,8 +2,6 @@
 
 In JavaScript, functions are values, but they are also much more than simple numbers, strings, or even complex data structures like trees or maps. Functions represent computations to be performed. Like numbers, strings, and arrays, they have a representation. Let's start with the second simplest possible function.[^simplest] In JavaScript, it looks like this:
 
-[^simplest]: The simplest possible function is `() => {}`, we'll see that later.
-
     () => 0
     
 This is a function that is applied to no values and returns `0`. Let's verify that our function is a value like all others:
@@ -12,6 +10,8 @@ This is a function that is applied to no values and returns `0`. Let's verify th
       //=> [Function]
       
 What!? Why didn't it type back `() => 0` for us? This *seems* to break our rule that if an expression is also a value, JavaScript will give the same value back to us. What's going on? The simplest and easiest answer is that although the JavaScript interpreter does indeed return that value, displaying it on the screen is a slightly different matter. `[Function]` is a choice made by the people who wrote Node.js, the JavaScript environment that hosts the JavaScript REPL. If you try the same thing in a browser, you may see something else.
+
+[^simplest]: The simplest possible function is `() => {}`, we'll see that later.
 
 {pagebreak}
 

@@ -1,4 +1,4 @@
-## Foreword to the First Edition by Matthew Knox
+## Foreword to the first edition by Matthew Knox
 
 A different kind of language requires a different kind of book.
 
