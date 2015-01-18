@@ -180,8 +180,6 @@ backmatter:
 
   markdown/Appendices/title.md
 
-    markdown/Appendices/authornotes.md
-
     markdown/Appendices/examples.md
 
     markdown/Appendices/thanks.md
