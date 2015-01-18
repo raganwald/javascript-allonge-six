@@ -6,7 +6,7 @@ frontmatter:
 
   markdown/Prefaces/matthewknox.md
 
-  markdown/Prefaces/about.md
+  markdown/Prefaces/why.md
 
   markdown/Prefaces/recipes.md
 
