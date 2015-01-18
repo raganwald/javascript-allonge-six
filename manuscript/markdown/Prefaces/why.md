@@ -8,7 +8,7 @@ Second, *JavaScript Allongé* provides recipes for using functions to write soft
 
 [JavaScript]: https://developer.mozilla.org/en-US/docs/JavaScript
 
-## Why JavaScript Allongé, The "Six" Edition?
+### Why JavaScript Allongé, The "Six" Edition?
 
 The first edition of JavaScript Allongé was written when almost all versions of JavaScript conformed to the EcmaScript-5 standard. EcmaScript-5 makes a nice language, but many JavaScript developers are ployglots: They might write Ruby on a server and JavaScript in the browser, or build systems that have services written with Node/JavaScript and Python.
 
@@ -22,7 +22,7 @@ For example, the first edition notes that in CoffeeScript, you can write:
 
     callLeft = (fn, args...) =>
       (remainingArgs...) =>
-        fn.apply(this, args.concat(remainingArgs))
+        fn.apply(null, args.concat(remainingArgs))
         
 In EcmaScript-5, you do not have "rest arguments," so you can't write `args...`. You also don't have the "arrow notation" for functions, so you have to write `function (...) { ... }`. To get "rest" arguments in EcmaScript-5, the first edition provides a decorator called `variadic`, it looks like this:
 
@@ -59,22 +59,21 @@ In EcmaScript-5, you do not have "rest arguments," so you can't write `args...`.
       }
     };
     
-In EcmaScript-5, you'd use it like this:
+In EcmaScript-5, you could use it like this:
 
     var callLeft = variadic( function (fn, args) {
       return variadic( function (remainingArgs) {
-          return fn.apply(this, args.concat(remainingArgs));
+          return fn.apply(null, args.concat(remainingArgs));
         };
       });
       
 But in EcmaScript-6, you can write:
 
-    var callLeft = (fn, ...args) => (
+    var callLeft = (fn, ...args) =>
         (...remainingArgs) =>
-          fn.apply(this, args.concat(remainingArgs)))
-      );
+          fn(...args, ...remainingArgs);
 
-The syntax is very similar ot CoffeeScript, and no decorator is required.
+The syntax is very similar to CoffeeScript, and no decorator is required.
 
 JavaScript Allongé, The "Six" Edition packs all the goodness of JavaScript Allongé into a new, updated package that is relevant for programmers working with (or planning to work with) the latest version of JavaScript.
 
