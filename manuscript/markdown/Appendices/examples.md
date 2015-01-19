@@ -26,7 +26,7 @@ Is translated into this EcmaScript-5 code:
       };
     };
     
-![6to5](images/6to5.png)
+![The 6to5 "try it out" page](images/6to5.png)
     
 If we make it even more idiomatic, we could write:
 
