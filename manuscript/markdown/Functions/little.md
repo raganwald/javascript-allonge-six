@@ -68,12 +68,25 @@ In the prelude, we looked at expressions. Values like `0` are expressions, as ar
     (() => Infinity * Infinity)()
       //=> Infinity
 
-Yes we can. We can put any expression to the right of the arrow. For example, `(() => 0)()` is an expression. Can we put it to the right of an arrow, like this: `() => (() => 0)()`? Let's try it:
+Yes we can. We can put any expression to the right of the arrow. For example, `(() => 0)()` is an expression. Can we put it to the right of an arrow, like this: `() => (() => 0)()`?
+
+Let's try it:
 
     (() => (() => 0)())()
       //=> 0
 
 Yes we can! Functions can return the value of evaluating another function.
+
+When dealing with expressions that have a lot of the same characters (like parentheses), you may find it helpful to format the code to make things stand out. So we cn also write:
+
+
+    (() =>
+        (() => 0
+          )()
+      )()
+      //=> 0
+
+It evaluates to the same thing, `0`.
 
 ### commas
 
