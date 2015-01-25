@@ -26,6 +26,8 @@ mainmatter:
 
       markdown/Functions/args.md
 
+      markdown/Functions/closures.md
+
 backmatter:
 
   markdown/Appendices/title.md

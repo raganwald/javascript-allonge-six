@@ -4,15 +4,11 @@ Up to now, all we've really seen are *anonymous functions*, functions that don't
 
 There are other ways to name things in JavaScript, but before we learn some of those, let's see how to use what we already have to name things. Let's revisit a very simple example:
 
-    function (diameter) {
-      return diameter * 3.14159265
-    }
+    (diameter) => diameter * 3.14159265
 
 What is this "3.14159265" number? [Pi], obviously. We'd like to name it so that we can write something like:
 
-    function (diameter) {
-      return diameter * Pi
-    }
+    (diameter) => diameter * Pi
 
 In order to bind `3.14159265` to the name `Pi`, we'll need a function with a parameter of `Pi` applied to an argument of `3.14159265`. If we put our function expression in parentheses, we can apply it to the argument of `3.14159265`:
 

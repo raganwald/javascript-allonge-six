@@ -10,7 +10,7 @@ Let's make a function with an argument:
 
     (room) => {}
   
-This function has one argument, `room`, and no body. Here's a function with two arguments and no body:
+This function has one argument, `room`, and no body. Here's a function with two arguments and an empty body:
 
     (room, board) => {}
   
@@ -111,4 +111,4 @@ And with that, we're ready to look at *closures*. When we combine our knowledge 
       (copy) =>
         copy === value
 
-[^NaNPedantry]: Unless the argument is NaN, which isn't equal to anything, including itself
+[^NaNPedantry]: Unless the argument is `NaN`, which isn't equal to anything, *including itself*. `NaN` in JavaScript behaves a lot like `NULL` in SQL.

@@ -2,6 +2,8 @@ frontmatter:
 
   markdown/Prefaces/title.md
 
+  markdown/Sample/about.md
+
   markdown/Prefaces/fogus.md
 
   markdown/Prefaces/matthewknox.md
@@ -23,6 +25,10 @@ mainmatter:
     markdown/Functions/title.md
 
       markdown/Functions/little.md
+
+      markdown/Functions/args.md
+
+      markdown/Functions/closures.md
 
 backmatter:
 

@@ -1,8 +1,10 @@
 ## I'd Like to Have Some Arguments. Again. {#arguments-again}
 
-As we've discussed, when a function is applied to arguments (or "called"), JavaScript binds the values of arguments to the function's argument names in an environment created for the function's execution. What we didn't discuss is that JavaScript also binds some "magic" names in addition to any you put in the argument list.
+As we've discussed, when a function is applied to arguments (or "called"), JavaScript binds the values of arguments to the function's argument names in an environment created for the function's execution. What we didn't discuss is that JavaScript also binds some "magic" names in addition to any you put in the argument list.[^read-only]
 
-You should never attempt to define your own bindings against these names. Consider them read-only at all times. The first is called `this` and it is bound to something called the function's [context](#context). We will explore that when we start discussing objects and classes. The second is very interesting, it's called `arguments`, and the most interesting thing about it is that it contains a list of arguments passed to the function:
+[^read-only]: You should never attempt to define your own bindings against "magic" names that JavaScript binds for you. It is wise to treat them as read-only at all times.
+
+The first is called `this` and it is bound to something called the function's [context](#context). We will explore that when we start discussing objects and classes. The second is very interesting, it's called `arguments`, and the most interesting thing about it is that it contains a list of arguments passed to the function:
 
     function plus (a, b) {
       return arguments[0] + arguments[1]

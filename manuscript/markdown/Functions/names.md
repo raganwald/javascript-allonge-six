@@ -2,22 +2,59 @@
 
 Let's get right to it. This code does *not* name a function:
 
-    var repeat = function (str) {
-      return str + str
-    };
+    var repeat = (str) => str + str
     
-It doesn't name the function "repeat" for the same reason that `var answer = 42` doesn't name the number `42`. That snippet of code binds an anonymous function to a name in an environment, but the function itself remains anonymous.
+It doesn't name the function "repeat" for the same reason that `var answer = 42` doesn't name the number `42`. This syntax binds an anonymous function to a name in an environment, but the function itself remains anonymous.
 
-JavaScript *does* have a syntax for naming a function, it looks like this:
+### the `function` keyword
 
-    var bindingName = function actualName () {
-      //...
-    };
+JavaScript *does* have a syntax for naming a function, we use the `function` keyword. Until ES-6 was created, `function` was the usual syntax for writing functions.
 
-In this expression, `bindingName` is the name in the environment, but `actualName` is the function's actual name. This is a *named function expression*. That may seem confusing, but think of the binding names as properties of the environment, not the function itself. And indeed the name *is* a property:
+Here's our `repeat` function written using a "fat arrow"
 
-    bindingName.name
-      //=> 'actualName'
+    (str) => str + str
+    
+And here's (almost) the exact same function written using the `function` keyword:
+
+    function (str) { return str + str }
+    
+There is a subtle difference that will be discussed when we take another look at [arguments](#arguments-again), but let's look at the obvious differences:
+
+1. We introduce a function with the `function` keyword.
+1. Something else we're about to discuss is optional.
+1. We have arguments in parentheses, just like fat arrow functions.
+1. We do not have a fat arrow, we go directly to the body.
+1. We always use a block, we cannot write `function repeat (str) str + str`. This means that if we want our functions to return a value, we always need to use the `return` keyword
+
+If we leave out the "something optional" that comes after the `function` keyword, we can translate almost any fat arrow function into a `function` keyword function, e.g.
+
+    (n) => (1.618**n - -1.618**-n) / 2.236
+    
+Can be written as:
+
+    function (n) { return (1.618**n - -1.618**-n) / 2.236; }
+    
+This still does not *name* a function, but as we noted above, functions written with the `function` keyword have an optional "something else." Could that "something else" name a function? Yes, of course.[^ofcourse]
+
+[^ofcourse]: "Yes of course?" Well, in chapter of a book dedicated to naming functions, it is not surprising that feature we mention has something to do with naming functions.
+
+Here are our example functions written with names:
+
+    function repeat (str) { return str + str; }
+    function fibonacci_approximation (n) { return (1.618**n - -1.618**-n) / 2.236; }
+    
+Placing a name between the `function` keyword and the argument list names the function.
+
+Confusingly, the name of the function is not exactly the same thing as the name we may choose to bind to the value of the function. For example, we can write:
+
+    var double = function repeat (str) { return str + str; }
+
+In this expression, `double` is the name in the environment, but `repeat` is the function's actual name. This is a *named function expression*. That may seem confusing, but think of the binding names as properties of the environment, not of the function. While the name of the function is a property of the function, not of the environment.
+
+And indeed the name *is* a property:
+
+    double.name
+      //=> 'repeat'
 
 In this book we are not examining JavaScript's tooling such as debuggers baked into browsers, but we will note that when you are navigating call stacks in all modern tools, the function's binding name is ignored but its actual name is displayed, so naming functions is very useful even if they don't get a formal binding, e.g.
 
