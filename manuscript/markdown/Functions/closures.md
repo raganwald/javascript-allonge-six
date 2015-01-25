@@ -41,7 +41,7 @@ Pure functions are easiest to understand. They always mean the same thing wherev
 
     () => {}
     
-    x) => x
+    (x) => x
       
     (x) => (y) => x
 
@@ -61,7 +61,7 @@ The environment for `((y) => x)(2)` is *actually* `{y: 2, '..': {x: 1, ...}}`. `
 
 And now you can guess how we evaluate `((y) => x)(2)` in the environment `{y: 2, '..': {x: 1, ...}}`. The variable `x` isn't in `(y) => ...`'s immediate environment, but it is in its parent's environment, so it evaluates to `1` and that's what `((y) => x)(2)` returns even though it ended up ignoring its own argument.
 
-A> `(x) => x is called the I Combinator, or the *Identity Function*. `(x) => (y) => x` is called the K Combinator, or *Kestrel*. Some people get so excited by this that they write entire books about them, some are [great][mock], some--how shall I put this--are [interesting][interesting] if you use Ruby.
+A> `(x) => x` is called the I Combinator, or the *Identity Function*. `(x) => (y) => x` is called the K Combinator, or *Kestrel*. Some people get so excited by this that they write entire books about them, some are [great][mock], some--how shall I put this--are [interesting][interesting] if you use Ruby.
 
 [mock]: http://www.amzn.com/0192801422?tag=raganwald001-20
 [interesting]: https://leanpub.com/combinators "Kestrels, Quirky Birds, and Hopeless Egocentricity"

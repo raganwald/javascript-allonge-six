@@ -10,7 +10,7 @@ Let's make a function with an argument:
 
     (room) => {}
   
-This function has one argument, `room`, and no body. Here's a function with two arguments and an empty body:
+This function has one argument, `room`, and an empty body. Here's a function with two arguments and an empty body:
 
     (room, board) => {}
   
