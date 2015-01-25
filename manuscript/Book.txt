@@ -24,6 +24,8 @@ mainmatter:
 
       markdown/Functions/little.md
 
+      markdown/Functions/args.md
+
 backmatter:
 
   markdown/Appendices/title.md
