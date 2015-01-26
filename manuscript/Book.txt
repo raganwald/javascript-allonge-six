@@ -30,6 +30,8 @@ mainmatter:
 
       markdown/Functions/letvar.md
 
+      markdown/Functions/names.md
+
 backmatter:
 
   markdown/Appendices/title.md

@@ -148,7 +148,7 @@ Aha! It works differently, as if you'd written:
       return someName;
     })()
 
-That difference is intentional on the part of JavaScript's design to facilitate a certain style of programming where you put the main logic up front, and the "helper functions" at the bottom. It is not necessary to declare functions in this way in JavaScript, but understanding the syntax and its behaviour (especially the way it differs from `var`) is essential for working with production code.
+That difference is intentional on the part of JavaScript's design to facilitate a certain style of programming where you put the main logic up front, and the "helper functions" at the bottom. It is not necessary to declare functions in this way in JavaScript, but understanding the syntax and its behaviour (especially the way it differs from `let` and `var`) is essential for working with production code.
 
 ### function declaration caveats[^caveats]
 
