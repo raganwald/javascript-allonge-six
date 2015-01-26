@@ -12,17 +12,17 @@ What is this "3.14159265" number? [PI], obviously. We'd like to name it so that 
 
 In order to bind `3.14159265` to the name `PI`, we'll need a function with a parameter of `PI` applied to an argument of `3.14159265`. If we put our function expression in parentheses, we can apply it to the argument of `3.14159265`:
 
-    ((PI) => {
-      return ????
-    })(3.14159265)
+    ((PI) => 
+      // ????
+    )(3.14159265)
 
 What do we put inside our new function that binds `3.14159265` to the name `PI` when evaluated? Our circumference function, of course:
 
 [PI]: https://en.wikipedia.org/wiki/Pi
 
-    ((PI) => {
+    ((PI) =>
       (diameter) => diameter * PI
-    })(3.14159265)
+    )(3.14159265)
 
 This expression, when evaluated, returns a function that calculates circumferences. That sounds bad, but when we think about it, `(diameter) => diameter * 3.14159265` is also an expression, that when evaluated, returns a function that calculates circumferences. All of our "functions" are epxressions. This one has a few more moving parts, that's all. But we can use it just like `(diameter) => diameter * 3.14159265`.
 
@@ -31,9 +31,9 @@ Let's test it:
     ((diameter) => diameter * 3.14159265)(2)
       //=> 6.2831853
       
-    ((PI) => {
+    ((PI) =>
       (diameter) => diameter * PI
-    })(3.14159265)(2)
+    )(3.14159265)(2)
       //=> 6.2831853
 
 That works! We can bind anything we want in an expression by wrapping it in a function that is immediately invoked with the value we want to bind.[^explain-iife]
@@ -53,9 +53,9 @@ It produces the same result as our previous expressions for a diameter-calculati
     ((diameter) => diameter * 3.14159265)(2)
       //=> 6.2831853
       
-    ((PI) => {
+    ((PI) =>
       (diameter) => diameter * PI
-    })(3.14159265)(2)
+    )(3.14159265)(2)
       //=> 6.2831853
 
     ((diameter) =>
@@ -72,9 +72,9 @@ The third one is easiest for most people to read. It separates concerns nicely: 
 
 Everything else is encapsulated in its body. That's how it should be, naming `PI` is is concern, not ours. The other formulation:
 
-    ((PI) => {
+    ((PI) =>
       // ...
-    })(3.14159265)
+    )(3.14159265)
 
 "Exposes" naming `PI` first, and we have to look inside to find out why we care. So, should we should always write this?
 
