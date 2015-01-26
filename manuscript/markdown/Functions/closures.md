@@ -26,7 +26,7 @@ A> <<(code/k.rb)
 A>
 A> Now let's enjoy a relaxed Allongé before we continue!
 
-### If functions without free variables are pure, are closures impure?
+### if functions without free variables are pure, are closures impure?
 
 The function `(y) => x` is interesting. It contains a *free variable*, `x`.[^nonlocal] A free variable is one that is not bound within the function. Up to now, we've only seen one way to "bind" a variable, namely by passing in an argument with the same name. Since the function `(y) => x` doesn't have an argument named `x`, the variable `x` isn't bound in this function, which makes it "free."
 
@@ -122,4 +122,4 @@ Sometimes, programmers wish to avoid this. If you don't want your code to operat
     })();
     // bottom of the file
 
-The effect is to insert a new, empty environment in between the global environment and your own functions: `{x: 1, '..': {'..': `*global environment*`}}`. As we'll see when we discuss mutable state, this helps to prevent programmers from accidentally changing the global state that is shared by code in every file when they use the [var keyword](#var) properly.
+The effect is to insert a new, empty environment in between the global environment and your own functions: `{x: 1, '..': {'..': `*global environment*`}}`. As we'll see when we discuss mutable state, this helps to prevent programmers from accidentally changing the global state that is shared by code in every file when they use the [let keyword](#let) properly.

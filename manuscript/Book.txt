@@ -28,6 +28,8 @@ mainmatter:
 
       markdown/Functions/closures.md
 
+      markdown/Functions/letvar.md
+
 backmatter:
 
   markdown/Appendices/title.md

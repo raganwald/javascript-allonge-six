@@ -6,132 +6,437 @@ There are other ways to name things in JavaScript, but before we learn some of t
 
     (diameter) => diameter * 3.14159265
 
-What is this "3.14159265" number? [Pi], obviously. We'd like to name it so that we can write something like:
+What is this "3.14159265" number? [PI], obviously. We'd like to name it so that we can write something like:
 
-    (diameter) => diameter * Pi
+    (diameter) => diameter * PI
 
-In order to bind `3.14159265` to the name `Pi`, we'll need a function with a parameter of `Pi` applied to an argument of `3.14159265`. If we put our function expression in parentheses, we can apply it to the argument of `3.14159265`:
+In order to bind `3.14159265` to the name `PI`, we'll need a function with a parameter of `PI` applied to an argument of `3.14159265`. If we put our function expression in parentheses, we can apply it to the argument of `3.14159265`:
 
-    (function (Pi) {
+    ((PI) => {
       return ????
     })(3.14159265)
 
-What do we put inside our new function that binds `3.14159265` to the name `Pi` when evaluated? Our circumference function, of course:
+What do we put inside our new function that binds `3.14159265` to the name `PI` when evaluated? Our circumference function, of course:
 
-[Pi]: https://en.wikipedia.org/wiki/Pi
+[PI]: https://en.wikipedia.org/wiki/Pi
 
-    (function (Pi) {
-      return function (diameter) {
-        return diameter * Pi
-      }
+    ((PI) => {
+      (diameter) => diameter * PI
     })(3.14159265)
 
-This expression, when evaluated, returns a function that calculates circumferences. It differs from our original in that it names the constant `Pi`. Let's test it:
+This expression, when evaluated, returns a function that calculates circumferences. That sounds bad, but when we think about it, `(diameter) => diameter * 3.14159265` is also an expression, that when evaluated, returns a function that calculates circumferences. All of our "functions" are epxressions. This one has a few more moving parts, that's all. But we can use it just like `(diameter) => diameter * 3.14159265`.
 
-    (function (Pi) {
-      return function (diameter) {
-        return diameter * Pi
-      }
+Let's test it:
+
+    ((diameter) => diameter * 3.14159265)(2)
+      //=> 6.2831853
+      
+    ((PI) => {
+      (diameter) => diameter * PI
     })(3.14159265)(2)
       //=> 6.2831853
 
-That works! We can bind anything we want in an expression by wrapping it in a function that is immediately invoked with the value we want to bind.
+That works! We can bind anything we want in an expression by wrapping it in a function that is immediately invoked with the value we want to bind.[^explain-iife]
 
-### immediately invoked function expressions
+[^explain-iife]: JavaScript programmers regularly use the idea of writing an expression that denotes a function and then immediately applying it to arguments. Explaining the pattern, Ben Alman coined the term [Immediately Invoked Function Expression][iife] for it, often abbreviated "IIFE."
 
-JavaScript programmers regularly use the idea of writing an expression that denotes a function and then immediately applying it to arguments. Explaining the pattern, Ben Alman coined the term [Immediately Invoked Function Expression][iife] for it, often abbreviated "IIFE." As we'll see in a moment, an IIFE need not have parameters:
+### inside-out
 
-    (function () {
-      // ... do something here...
-    })();
+There's another way we can make a function that binds `3.14159265` to the name `PI` and then uses that in its expression. We can turn things inside-out by putting the binding inside our diameter calculating function, like this:
 
-When an IIFE binds values to names (as we did above with `Pi`), retro-grouch programmers often call it "let."[^let] And confusing the issue, upcoming versions of JavaScript have support for a `let` keyword that has a similar binding behaviour.
+    (diameter) =>
+      ((PI) =>
+        diameter * PI)(3.14159265)
 
-### var {#var}
+It produces the same result as our previous expressions for a diameter-calculating function:
 
-Using an IIFE to bind names works very well, but only a masochist would write programs this way in JavaScript. Besides all the extra characters, it suffers from a fundamental semantic problem: there is a big visual distance between the name `Pi` and the value `3.14159265` we bind to it. They should be closer. Is there another way?
+    ((diameter) => diameter * 3.14159265)(2)
+      //=> 6.2831853
+      
+    ((PI) => {
+      (diameter) => diameter * PI
+    })(3.14159265)(2)
+      //=> 6.2831853
 
-Yes.
+    ((diameter) =>
+      ((PI) =>
+        diameter * PI)(3.14159265))(2)
+      //=> 6.2831853
 
-Another way to write our "circumference" function would be to pass `Pi` along with the diameter argument, something like this:
+WHich one is better? Well, the first one seems simplest, but a half-century of experience has taught us that names matter. A "magic literal" like `3.14159265` is anathema to sustainable software development.
 
-    function (diameter, Pi) {
-      return diameter * Pi
-    }
+The third one is easiest for most people to read. It separates concerns nicely: The "outer" function describes its parameters:
 
-And you could use it like this:
+    (diameter) =>
+      // ...
 
-    (function (diameter, Pi) {
-      return diameter * Pi
-    })(2, 3.14159265)
+Everything else is encapsulated in its body. That's how it should be, naming `PI` is is concern, not ours. The other formulation:
+
+    ((PI) => {
+      // ...
+    })(3.14159265)
+
+"Exposes" naming `PI` first, and we have to look inside to find out why we care. So, should we should always write this?
+
+    (diameter) =>
+      ((PI) =>
+        diameter * PI)(3.14159265)
+      
+Well, the wrinkle with this is that typically, invoking functions is considerably more expensive than evaluating expressions. Every time we invoke the outer function, we'll invoke the inner function. We could get around this by writing 
+      
+    ((PI) =>
+      (diameter) => diameter * PI
+    )(3.14159265)
+    
+But then we've obfuscated our code, and we don't want to do that unless we absolutely have to.
+
+What would be very nice is if the language gave us a way to bind names inside of blocks without incurring the cost of a function invocation. And JavaScript does.
+
+### let {#let}
+
+Another way to write our "circumference" function would be to pass `PI` along with the diameter argument, something like this:
+
+    (diameter, PI) => diameter * PI
+
+And we could use it like this:
+
+    ((diameter, PI) => diameter * PI)(2, 3.14159265)
       //=> 6.2831853
 
 This differs from our example above in that there is only one environment, rather than two. We have one binding in the environment representing our regular argument, and another our "constant." That's more efficient, and it's *almost* what we wanted all along: A way to bind `3.14159265` to a readable name.
 
-JavaScript gives us a way to do that, the `var` keyword. We'll learn a lot more about `var` in future chapters, but here's the most important thing you can do with `var`:
+JavaScript gives us a way to do that, the `let` keyword. We'll learn a lot more about `let` in future chapters, but here's the most important thing we can do with `let`:
 
-    function (diameter) {
-      var Pi = 3.14159265;
+    (diameter) => {
+      let PI = 3.14159265;
 
-      return diameter * Pi
+      return diameter * PI
     }
 
-The `var` keyword introduces one or more bindings in the current function's environment. It works just as we want:
+The `let` keyword introduces one or more bindings in the block that encloses it. It doesn't incur the cost of a function invocation. That's great. Even better, it puts the symbol (like `PI`) close to the value (`3.14159265`). That's much better than what we were writing.
 
-    (function (diameter) {
-      var Pi = 3.14159265;
+We use the `let` keyword in a *let statement*. `let` statements occur inside blocks, we can't use them when we write a fat arrow that has an expression as its body.
 
-      return diameter * Pi
+It works just as we want. Instead of:
+
+    ((diameter) =>
+      ((PI) =>
+        diameter * PI)(3.14159265))(2)
+        
+Or:
+
+    ((diameter, PI) => diameter * PI)(2, 3.14159265)
+      //=> 6.2831853
+      
+We write:
+
+    ((diameter) => {
+      let PI = 3.14159265;
+
+      return diameter * PI
     })(2)
       //=> 6.2831853
 
-You can bind any expression. Functions are expressions, so you can bind helper functions:
+We can bind any expression. Functions are expressions, so we can bind helper functions:
 
-    function (d) {
-      var calc = function (diameter) {
-        var Pi = 3.14159265;
+    (d) => {
+      let calc = (diameter) => {
+        let PI = 3.14159265;
 
-        return diameter * Pi
+        return diameter * PI
       };
 
       return "The circumference is " + calc(d)
     }
 
-Notice `calc(d)`? This underscores what we've said: if you have an expression that evaluates to a function, you apply it with `()`. A name that's bound to a function is a valid expression evaluating to a function.[^namedfn]
+Notice `calc(d)`? This underscores what we've said: if we have an expression that evaluates to a function, we apply it with `()`. A name that's bound to a function is a valid expression evaluating to a function.[^namedfn]
 
 [^namedfn]: We're into the second chapter and we've finally named a function. Sheesh.
 
 A> Amazing how such an important idea--naming functions--can be explained *en passant* in just a few words. That emphasizes one of the things JavaScript gets really, really right: Functions as "first class entities." Functions are values that can be bound to names like any other value, passed as arguments, returned from other functions, and so forth.
 
-You can bind more than one name-value pair by separating them with commas. For readability, most people put one binding per line:
+We can bind more than one name-value pair by separating them with commas. For readability, most people put one binding per line:
 
-    function (d) {
-      var Pi   = 3.14159265,
-          calc = function (diameter) {
-            return diameter * Pi
-          };
+    (d) => {
+      let PI   = 3.14159265,
+          calc = (diameter) => diameter * PI;
 
       return "The circumference is " + calc(d)
     }
 
-These examples use the `var` keyword to bind names in the same environment as our function. We can also create a new scope using an IIFE if we wish to bind some names in part of a function:
+### nested blocks
 
-    function foobar () {
+Up to now, we've only ever seen blocks we use as the body of functions. But there are other kinds of blocks. One of the places you can find blocks is in an `if` statement. In JavaScript, an `if` statement looks like this:
 
-      // do something without foo or bar
+    (n) => {
+      let even = (x) => {
+        if (x === 0)
+          return true;
+        else
+          return !even(x - 1);
+      }
+      return even(n)
+    }
+    
+And it works for fairly small numbers:
 
-      (function () {
-        var foo = 'foo',
-            bar = 'bar';
+    ((n) => {
+      let even = (x) => {
+        if (x === 0)
+          return true;
+        else
+          return !even(x - 1);
+      }
+      return even(n)
+    })(13)
+      //=> false
 
-        // ... do something with foo and bar ...
+The `if` statement is a statement, not an expression (an unfortunate design choice), and its clauses are statements or blocks. So we could also write something like:
 
-      })();
-
-      // do something else without foo or bar
-
+    (n) => {
+      let even = (x) => {
+        if (x === 0)
+          return true;
+        else {
+          let odd = (y) => !even(y);
+          
+          return odd(x - 1);
+        }
+      }
+      return even(n)
     }
 
-[^let]: To be pedantic, both main branches of Lisp today define a special construct called "let." One, Scheme, [uses `define-syntax` to rewrite `let` into an immediately invoked function expression that binds arguments to values](https://en.wikipedia.org/wiki/Scheme_(programming_language)#Minimalism) as shown above. The other, Common Lisp, leaves it up to implementations to decide how to implement `let`.
+And this also works:
+
+    ((n) => {
+      let even = (x) => {
+        if (x === 0)
+          return true;
+        else {
+          let odd = (y) => !even(y);
+          
+          return odd(x - 1);
+        }
+      }
+      return even(n)
+    })(42)
+      //=> true
+    
+We've used a block as the `else` clause, and since it's a block, we've placed a `let` statement inside it.
+
+### let and lexical scope
+
+This seems very straightforward, but alas, there are some semantics of binding names that we need to understand if we're to place `let` anywhere we like. The first thing to ask ourselves is, what happens if we use `let` to bind two different values to the "same" name?
+
+Let's back up and reconsider how closures work. What happens if we use parameters to bind two different values to the same name?
+
+Here's the second formulation of our diameter function, bound to a name using an IIFE:
+
+    ((diameter_fn) =>
+      // ...
+    )(
+      ((PI) =>
+        (diameter) => diameter * PI
+      )(3.14159265)
+    )
+
+It's more than a bit convoluted, but it binds `((PI) => (diameter) => diameter * PI)(3.14159265)` to `diameter_fn` and evaluates the expression that we've elided. We can use any expression in there, and that expression can invoke `diameter_fn`. For example:
+
+    ((diameter_fn) =>
+      diameter_fn(2)
+    )(
+      ((PI) =>
+        (diameter) => diameter * PI
+      )(3.14159265)
+    )
+      //=> 6.2831853
+      
+We know this from the chapter on [closures](#closures), but even though `PI` is not bound when we invoke `diameter_fn` by evaluating `diameter_fn(2)`, `PI` *is* bound when we evaluated `(diameter) => diameter * PI`, and thus the expression `diameter * PI` is able to access values for `PI` and `diameter` when we evaluate `diameter_fn`.
+
+This is called [lexical scoping], because we can discover where a name is bound by looking at the source code for the program. We can see that `PI` is bound in an environment surrounding `(diameter) => diameter * PI`, we don't need to know where `diameter_fn` is invoked.
+
+We can test this by deliberately creating a "conflict:"
+
+    ((diameter_fn) =>
+      ((PI) =>
+        diameter_fn(2)
+      )(3)
+    )(
+      ((PI) =>
+        (diameter) => diameter * PI
+      )(3.14159265)
+    )
+      //=> 6.2831853
+
+Although we have bound `3` to `PI` in the environment surrounding `diameter_fn(2)`, the value that counts is `3.14159265`, the value we bound to `PI` in the environment surrounding (diameter) => diameter * PI.
+
+That much we can carefully work out from the way closures work. Does `let` work the same way? Let's find out:
+
+    ((diameter_fn) => {
+      let PI = 3;
+      
+      return diameter_fn(2)
+    })(
+      (() => {
+        let PI = 3.14159265;
+        
+        return (diameter) => diameter * PI
+      })()
+    )
+      //=> 6.2831853
+
+Yes. Binding values to names with `let` works just like binding values to names with parameter invocations, it uses lexical scope.
+
+[lexical scoping]: https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope_vs._dynamic_scope
+
+### shadowy lets from a shadowy planet
+
+We just saw that values bound with `let` use lexical scope, just like values bound with parameters. They are looked up in the environment where they are declared. And we know that functions create environments. Parameters are declared when we create functions, so it makes sense that parameters are bound to envirnoments created when we invoke functions.
+
+But `let` statements can appear inside blocks, and we saw that blocks can appear inside of other blocks, including function bodies. So where are `let` variables bound? In the function environment? Or in an environment correspodning to the block?
+
+We can test this by creating another conflict. But instead of binding two different variables to the same name in two different places, we'll bind two different values to the same name, but one environment will be completely enclosed by the other.
+
+Let's start, as above, by doing this with parameters. We'll start with:
+
+    ((PI) =>
+      (diameter) => diameter * PI
+    )(3.14159265)
+
+And gratuitously wrap it in another IIFE so that we can bind `PI` to something else:
+
+    ((PI) =>
+      ((PI) =>
+        (diameter) => diameter * PI
+      )(3.14159265)
+    )(3)
+    
+This still evaluates to a function that calculates diameters:
+
+    ((PI) =>
+      ((PI) =>
+        (diameter) => diameter * PI
+      )(3.14159265)
+    )(3)(2)
+      //=> 6.2831853
+      
+And we can see that our `diameter * PI` expression uses the binding for `PI` in the closest parent environment.  but one question: Did binding `3.14159265` to `PI` somehow change the binding in the "outer" environment? Let's rewrite things slightly differently:
+
+    ((PI) => {
+      ((PI) => {})(3);
+      
+      return (diameter) => diameter * PI;
+    })(3.14159265)
+    
+Now we bind `3` to `PI` in an otherwise empty IIFE inside of our IIFE that binds `3.14159265` to `PI`. Does that binding "overwrite" teh outer one? Will our function return `6` or `6.2831853`? This is a book, you've already scanned ahead, so you know that the answer is **no**, the inner binding does not overwrite the outer binding:
+
+    ((PI) => {
+      ((PI) => {})(3);
+      
+      return (diameter) => diameter * PI;
+    })(3.14159265)(2)
+      //=> 6.2831853
+      
+We say that when we bind a variable using a parameter inside another binding, the inner binding *shadows* the outer binding. It has effect inside its own scope, but does not affect the binding in the enclosing scope.
+
+So what about `let`. Does it work the same way?
+
+    ((diameter) => {
+      let PI = 3.14159265;
+      
+      (() => {
+        let PI = 3;
+      })();
+      
+      return diameter * PI;
+    })(2)
+      //=> 6.2831853
+
+Yes, names bound with `let` shadow enclosing bindings just like parameters. But wait! There's more!!!
+
+Parameters are only bound when we invoke a function. That's why we made all these IIFEs. But `let` statements can appear inside blocks. What happens when we use a `let` inside of a block?
+
+We'll need a gratuitous block. We've seen `if` statements, what could be more gratuitous than:
+
+    if (true) {
+      // an immediately invoked block statement (IIBS)
+    }
+    
+Let's try it:
+
+    ((diameter) => {
+      let PI = 3;
+      
+      if (true) {
+        let PI = 3.14159265;
+      
+        return diameter * PI;
+      }
+    })(2)
+      //=> 6.2831853
+
+    ((diameter) => {
+      let PI = 3.14159265;
+      
+      if (true) {
+        let PI = 3;
+      }
+      return diameter * PI;
+    })(2)
+      //=> 6.2831853
+      
+Ah! `let` statements don't just shadow values bound within the environments created by functions, they shadow values bound within environments created by blocks!
+
+This is enormously important. Consider the alternative: What if `let` could be declared inside of a block, but it always bound the name in the function's scope. In that case, we'd see things like this:
+
+   ((diameter) => {
+      let PI = 3.14159265;
+      
+      if (true) {
+        let PI = 3;
+      }
+      return diameter * PI;
+    })(2)
+      //=> would return 6 if let had function scope
+      
+If `let` always bound its value to the name defined in the function's environment, placing a `let` statement inside of a block would merely rebind the existing name, ovewriting its old contents. That would be super-confusing. And this code would "work:"
+
+   ((diameter) => {
+      if (true) {
+        let PI = 3.14159265;
+      }
+      return diameter * PI;
+    })(2)
+      //=> would return 6.2831853 if let had function scope
+
+Again, confusing. Typically, we want to bind our names as close to where we need them as possible. This design rule is called the [Principle of Least Privilege][plp], and it has both quality and security implications. Being able to bind a name insid eof a block means that if the name is only needed in the block, we are not "leaking" its binding to other parts of the code that do not need to interact with it.
+
+[plp]: https://en.wikipedia.org/wiki/Principle_of_least_privilege
+    
+### `var` {#var}
+
+`let` binding names within blocks is clearly superior to it binding names within functions only. So why mention function-level scope rather than block-level scope? Well, JavaScript also supports a construct like `let` that only binds names within the function's environment. It's the `var` statement:
+
+   ((diameter) => {
+      var PI = 3.14159265;
+      
+      if (true) {
+        var PI = 3;
+      }
+      return diameter * PI;
+    })(2)
+      //=> returns 6
+      
+If `let` always bound its value to the name defined in the function's environment, placing a `let` statement inside of a block would merely rebind the existing name, ovewriting its old contents. That would be super-confusing. And this code would "work:"
+
+   ((diameter) => {
+      if (true) {
+        var PI = 3.14159265;
+      }
+      return diameter * PI;
+    })(2)
+      //=> returns 6.2831853
+
+`let` is superior to `var` for our purposes, and it is nearly always exactly what we need when writing JavaScript.
 
 [iife]: http://www.benalman.com/news/2010/11/immediately-invoked-function-expression/
