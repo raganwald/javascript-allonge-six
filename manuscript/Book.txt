@@ -32,6 +32,8 @@ mainmatter:
 
       markdown/Functions/names.md
 
+      markdown/Functions/combinators.md
+
 backmatter:
 
   markdown/Appendices/title.md
