@@ -33,15 +33,21 @@ Code is easier than words for this. The [Underscore] library provides a higher-o
 
     _.map([1, 2, 3], (n) => n * n)
       //=> [1, 4, 9]
+
+We don't want to fool around writing `_.`, so we can use it by writing:[^_map]
+
+[^_map]: If we don't want to sort out [Underscore], we can also write the following: `let map = (a, fn) => a.map(fn);`, and trust that it works even thogh we haven't discussed methods yet.
+
+    let map = _.map;
       
 This code implements a partial application of the map function by applying the function `(n) => n * n` as its second argument:
 
-    let squareAll = (array) => _.map(array,  (n) => n * n);
+    let squareAll = (array) => map(array,  (n) => n * n);
 
 The resulting function--`squareAll`--is still the map function, it's just that we've applied one of its two arguments already. `squareAll` is nice, but why write one function every time we want to partially apply a function to a map? We can abstract this one level higher. `mapWith` takes any function as an argument and returns a partially applied map function.
 
     let mapWith = (fn) =>
-      (array) => _.map(array, fn);
+      (array) => map(array, fn);
     
     let squareAll = mapWith((n) => n * n);
     

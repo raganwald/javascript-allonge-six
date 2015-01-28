@@ -36,6 +36,8 @@ mainmatter:
 
       markdown/Functions/buildingblocks.md
 
+      markdown/Functions/args-again.md
+
 backmatter:
 
   markdown/Appendices/title.md
