@@ -38,6 +38,8 @@ mainmatter:
 
       markdown/Functions/args-again.md
 
+      markdown/Functions/summary.md
+
 backmatter:
 
   markdown/Appendices/title.md
