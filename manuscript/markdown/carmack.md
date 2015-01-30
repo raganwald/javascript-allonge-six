@@ -1,1 +1,1 @@
-![ ](images/carmack.png)
+![ ](images/carmack-tweet.png)

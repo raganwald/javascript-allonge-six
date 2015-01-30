@@ -14,11 +14,9 @@ frontmatter:
 
   markdown/Prefaces/spessore.md
 
+  markdown/prelude.md
+
 mainmatter:
-
-    markdown/prelude.md
-
-    markdown/ValuesAndExpressions/title.md
 
     markdown/carmack.md
 
@@ -41,6 +39,10 @@ mainmatter:
       markdown/Functions/args-again.md
 
       markdown/Functions/summary.md
+
+    markdown/ValuesAndExpressions/title.md
+
+      markdown/ValuesAndExpressions/literals.md
 
 backmatter:
 
