@@ -39,3 +39,18 @@ This kind of "inexactitude" can be ignored  when performing calculations that ha
 But as a rule, if you need to work with real numbers, you should have more than a nodding aquantence with the [IEEE Standard for Floating-Point Arithmetic]. Professional programmers almost never use floating point numbers to represent monetary amounts. For example, "$43.21" will nearly always be presented as two numbers: `43` for dollars and `21` for cents, not `43.21`. In this book, we need not think about such details, but outside of this book, we must.
 
 [IEEE754]: https://en.wikipedia.org/wiki/IEEE_floating_point
+
+### operators
+
+As we've seen, JavaScript has many common arithmetic operators. We can create expressions that look very much like mathematical expressions, for example we can write `1 + 1` or `2 * 3` or `42 - 34` or even `6 / 2`. These can be combined to make more complex expressions, like ` 2 * 5 + 1`.
+
+In JavaScript, operators have an order of precedence designed to mimic the way humans typically parse written arithmatic. So:
+
+    2 * 5 + 1
+      //=> 11
+    1 + 5 * 2
+      //=> 11
+      
+JavaScript treats the expressions as if we had written `(2 * 5) + 1` and `1 + (5 * 2)`, because the `*` operator has a *higher precedence* than the `+` operator. JavaScript has many more operators. In a sense, they behave like little functions. If we write `1 + 2`, this is conceptually similar to writing `plus(1, 2)` (assuming we have a function that adds two numbers bound to the name `plus`, of course).
+
+Unike functions, however, expressions involving values and operators do not incur the cost of invoking functions. There is no special environment created, no extra names are bound, and the interpreter's *call stack* is not 
