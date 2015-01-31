@@ -76,9 +76,9 @@ Although it seems quixotic for the two syntaxes to have different semantics, it 
 
 To give a contrived example, this function takes a number and returns an array representing a row in a hypothetical multiplication table. It uses `mapWith`, whch we discussed in [Building Blocks](#buildingblocks).[^mapWith] We'll use `arguments` just to show the difference between using a fat arrow and the function keyword:
 
-[^mapWith]: We can also write the following: `let mapWith = (fn, a) => a.map(fn);`, and trust that it works even thogh we haven't discussed methods yet.
+[^mapWith]: We can also write the following: `const mapWith = (fn, a) => a.map(fn);`, and trust that it works even thogh we haven't discussed methods yet.
 
-    function row () {
+    const row = function () {
       return mapWith(
         (column) => column * arguments[0],
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -90,7 +90,7 @@ To give a contrived example, this function takes a number and returns an array r
 
 This works just fine, because `arguments[0]` refers to the `3` we passed to the function `row`. Our "fat arrow" function `(column) => column * arguments[0]` doesn't bind `arguments` when it's invoked. But if we rewrite `row` to use the `function` keyword, it stops working:
 
-    function row () {
+    const row = function () {
       return mapWith(
         function (column) { return column * arguments[0] },
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -103,7 +103,7 @@ This works just fine, because `arguments[0]` refers to the `3` we passed to the 
 Now our inner function binds `arguments[0]` every time it is invoked, so we get the same result as if we'd written
 `function (column) { return column * column }`.
 
-Although this example is clearly unrealistic, theer is a general design principle that deserves attention. Sometimes, a function is meant to be used as a Big-F function. It has a name, it is called by different pieces of code, it's a first-class entity in the code.
+Although this example is clearly unrealistic, there is a general design principle that deserves attention. Sometimes, a function is meant to be used as a Big-F function. It has a name, it is called by different pieces of code, it's a first-class entity in the code.
 
 But sometimes, a function is a small-f function. It's a simple representation of an expression to be computed. In our example above, `row` is a Big-F function, but `(column) => column * arguments[0]` is a small-f function, it exists just to give `mapWith` something to apply.
 

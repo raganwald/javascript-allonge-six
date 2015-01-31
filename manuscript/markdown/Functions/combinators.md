@@ -43,22 +43,22 @@ In this book, we will be using a looser definition of "combinator:" Higher-order
 
 Let's start with a useful combinator: Most programmers call it *Compose*, although the logicians call it the B combinator or "Bluebird." Here is the typical[^bluebird] programming implementation:
 
-    compose (a, b) =>
+    const compose = (a, b) =>
       (c) => a(b(c))
 
 Let's say we have:
 
-    let addOne = (number) > number + 1;
+    const addOne = (number) > number + 1;
     
-    let doubleOf = (number) => number * 2;
+    const doubleOf = (number) => number * 2;
     
 With `compose`, anywhere you would write
 
-    let doubleOfAddOne = (number) => doubleOf(addOne(number));
+    const doubleOfAddOne = (number) => doubleOf(addOne(number));
     
 You could also write:
 
-    let doubleOfAddOne = compose(doubleOf, addOne);
+    const doubleOfAddOne = compose(doubleOf, addOne);
     
 This is, of course, just one example of many. You'll find lots more perusing the recipes in this book. While some programmers believe "There Should Only Be One Way To Do It," having combinators available as well as explicitly writing things out with lots of symbols and keywords has some advantages when used judiciously.
 
@@ -70,21 +70,21 @@ Code that uses a lot of combinators tends to name the verbs and adverbs (like `d
 
 A *function decorator* is a higher-order function that takes one function as an argument, returns another function, and the returned function is a variation of the argument function. Here's a ridiculously simple  decorator:[^variadic]
 
-    let not = (fn) => (x) => !fn(x)
+    const not = (fn) => (x) => !fn(x)
       
 [^variadic]: We'll see later why an even more useful version would be written `(fn) => (...args) => !fn(...args)`
 
 So instead of writing `!someFunction(42)`, we can write `not(someFunction)(42)`. Hardly progress. But like `compose`, we could write either:
 
-    let something = (x) => x != null;
+    const something = (x) => x != null;
 
 And elsewhere, write:
 
-    let nothing = (x) => !something(x);
+    const nothing = (x) => !something(x);
 
 Or we could write:
 
-    let nothing = not(something);
+    const nothing = not(something);
 
 `not` is a function decorator because it modifies a function while remaining strongly related to the original function's semantics. You'll see other function decorators in the recipes, like [once](#once), [mapWith](#mapWith), and [maybe](#maybe). Function decorators aren't strict about being pure functions, so there's more latitude for making decorators than combinators.
 

@@ -6,13 +6,13 @@ When you look at functions within functions in JavaScript, there's a bit of a "s
 
 One of the most basic of these building blocks is *composition*:
 
-    let cookAndEat = (food) => eat(cook(food));
+    const cookAndEat = (food) => eat(cook(food));
     
 It's really that simple: Whenever you are chaining two or more functions together, you're composing them. You can compose them with explicit JavaScript code as we've just done. You can also generalize composition with the B Combinator or "compose" that we saw in [Combinators and Decorators](#combinators):
 
-    let compose = (a, b) => (c) => a(b(c));
+    const compose = (a, b) => (c) => a(b(c));
 
-    var cookAndEat = compose(eat, cook);
+    const cookAndEat = compose(eat, cook);
     
 If that was all there was to it, composition wouldn't matter much. But like many patterns, using it when it applies is only 20% of the benefit. The other 80% comes from organizing your code such that you can use it: Writing functions that can be composed in various ways.
 
@@ -20,10 +20,10 @@ In the recipes, we'll look at a decorator called  [once](#once): It ensures that
 
 Of course, you needn't use combinators to implement either of these ideas, you can use if statements. But `once` and `maybe` compose, so you can chain them together as you see fit:
 
-    let actuallyTransfer= (from, to, amount) =>
+    const actuallyTransfer= (from, to, amount) =>
       // do something
     
-    let invokeTransfer = once(maybe(actuallyTransfer(...)));
+    const invokeTransfer = once(maybe(actuallyTransfer(...)));
     
 ### partial application
 
@@ -36,27 +36,27 @@ Code is easier than words for this. The [Underscore] library provides a higher-o
 
 We don't want to fool around writing `_.`, so we can use it by writing:[^_map]
 
-[^_map]: If we don't want to sort out [Underscore], we can also write the following: `let map = (a, fn) => a.map(fn);`, and trust that it works even thogh we haven't discussed methods yet.
+[^_map]: If we don't want to sort out [Underscore], we can also write the following: `const map = (a, fn) => a.map(fn);`, and trust that it works even thogh we haven't discussed methods yet.
 
-    let map = _.map;
+    const map = _.map;
       
 This code implements a partial application of the map function by applying the function `(n) => n * n` as its second argument:
 
-    let squareAll = (array) => map(array,  (n) => n * n);
+    const squareAll = (array) => map(array,  (n) => n * n);
 
 The resulting function--`squareAll`--is still the map function, it's just that we've applied one of its two arguments already. `squareAll` is nice, but why write one function every time we want to partially apply a function to a map? We can abstract this one level higher. `mapWith` takes any function as an argument and returns a partially applied map function.
 
-    let mapWith = (fn) =>
+    const mapWith = (fn) =>
       (array) => map(array, fn);
     
-    let squareAll = mapWith((n) => n * n);
+    const squareAll = mapWith((n) => n * n);
     
     squareAll([1, 2, 3])
       //=> [1, 4, 9]
 
 We'll discuss mapWith again in [the recipes](#mapWith). The important thing to see is that partial application is orthogonal to composition, and that they both work together nicely:
 
-    let safeSquareAll = mapWith(maybe((n) => n * n));
+    const safeSquareAll = mapWith(maybe((n) => n * n));
     
     safeSquareAll([1, null, 2, 3])
       //=> [1, null, 4, 9]

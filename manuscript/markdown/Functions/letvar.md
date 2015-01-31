@@ -63,7 +63,7 @@ It produces the same result as our previous expressions for a diameter-calculati
         diameter * PI)(3.14159265))(2)
       //=> 6.2831853
 
-WHich one is better? Well, the first one seems simplest, but a half-century of experience has taught us that names matter. A "magic literal" like `3.14159265` is anathema to sustainable software development.
+Which one is better? Well, the first one seems simplest, but a half-century of experience has taught us that names matter. A "magic literal" like `3.14159265` is anathema to sustainable software development.
 
 The third one is easiest for most people to read. It separates concerns nicely: The "outer" function describes its parameters:
 
@@ -440,3 +440,39 @@ If `let` always bound its value to the name defined in the function's environmen
 `let` is superior to `var` for our purposes, and it is nearly always exactly what we need when writing JavaScript.
 
 [iife]: http://www.benalman.com/news/2010/11/immediately-invoked-function-expression/
+    
+### const {#const}
+
+By default, JavaScript permits us to *rebind* new values to names bound with a parameter, with `let`, or with `var`. For example, we can write:
+
+    function evenStevens (n) {
+      let even = true;
+      if (n > 0) {
+        even = evenStevens(n - 1);
+      }
+      return even;
+    }
+    
+    evenStevens(42)
+      //=> true
+    
+The line `even = evenStevens(n - 1);` *rebinds* a new value to the name `even`. We will discuss this at much greater length in the chapter on [Rebinding and References](#references), but long before we do, here is the `const` statement at work:
+
+    function evenStevens (n) {
+      const even = true;
+      if (n > 0) {
+        even = evenStevens(n - 1);
+      }
+      return even;
+    }
+    
+    evenStevens(42)
+      //=> ERROR, line 5: even is read-only
+      
+  JavaScript does not permit us to rebind a name that has been bound with `const`. Now, any program that operates correctly with a mixture of `let` and `const` will operate correctly with just `let`: The scope of the two kinds of variables is identical, and it's perfectly legal to bind a variable with `let` and never rebind it.
+  
+  But binding it with `const` serves two very important purposes: It documents our intent to those reading our programs, and as a pleasant bonus, JavaScript enforces our signal and will not allow us to say that a name is not to be rebound but actually rebind it.
+  
+  In this book, we will use `const` wherever possible.
+  
+ A> An excellent practice is to use `const` wherever possible,and to use `let` only when necessary. That way, `let` documents that we expect to rebind a variable. Sadly, JavaScript does not enforce that every variable bound with `let` is necessarily rebound, but this is the best we can do.
