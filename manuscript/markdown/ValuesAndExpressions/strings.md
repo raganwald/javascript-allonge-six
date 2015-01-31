@@ -1,0 +1,64 @@
+# A Wam Cup in the Hand: Strings
+
+![Coffee and a Book](images/coffee-and-a-book.jpg)
+
+> An expression is any valid unit of code that resolves to a value.—[Mozilla Development Network: Expressions and operators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators)
+
+Like most programming languages, JavaScript also has string literals, like `'fubar'` or `'fizzbuzz'`. Liek many contemporary languages, special characters can be incldued in a string literal by means of an *escape sequence*. For example, the escape sequence `\n` inserts a newline character in a string literal, like this:'first line\nsecond line'.
+
+There are operators that can be used on strings. The most common is `+`, it *concatenates*:
+
+    'fu' + 'bar'
+      //=> 'fubar'
+      
+String manipulatio is extremely common in programming. Writing is a big part of what makes us human, and strings are how JavaScript and most other langauges represent writing. 
+
+### quasi-literals
+
+JavaScript supports *quasi-literal strings*, a/k/a "Template Strings" or "String Interpolation Expressions." A quasi-literal string is something that looks like a string literal, but is actually an expression. Quasi-literal strings are denoted with back quotes, like this: `\`foobar\``, and most strings that can be expressed as literals have the exact same meaning as quasi-literals, e.g.
+
+    `foobar`
+      //=> 'foobar'
+      
+    `fizz` + `buzz`
+      //=> 'fizzbuzz'
+
+Quasi-literals go much futher. A quasi-literal can contain an expression to be evaluated. Old-school lispers call this "unquoting," the more contemporary term is "interpolation." An unquoted expression is inserted in a quasi-literal with `${expression}`. The expression is evaluated, and the result is cerced to a string, then inserted in the quasi-string.
+
+For example:
+
+    `A popular number for nerds is ${40 + 2}`
+      //=> 'A popular number for nerds is 42'
+
+A quasi-literal is computationally equivalent to an expression using `+`. So the above expression could also be written:
+
+    'A popular number for nerds is ' + (40 + 2)
+      //=> 'A popular number for nerds is 42'
+      
+However, there is a big semantic difference between a quasi-literal and an expression. Quasi-literals are expressions that resemble their result. They're easier to read and it's easier to avid errors like the following:
+
+    'A popular number for nerds is' + (40 + 2)
+      //=> 'A popular number for nerds is42'
+      
+### evaluation time
+
+Like any other expression, quasi-literals are evaluated *late*, when that line or lines of code is evaluated.
+
+So for example, 
+
+    const name = "Harry";
+    
+    const greeting = (name) => `Hello my name is ${name}`;
+    
+    greeting('Arthur Dent')
+      //=> 'Hello my name is Arthur Dent'
+      
+JavaScript does not eveluate the quasi-literal when the function is evaluated, it evaluates the quasi-literal when the function is invoked and teh quasi-literal inside the function's body is evaluated. Thus, `name` is not bound to `"Harry"`, the value when the function expression is evaluated and bound to `greeting`. `name` is bound to `'Arthur Dent'`, the value of the parameter when the function is invoked.
+
+This is exactly wat we'd expect if we'd written it like this:
+    
+    const greeting = (name) => 'Hello my name is ' + name;
+    
+    greeting('Arthur Dent')
+      //=> 'Hello my name is Arthur Dent'
+

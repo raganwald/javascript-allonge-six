@@ -40,9 +40,9 @@ mainmatter:
 
       markdown/Functions/summary.md
 
-    markdown/ValuesAndExpressions/title.md
+    markdown/ValuesAndExpressions/numbers.md
 
-      markdown/ValuesAndExpressions/literals.md
+    markdown/ValuesAndExpressions/strings.md
 
 backmatter:
 

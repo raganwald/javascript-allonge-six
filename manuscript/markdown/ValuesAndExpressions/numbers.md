@@ -1,4 +1,8 @@
-## Numbers
+# The Rich Aroma: Numbers
+
+![Mathematics and Coffee](images/expressions-title.jpg)
+
+> In computer science, a literal is a notation for representing a fixed value in source code. Almost all programming languages have notations for atomic values such as integers, floating-point numbers, and strings, and usually for booleans and characters; some also have notations for elements of enumerated types and compound values such as arrays, records, and objects. An anonymous function is a literal for the function type.—[Wikipedia](https://en.wikipedia.org/wiki/Literal_(computer_programming))
 
 JavaScript, like most languages, has a collection of literals. We saw that an expression consisting solely of numbers, like `42`, is a literal. It represents the number forty-two, which is 42 base 10. Not all numbers are base ten. If we start a literal with a zero, it is an octal literal. So the literal `042` is 42 base 8, which is actually 34 base 10.
 
@@ -40,7 +44,7 @@ But as a rule, if you need to work with real numbers, you should have more than 
 
 [IEEE754]: https://en.wikipedia.org/wiki/IEEE_floating_point
 
-### operators
+### operations on numbers
 
 As we've seen, JavaScript has many common arithmetic operators. We can create expressions that look very much like mathematical expressions, for example we can write `1 + 1` or `2 * 3` or `42 - 34` or even `6 / 2`. These can be combined to make more complex expressions, like ` 2 * 5 + 1`.
 
@@ -53,4 +57,9 @@ In JavaScript, operators have an order of precedence designed to mimic the way h
       
 JavaScript treats the expressions as if we had written `(2 * 5) + 1` and `1 + (5 * 2)`, because the `*` operator has a *higher precedence* than the `+` operator. JavaScript has many more operators. In a sense, they behave like little functions. If we write `1 + 2`, this is conceptually similar to writing `plus(1, 2)` (assuming we have a function that adds two numbers bound to the name `plus`, of course).
 
-Unike functions, however, expressions involving values and operators do not incur the cost of invoking functions. There is no special environment created, no extra names are bound, and the interpreter's *call stack* is not 
+In addition to the common `+`, `-`, '*', and `/`, JavaScript also supports modulus (`%`) and unary negation `-`. For example:
+
+    -(3 + 5)
+      //=> -8
+
+There are lots and lots more operators that can be used with numbers, including bitwise operators like `|` and `&` that allow you to operate directly on a number's binary representation, and a number of opther operators that perform assignment or logical comparision that we will look at later.
