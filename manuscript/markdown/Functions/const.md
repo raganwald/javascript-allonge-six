@@ -24,7 +24,7 @@ What do we put inside our new function that binds `3.14159265` to the name `PI` 
       (diameter) => diameter * PI
     )(3.14159265)
 
-This expression, when evaluated, returns a function that calculates circumferences. That sounds bad, but when we think about it, `(diameter) => diameter * 3.14159265` is also an expression, that when evaluated, returns a function that calculates circumferences. All of our "functions" are epxressions. This one has a few more moving parts, that's all. But we can use it just like `(diameter) => diameter * 3.14159265`.
+This expression, when evaluated, returns a function that calculates circumferences. That sounds bad, but when we think about it, `(diameter) => diameter * 3.14159265` is also an expression, that when evaluated, returns a function that calculates circumferences. All of our "functions" are expressions. This one has a few more moving parts, that's all. But we can use it just like `(diameter) => diameter * 3.14159265`.
 
 Let's test it:
 
@@ -291,7 +291,7 @@ Yes. Binding values to names with `const` works just like binding values to name
 
 ### shadowy consts from a shadowy planet
 
-We just saw that values bound with `const` use lexical scope, just like values bound with parameters. They are looked up in the environment where they are declared. And we know that functions create environments. Parameters are declared when we create functions, so it makes sense that parameters are bound to envirnoments created when we invoke functions.
+We just saw that values bound with `const` use lexical scope, just like values bound with parameters. They are looked up in the environment where they are declared. And we know that functions create environments. Parameters are declared when we create functions, so it makes sense that parameters are bound to environments created when we invoke functions.
 
 But `const` statements can appear inside blocks, and we saw that blocks can appear inside of other blocks, including function bodies. So where are `const` variables bound? In the function environment? Or in an environment corresponding to the block?
 
@@ -328,7 +328,7 @@ And we can see that our `diameter * PI` expression uses the binding for `PI` in 
       return (diameter) => diameter * PI;
     })(3.14159265)
     
-Now we bind `3` to `PI` in an otherwise empty IIFE inside of our IIFE that binds `3.14159265` to `PI`. Does that binding "overwrite" teh outer one? Will our function return `6` or `6.2831853`? This is a book, you've already scanned ahead, so you know that the answer is **no**, the inner binding does not overwrite the outer binding:
+Now we bind `3` to `PI` in an otherwise empty IIFE inside of our IIFE that binds `3.14159265` to `PI`. Does that binding "overwrite" the outer one? Will our function return `6` or `6.2831853`? This is a book, you've already scanned ahead, so you know that the answer is **no**, the inner binding does not overwrite the outer binding:
 
     ((PI) => {
       ((PI) => {})(3);
@@ -399,7 +399,7 @@ This is enormously important. Consider the alternative: What if `const` could be
     })(2)
       //=> would return 6 if const had function scope
       
-If `const` always bound its value to the name defined in the function's environment, placing a `const` statement inside of a block would merely rebind the existing name, ovewriting its old contents. That would be super-confusing. And this code would "work:"
+If `const` always bound its value to the name defined in the function's environment, placing a `const` statement inside of a block would merely rebind the existing name, overwriting its old contents. That would be super-confusing. And this code would "work:"
 
    ((diameter) => {
       if (true) {
@@ -409,7 +409,7 @@ If `const` always bound its value to the name defined in the function's environm
     })(2)
       //=> would return 6.2831853 if const had function scope
 
-Again, confusing. Typically, we want to bind our names as close to where we need them as possible. This design rule is called the [Principle of Least Privilege][plp], and it has both quality and security implications. Being able to bind a name insid eof a block means that if the name is only needed in the block, we are not "leaking" its binding to other parts of the code that do not need to interact with it.
+Again, confusing. Typically, we want to bind our names as close to where we need them as possible. This design rule is called the [Principle of Least Privilege][plp], and it has both quality and security implications. Being able to bind a name inside of a block means that if the name is only needed in the block, we are not "leaking" its binding to other parts of the code that do not need to interact with it.
 
 [plp]: https://en.wikipedia.org/wiki/Principle_of_least_privilege
     

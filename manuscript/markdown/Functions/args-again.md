@@ -6,7 +6,7 @@ When a function is applied to arguments (or "called"), JavaScript binds the valu
 
 ### the function keyword
 
-There are two separate rules for these "magic" names, one for when you invoke a function using the `function` keyword, and another for functions defined with "fat arrows." We'll begin with how things work for functions definedw ith eth `function` keyword.
+There are two separate rules for these "magic" names, one for when you invoke a function using the `function` keyword, and another for functions defined with "fat arrows." We'll begin with how things work for functions defined with the `function` keyword.
 
 The first magic name is  `this`, and it is bound to something called the function's [context](#context). We will explore `this` in more detail when we start discussing objects and classes. The second magic name is very interesting, it's called `arguments`, and the most interesting thing about it is that it contains a list of arguments passed to a function:
 
@@ -74,9 +74,9 @@ But if we use a fat arrow, `arguments` will be defined in the outer environment,
       
 Although it seems quixotic for the two syntaxes to have different semantics, it makes sense when you consider the design goal: Fat arrow functions are designed to be very lightweight and are often used with constructs like mapping or callbacks to emulate syntax.
 
-To give a contrived example, this function takes a number and returns an array representing a row in a hypothetical multiplication table. It uses `mapWith`, whch we discussed in [Building Blocks](#buildingblocks).[^mapWith] We'll use `arguments` just to show the difference between using a fat arrow and the function keyword:
+To give a contrived example, this function takes a number and returns an array representing a row in a hypothetical multiplication table. It uses `mapWith`, which we discussed in [Building Blocks](#buildingblocks).[^mapWith] We'll use `arguments` just to show the difference between using a fat arrow and the function keyword:
 
-[^mapWith]: We can also write the following: `const mapWith = (fn, a) => a.map(fn);`, and trust that it works even thogh we haven't discussed methods yet.
+[^mapWith]: We can also write the following: `const mapWith = (fn, a) => a.map(fn);`, and trust that it works even though we haven't discussed methods yet.
 
     const row = function () {
       return mapWith(

@@ -38,9 +38,9 @@ However:
     0.1 + 0.1 + 0.1
       //=> 0.30000000000000004
       
-This kind of "inexactitude" can be ignored  when performing calculations that have an acceptable deviation. For example, when centering some text on a page, as long as the difference between what you might calculate longahnd and JavaScript's calculation is less than a pixel, there is no observable error.
+This kind of "inexactitude" can be ignored  when performing calculations that have an acceptable deviation. For example, when centering some text on a page, as long as the difference between what you might calculate longhand and JavaScript's calculation is less than a pixel, there is no observable error.
 
-But as a rule, if you need to work with real numbers, you should have more than a nodding aquantence with the [IEEE Standard for Floating-Point Arithmetic]. Professional programmers almost never use floating point numbers to represent monetary amounts. For example, "$43.21" will nearly always be presented as two numbers: `43` for dollars and `21` for cents, not `43.21`. In this book, we need not think about such details, but outside of this book, we must.
+But as a rule, if you need to work with real numbers, you should have more than a nodding acquaintance with the [IEEE Standard for Floating-Point Arithmetic]. Professional programmers almost never use floating point numbers to represent monetary amounts. For example, "$43.21" will nearly always be presented as two numbers: `43` for dollars and `21` for cents, not `43.21`. In this book, we need not think about such details, but outside of this book, we must.
 
 [IEEE754]: https://en.wikipedia.org/wiki/IEEE_floating_point
 
@@ -48,7 +48,7 @@ But as a rule, if you need to work with real numbers, you should have more than 
 
 As we've seen, JavaScript has many common arithmetic operators. We can create expressions that look very much like mathematical expressions, for example we can write `1 + 1` or `2 * 3` or `42 - 34` or even `6 / 2`. These can be combined to make more complex expressions, like ` 2 * 5 + 1`.
 
-In JavaScript, operators have an order of precedence designed to mimic the way humans typically parse written arithmatic. So:
+In JavaScript, operators have an order of precedence designed to mimic the way humans typically parse written arithmetic. So:
 
     2 * 5 + 1
       //=> 11
@@ -62,4 +62,4 @@ In addition to the common `+`, `-`, '*', and `/`, JavaScript also supports modul
     -(3 + 5)
       //=> -8
 
-There are lots and lots more operators that can be used with numbers, including bitwise operators like `|` and `&` that allow you to operate directly on a number's binary representation, and a number of opther operators that perform assignment or logical comparision that we will look at later.
+There are lots and lots more operators that can be used with numbers, including bitwise operators like `|` and `&` that allow you to operate directly on a number's binary representation, and a number of other operators that perform assignment or logical comparison that we will look at later.

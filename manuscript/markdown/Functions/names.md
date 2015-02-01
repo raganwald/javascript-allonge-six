@@ -120,7 +120,7 @@ This behaves a *little* like:
       // ...
     }
     
-In that it binds a name in the environment to a named function. However, there are two important differences. First, function declarations are *hosited* to the top of the function in which they occur.
+In that it binds a name in the environment to a named function. However, there are two important differences. First, function declarations are *hoisted* to the top of the function in which they occur.
 
 Consider this example where we try to use the variable `fizzbuzz` as a function before we bind a function to it with `const`:
 

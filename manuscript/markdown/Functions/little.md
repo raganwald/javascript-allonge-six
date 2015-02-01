@@ -77,7 +77,7 @@ Let's try it:
 
 Yes we can! Functions can return the value of evaluating another function.
 
-When dealing with expressions that have a lot of the same characters (like parentheses), you may find it helpful to format the code to make things stand out. So we cn also write:
+When dealing with expressions that have a lot of the same characters (like parentheses), you may find it helpful to format the code to make things stand out. So we can also write:
 
 
     (() =>
@@ -120,7 +120,7 @@ Or even:
 
 There's another thing we can put to the right of an arrow, a *block*. A block has zero or more *statements*, separated by semicolons.[^asi]
 
-[^asi]: Sometimes, you will find JavaScript that has statements that are separated by newlines without semi-colons. This works because JavaScript has a feature that can infer where the semi-colons shoud be most of the time. We will not take advantage of this feature, but it's helpful to know it exists.
+[^asi]: Sometimes, you will find JavaScript that has statements that are separated by newlines without semi-colons. This works because JavaScript has a feature that can infer where the semi-colons should be most of the time. We will not take advantage of this feature, but it's helpful to know it exists.
 
 So, this is a valid function:
 
