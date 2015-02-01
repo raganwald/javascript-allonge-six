@@ -1,6 +1,6 @@
 ## About The Author
 
-When he's not shipping JavaScript, Ruby, CoffeeScript and Java applications scaling out to millions of users, Reg "Raganwald" Braithwaite has authored [libraries][lib] for JavaScript, CoffeeScript, and Ruby programming such as Method Combinators, Katy, JQuery Combinators, YouAreDaChef, andand, and others.
+When he's not shipping JavaScript, Ruby, CoffeeScript and Java applications scaling out to millions of users, Reg "Raganwald" Braithwaite has authored [libraries][lib] for JavaScript, CoffeeScript, and Ruby programming such as Allong.es, Method Combinators, Katy, JQuery Combinators, YouAreDaChef, andand, and others.
 
 [lib]: http://github.com/raganwald
 

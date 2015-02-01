@@ -10,13 +10,13 @@ Second, *JavaScript Allongé* provides recipes for using functions to write soft
 
 ### Why JavaScript Allongé, The "Six" Edition?
 
-The first edition of JavaScript Allongé was written when almost all versions of JavaScript conformed to the EcmaScript-5 standard. EcmaScript-5 makes a nice language, but many JavaScript developers are ployglots: They might write Ruby on a server and JavaScript in the browser, or build systems that have services written with Node/JavaScript and Python.
+The first edition of JavaScript Allongé was written when almost all versions of JavaScript conformed to the ECMAScript-5 standard. ECMAScript-5 makes a nice language, but many JavaScript developers are ployglots: They might write Ruby on a server and JavaScript in the browser, or build systems that have services written with Node/JavaScript and Python.
 
 And lots of JavaScript developers have experimented with compile-to-JavaScript alternatives like CoffeeScript or ClojureScript. The net result is that JavaScript developers have aquired a taste for language features that ther languages have proven to be useful.
 
-The EcmaScript standards committee responded with EcmaScript-6, an update to JavaScript that introduces new features that have been proven useful and popular in other languages. It also introduces a number of features that address common JavaScript concerns.
+The ECMAScript standards committee responded with ECMAScript-6, an update to JavaScript that introduces new features that have been proven useful and popular in other languages. It also introduces a number of features that address common JavaScript concerns.
 
-The first edition of JavaScript Allongé does not use any of the EcmaScript-6 features, and in some cases shows you how to solve a problem with EcmaScript-5 that EcmaScript-6 solves in a natural way.
+The first edition of JavaScript Allongé does not use any of the ECMAScript-6 features, and in some cases shows you how to solve a problem with ECMAScript-5 that ECMAScript-6 solves in a natural way.
 
 For example, the first edition notes that in CoffeeScript, you can write:
 
@@ -24,7 +24,7 @@ For example, the first edition notes that in CoffeeScript, you can write:
       (remainingArgs...) =>
         fn.apply(null, args.concat(remainingArgs))
         
-In EcmaScript-5, you do not have "rest arguments," so you can't write `args...`. You also don't have the "arrow notation" for functions, so you have to write `function (...) { ... }`. To get "rest" arguments in EcmaScript-5, the first edition provides a decorator called `variadic`, it looks like this:
+In ECMAScript-5, you do not have "rest arguments," so you can't write `args...`. You also don't have the "arrow notation" for functions, so you have to write `function (...) { ... }`. To get "rest" arguments in ECMAScript-5, the first edition provides a decorator called `variadic`, it looks like this:
 
     var __slice = Array.prototype.slice;
 
@@ -59,7 +59,7 @@ In EcmaScript-5, you do not have "rest arguments," so you can't write `args...`.
       }
     };
     
-In EcmaScript-5, you could use it like this:
+In ECMAScript-5, you could use it like this:
 
     var callLeft = variadic( function (fn, args) {
       return variadic( function (remainingArgs) {
@@ -67,7 +67,7 @@ In EcmaScript-5, you could use it like this:
         };
       });
       
-But in EcmaScript-6, you can write:
+But in ECMAScript-6, you can write:
 
     var callLeft = (fn, ...args) =>
         (...remainingArgs) =>
