@@ -1,4 +1,4 @@
-# A Wam Cup in the Hand: Strings
+# A Wam Cup in the Hand: Strings and Quasi-Literals
 
 ![Coffee and a Book](images/coffee-and-a-book.jpg)
 

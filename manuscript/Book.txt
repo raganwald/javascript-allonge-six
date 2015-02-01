@@ -28,7 +28,7 @@ mainmatter:
 
       markdown/Functions/closures.md
 
-      markdown/Functions/letvar.md
+      markdown/Functions/const.md
 
       markdown/Functions/names.md
 
