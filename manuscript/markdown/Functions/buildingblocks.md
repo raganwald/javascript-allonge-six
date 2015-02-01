@@ -36,7 +36,7 @@ Code is easier than words for this. The [Underscore] library provides a higher-o
 
 We don't want to fool around writing `_.`, so we can use it by writing:[^_map]
 
-[^_map]: If we don't want to sort out [Underscore], we can also write the following: `const map = (a, fn) => a.map(fn);`, and trust that it works even thogh we haven't discussed methods yet.
+[^_map]: If we don't want to sort out [Underscore], we can also write the following: `const map = (a, fn) => a.map(fn);`, and trust that it works even though we haven't discussed methods yet.
 
     const map = _.map;
       
