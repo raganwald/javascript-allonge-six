@@ -18,7 +18,7 @@ frontmatter:
 
 mainmatter:
 
-    markdown/carmack.md
+    markdown/ValuesAndExpressions/numbers.md
 
     markdown/Functions/title.md
 
@@ -39,8 +39,10 @@ mainmatter:
       markdown/Functions/magic-names.md
 
       markdown/Functions/summary.md
-
-    markdown/ValuesAndExpressions/numbers.md
+    
+    markdown/Recursion/title.md
+    
+      markdown/Recursion/destructuring.md
 
     markdown/ValuesAndExpressions/strings.md
 
