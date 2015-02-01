@@ -36,13 +36,11 @@ mainmatter:
 
       markdown/Functions/buildingblocks.md
 
-      markdown/Functions/args-again.md
+      markdown/Functions/magic-names.md
 
       markdown/Functions/summary.md
 
     markdown/ValuesAndExpressions/numbers.md
-
-    markdown/cheat-sheet.md
 
     markdown/ValuesAndExpressions/strings.md
 

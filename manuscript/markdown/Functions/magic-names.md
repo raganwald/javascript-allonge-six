@@ -1,4 +1,4 @@
-## I'd Like to Have Some Arguments. Again. {#arguments-again}
+## Magic Names {#magic-names}
 
 When a function is applied to arguments (or "called"), JavaScript binds the values of arguments to the function's argument names in an environment created for the function's execution. What we haven't discussed so far is that JavaScript also binds values to some "magic" names in addition to any you put in the argument list.[^read-only]
 
@@ -10,8 +10,8 @@ There are two separate rules for these "magic" names, one for when you invoke a 
 
 The first magic name is  `this`, and it is bound to something called the function's [context](#context). We will explore `this` in more detail when we start discussing objects and classes. The second magic name is very interesting, it's called `arguments`, and the most interesting thing about it is that it contains a list of arguments passed to a function:
 
-    function plus (a, b) {
-      return arguments[0] + arguments[1]
+    const plus = function (a, b) {
+      return arguments[0] + arguments[1];
     }
     
     plus(2,3)
@@ -19,8 +19,8 @@ The first magic name is  `this`, and it is bound to something called the functio
       
 Although `arguments` looks like an array, it isn't an array:[^pojo] It's more like an object[^pojo] that happens to bind some values to properties with names that look like integers starting with zero:
 
-    function args (a, b) {
-      return arguments
+    const args = function (a, b) {
+      return arguments;
     }
     
     args(2,3)
@@ -28,8 +28,8 @@ Although `arguments` looks like an array, it isn't an array:[^pojo] It's more li
 
 `arguments` always contains all of the arguments passed to a function, regardless of how many are declared. Therefore, we can write `plus` like this:
 
-    function plus () {
-      return arguments[0] + arguments[1]
+    const plus = function () {
+      return arguments[0] + arguments[1];
     }
     
     plus(2,3)
@@ -37,8 +37,8 @@ Although `arguments` looks like an array, it isn't an array:[^pojo] It's more li
 
 When discussing objects, we'll discuss properties in more depth. Here's something interesting about `arguments`:
 
-    function howMany () {
-      return arguments['length']
+    const howMany = function () {
+      return arguments['length'];
     }
     
     howMany()

@@ -1,4 +1,4 @@
-# The Recipe Cheat Sheet
+# The Recipe Cheat Sheet {#cheatsheet}
 
 In the recipes, you may see one or more of the following JavaScript constructs being used before being fully explained in the text. Here're some brief explanations to tide you over:
 
