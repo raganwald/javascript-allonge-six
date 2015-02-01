@@ -1,6 +1,6 @@
 ## Arrays and Destructuring Arguments
 
-While we have already mentioned arrays briefly, we haven't had a close look at them. Arrays are JavaScript's "native" representation of lists. Strings are important because they represent writing. Lists are important because they represent ordred collections of things, and ordered collections are a fundamental abstraction for making sense of reality.
+While we have already mentioned arrays briefly, we haven't had a close look at them. Arrays are JavaScript's "native" representation of lists. Strings are important because they represent writing. Lists are important because they represent ordered collections of things, and ordered collections are a fundamental abstraction for making sense of reality.
 
 ### array literals
 
@@ -70,9 +70,9 @@ As we can see, JavaScript Arrays are [zero-based].
 
 [zero-based]: https://en.wikipedia.org/wiki/Zero-based_numbering
 
-### destrcturing arrays
+### destructuring arrays
 
-There is another way to extract elements from arrays: *Destructuring*, a feature going back to Common Lisp, if not before. We saw how to construct an array literal usuing `[`, expressions, `,` and `]`. Here's an example of an array literal that uses a name:
+There is another way to extract elements from arrays: *Destructuring*, a feature going back to Common Lisp, if not before. We saw how to construct an array literal using `[`, expressions, `,` and `]`. Here's an example of an array literal that uses a name:
 
     const wrap = (something) => [something];
     
@@ -142,6 +142,31 @@ Sometimes wee need to extract arrays from arrays. Here is the most common patter
       
     const [head, ... ,tail] = [1, 2, 3, 4, 5];
       //=> ERROR
+      
+Now, when we introduced destructuring, we saw that it is kind-of-sort-of the reverse of array literals. So if
+
+    const wrapped = [something];
+    
+Then:
+
+    const [unwrapped] = something;
+    
+What about "rest?" We know that:
+
+    const [car, ...cdr] = [1, 2, 3, 4, 5];
+    
+What is the reverse? It would be:
+
+    const cons = [car, ...cdr];
+    
+Let's try it:
+
+    const oneTwoThree = ["one", "two", "three"];
+    
+    ["zero", ...oneTwoThree]
+      //=> ["zero","one","two","three"]
+      
+It works! We can use `...` to place the elements of an array inside another array. In JavaScript, using `...` to destructure is called a "rest," and using it in a literal is called a "spread." The two words are not inverses of each other for some strange reason, but we can see the symmetry for ourselves.
       
 ### destructuring and return values
 
