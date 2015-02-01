@@ -6,9 +6,7 @@ In the recipes, you may see one or more of the following JavaScript constructs b
 
 Functions are applied with `()`. But they also have *methods* for applying them to arguments. `.call` and `.apply` are explained when we discuss [function contexts](#context), but here are some examples:
 
-    function plus (a, b) {
-      return a + b
-    }
+    const plus = (a, b) => a + b;
     
     plus(2, 3) 
       //=> 5
@@ -37,7 +35,7 @@ Note that `slice` always creates a new array, so `.slice(0)` makes a copy of an 
     Array.prototype.slice.call(arguments, 0)
       //=> returns the arguments in an array.
       
-    function butFirst () {
+    const butFirst = function () {
       return Array.prototype.slice.call(arguments, 1)
     }
     
@@ -46,21 +44,17 @@ Note that `slice` always creates a new array, so `.slice(0)` makes a copy of an 
       
 For simplicity and as a small speed improvement, `slice` is usually bound to a local variable:
 
-    var __slice = Array.prototype.slice;
+    const __slice = Array.prototype.slice;
       
-    function butFirst () {
+    const butFirst = function () {
       return __slice.call(arguments, 1)
     }
     
 Or even:
-
-    var __slice = Array.prototype.slice;
     
-    function slice (list, from, to) {
-      return __slice.call(list, from, to)
-    }
+    const slice = (list, from, to) => Array.prototype.slice.call(list, from, to);
       
-    function butFirst () {
+    const butFirst = function () {
       return slice(arguments, 1)
     }
     
@@ -75,5 +69,5 @@ Arrays have another useful method, `.concat`. Concat returns an array created by
 
 Functions have a `.length` property that counts the number of arguments declared:
 
-    function (a, b, c) { return a + b + c }.length
+    ((a, b, c) => a + b + c).length
       //=> 3

@@ -42,6 +42,8 @@ mainmatter:
 
     markdown/ValuesAndExpressions/numbers.md
 
+    markdown/cheat-sheet.md
+
     markdown/ValuesAndExpressions/strings.md
 
 backmatter:
