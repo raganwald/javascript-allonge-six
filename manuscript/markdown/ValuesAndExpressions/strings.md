@@ -1,4 +1,4 @@
-# A Warm Cup in the Hand: Strings and Quasi-Literals
+# Interlude with a warm cup: Basic Strings and Quasi-Literals
 
 ![Coffee and a Book](images/coffee-and-a-book.jpg)
 

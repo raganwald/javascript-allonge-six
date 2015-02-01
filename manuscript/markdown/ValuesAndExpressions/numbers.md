@@ -1,4 +1,4 @@
-# The Rich Aroma: Numbers
+# Interlude with a rich aroma: Basic Numbers
 
 ![Mathematics and Coffee](images/expressions-title.jpg)
 
