@@ -39,6 +39,8 @@ mainmatter:
       markdown/Functions/magic-names.md
 
       markdown/Functions/summary.md
+
+    markdown/ValuesAndExpressions/choice.md
     
     markdown/Recursion/title.md
     
