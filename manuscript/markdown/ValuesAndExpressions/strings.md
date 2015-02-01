@@ -4,7 +4,7 @@
 
 > An expression is any valid unit of code that resolves to a value.—[Mozilla Development Network: Expressions and operators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators)
 
-Like most programming languages, JavaScript also has string literals, like `'fubar'` or `'fizzbuzz'`. Like many contemporary languages, special characters can be included in a string literal by means of an *escape sequence*. For example, the escape sequence `\n` inserts a newline character in a string literal, like this:'first line\nsecond line'.
+Like most programming languages, JavaScript also has string literals, like `'fubar'` or `'fizzbuzz'`. Special characters can be included in a string literal by means of an *escape sequence*. For example, the escape sequence `\n` inserts a newline character in a string literal, like this: `'first line\nsecond line'`.
 
 There are operators that can be used on strings. The most common is `+`, it *concatenates*:
 
@@ -15,7 +15,7 @@ String manipulation is extremely common in programming. Writing is a big part of
 
 ### quasi-literals
 
-JavaScript supports *quasi-literal strings*, a/k/a "Template Strings" or "String Interpolation Expressions." A quasi-literal string is something that looks like a string literal, but is actually an expression. Quasi-literal strings are denoted with back quotes, like this: `\`foobar\``, and most strings that can be expressed as literals have the exact same meaning as quasi-literals, e.g.
+JavaScript supports *quasi-literal strings*, a/k/a "Template Strings" or "String Interpolation Expressions." A quasi-literal string is something that looks like a string literal, but is actually an expression. Quasi-literal strings are denoted with back quotes, and most strings that can be expressed as literals have the exact same meaning as quasi-literals, e.g.
 
     `foobar`
       //=> 'foobar'
@@ -53,7 +53,7 @@ So for example,
     greeting('Arthur Dent')
       //=> 'Hello my name is Arthur Dent'
       
-JavaScript does not evaluate the quasi-literal when the function is evaluated, it evaluates the quasi-literal when the function is invoked and the quasi-literal inside the function's body is evaluated. Thus, `name` is not bound to `"Harry"`, the value when the function expression is evaluated and bound to `greeting`. `name` is bound to `'Arthur Dent'`, the value of the parameter when the function is invoked.
+JavaScript evaluates the quasi-literal when the function is invoked and the quasi-literal inside the function's body is evaluated. Thus, `name` is not bound to `"Harry"`, it is bound to `'Arthur Dent'`, the value of the parameter when the function is invoked.
 
 This is exactly what we'd expect if we'd written it like this:
     
