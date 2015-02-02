@@ -124,49 +124,69 @@ Destructuring can nest:
     description([["Reginald", "Braithwaite"], "programmer"])
       //=> "Reginald is a programmer"
       
-### rest
 
-Sometimes we need to extract arrays from arrays. Here is the most common pattern: Extracting the head and everything but the head from an array:
+       
+### gathering
 
-    const [car, ...cdr] = [1, 2, 3, 4, 5];
-    
-    car
-      //=> 1
-    cdr
-      //=> [2, 3, 4, 5]
+Sometimes we need to extract arrays from arrays. Here is the most common pattern: Extracting the head and gathering everything but the head from an array:
+
+{% highlight javascript %}
+const [car, ...cdr] = [1, 2, 3, 4, 5];
+
+car
+  //=> 1
+cdr
+  //=> [2, 3, 4, 5]
+{% endhighlight %}
       
-[`car` and `cdr`](https://en.wikipedia.org/wiki/CAR_and_CDR) are archaic terms that go back to an implementation of Lisp running on the IBM 704 computer. Some other languages call them `first` and `butFirst`, or `head` and `rest`. Alas, the `...` notation does not provide a universal patten-matching capability. For example, we cannot write
+[`car` and `cdr`](https://en.wikipedia.org/wiki/CAR_and_CDR) are archaic terms that go back to an implementation of Lisp running on the IBM 704 computer. Some other languages call them `first` and `butFirst`, or `head` and `tail`. We will use a common convention and call variables we gather `rest`, but refer to the `...` operation as a "gather," follow Kyle Simpson's example.[^getify]
 
-    const [...butLast, last] = [1, 2, 3, 4, 5];
-      //=> ERROR
-      
-    const [head, ... ,tail] = [1, 2, 3, 4, 5];
-      //=> ERROR
+[^getify]: Kyle Simpson is the author of [You Don't Know JS](https://github.com/getify/You-Dont-Know-JS/blob/master/README.md#you-dont-know-js-book-series), available [here](http://search.oreilly.com/?q=you+don%27t+know+js+kyle+simpson)
+
+Alas, the `...` notation does not provide a universal patten-matching capability. For example, we cannot write
+
+{% highlight javascript %}
+const [...butLast, last] = [1, 2, 3, 4, 5];
+  //=> ERROR
+  
+const [first, ..., last] = [1, 2, 3, 4, 5];
+  //=> ERROR
+{% endhighlight %}
       
 Now, when we introduced destructuring, we saw that it is kind-of-sort-of the reverse of array literals. So if
 
-    const wrapped = [something];
+{% highlight javascript %}
+const wrapped = [something];
+{% endhighlight %}
     
 Then:
 
-    const [unwrapped] = something;
+{% highlight javascript %}
+const [unwrapped] = something;
+{% endhighlight %}
     
-What about "rest?" We know that:
+What is the reverse of gathering? We know that:
 
-    const [car, ...cdr] = [1, 2, 3, 4, 5];
+{% highlight javascript %}
+const [car, ...cdr] = [1, 2, 3, 4, 5];
+{% endhighlight %}
     
 What is the reverse? It would be:
 
-    const cons = [car, ...cdr];
+{% highlight javascript %}
+const cons = [car, ...cdr];
+{% endhighlight %}
     
 Let's try it:
 
-    const oneTwoThree = ["one", "two", "three"];
-    
-    ["zero", ...oneTwoThree]
-      //=> ["zero","one","two","three"]
+{% highlight javascript %}
+const oneTwoThree = ["one", "two", "three"];
+
+["zero", ...oneTwoThree]
+  //=> ["zero","one","two","three"]
+{% endhighlight %}
       
-It works! We can use `...` to place the elements of an array inside another array. In JavaScript, using `...` to destructure is called a "rest," and using it in a literal is called a "spread." The two words are not inverses of each other for some strange reason, but we can see the symmetry for ourselves.
+It works! We can use `...` to place the elements of an array inside another array. We say that using `...` to destructure is gathering, and using it in a literal to insert elements is called "spreading."
 
 ### destructuring is not pattern matching
 
@@ -229,26 +249,34 @@ Some languages support multiple return values: A function can return several thi
 
 Consider the way we pass arguments to parameters:
 
-    foo()
-    bar("smaug")
-    baz(1, 2, 3)
+{% highlight javascript %}
+foo()
+bar("smaug")
+baz(1, 2, 3)
+{% endhighlight %}
     
 It is very much like an array literal. And consider how we bind values to parameter names:
 
-   const foo = () => ...
-   const bar = (name) => ...
-   const baz = (a, b, c) => ...
+{% highlight javascript %}
+const foo = () => ...
+const bar = (name) => ...
+const baz = (a, b, c) => ...
+{% endhighlight %}
    
-It *looks* like destructuring. It acts like destructuring. There is only one difference: We have not tried "rest" destructuring. Let's do that:
+It *looks* like destructuring. It acts like destructuring. There is only one difference: We have not tried gathering. Let's do that:
 
-    const numbers = (...nums) => nums;
-    
-    numbers(1, 2, 3, 4, 5)
-      //=> [1,2,3,4,5]
+{% highlight javascript %}
+const numbers = (...nums) => nums;
+
+numbers(1, 2, 3, 4, 5)
+  //=> [1,2,3,4,5]
+  
+const headAndTail = (head, ...tail) => [head, tail];
+
+headAndTail(1, 2, 3, 4, 5)
+  //=> [1,[2,3,4,5]]
+{% endhighlight %}
       
-    const headAndTail = (head, ...tail) => [head, tail];
-    
-    headAndTail(1, 2, 3, 4, 5)
-      //=> [1,[2,3,4,5]]
-      
-Rest destructuring works with parameters! This is very useful indeed, and we'll see more of it in a moment.
+Gathering works with parameters! This is very useful indeed, and we'll see more of it in a moment.[^rest]
+
+[^rest]: Gathering in parameters has a long history, and the usual terms are to call gathering "pattern matching" and to call a name that is bound to gathered values a "rest parameter." The term "rest" is perfectly compatible with gather: "Rest" is the noun, and "gather" is the verb. We *gather* the *rest* of the parameters.
