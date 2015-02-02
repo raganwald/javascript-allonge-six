@@ -48,6 +48,12 @@ mainmatter:
     
       markdown/Recursion/linear-recursion.md
 
+    markdown/cheat-sheet.md
+
+    markdown/Functions/recipes/title.md
+
+      markdown/Functions/recipes/partial.md
+
     markdown/ValuesAndExpressions/strings.md
 
 backmatter:
