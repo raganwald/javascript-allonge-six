@@ -40,14 +40,6 @@ mainmatter:
 
       markdown/Functions/summary.md
 
-    markdown/ValuesAndExpressions/choice.md
-    
-    markdown/Recursion/title.md
-    
-      markdown/Recursion/destructuring.md
-    
-      markdown/Recursion/linear-recursion.md
-
     markdown/cheat-sheet.md
 
     markdown/Functions/recipes/title.md
@@ -59,6 +51,14 @@ mainmatter:
       markdown/Functions/recipes/tap.md
 
       markdown/Functions/recipes/maybe.md
+
+    markdown/ValuesAndExpressions/choice.md
+    
+    markdown/Recursion/title.md
+    
+      markdown/Recursion/destructuring.md
+    
+      markdown/Recursion/linear-recursion.md
 
     markdown/ValuesAndExpressions/strings.md
 
