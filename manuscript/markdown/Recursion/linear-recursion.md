@@ -15,62 +15,60 @@ But we can also define a list by describing a rule for building lists. One of th
 
 Let's convert our rules to array literals. The first rule is simple: `[]` is a list. How about the second rule? We can express that using a spread. Given an element `e` and a list `list`, `[e, ...list]` is a list. We can test this manually by building up a list:
 
-{% highlight javascript %}
-[]
-//=> []
+    []
+    //=> []
 
-["baz", ...[]]
-//=> ["baz"]
+    ["baz", ...[]]
+    //=> ["baz"]
 
-["bar", ...["baz"]]
-//=> ["bar","baz"]
+    ["bar", ...["baz"]]
+    //=> ["bar","baz"]
 
-["foo", ...["bar", "baz"]]
-//=> ["foo","bar","baz"]
-{% endhighlight %}
+    ["foo", ...["bar", "baz"]]
+    //=> ["foo","bar","baz"]
   
 Thanks to the parallel between array literals + spreads with destructuring + rests, we can also use the same rules to decompose lists:
 
-{% highlight javascript %}
-const [first, ...rest] = [];
-first
-  //=> undefined
-rest
-  //=> []:
+    
+    const [first, ...rest] = [];
+    first
+      //=> undefined
+    rest
+      //=> []:
 
-const [first, ...rest] = ["foo"];
-first
-  //=> "foo"
-rest
-  //=> []
+    const [first, ...rest] = ["foo"];
+    first
+      //=> "foo"
+    rest
+      //=> []
 
-const [first, ...rest] = ["foo", "bar"];
-first
-  //=> "foo"
-rest
-  //=> ["bar"]
+    const [first, ...rest] = ["foo", "bar"];
+    first
+      //=> "foo"
+    rest
+      //=> ["bar"]
 
-const [first, ...rest] = ["foo", "bar", "baz"];
-first
-  //=> "foo"
-rest
-  //=> ["bar","baz"]
-{% endhighlight %}
+    const [first, ...rest] = ["foo", "bar", "baz"];
+    first
+      //=> "foo"
+    rest
+      //=> ["bar","baz"]
+    
 
 For the purpose of this exploration, we will presume the following:[^wellactually]
 
-{% highlight javascript %}
-const isEmpty = ([first, ...rest]) => first === undefined;
+    
+    const isEmpty = ([first, ...rest]) => first === undefined;
 
-isEmpty([])
-  //=> true
+    isEmpty([])
+      //=> true
 
-isEmpty([0])
-  //=> false
+    isEmpty([0])
+      //=> false
 
-isEmpty([[]])
-  //=> false
-{% endhighlight %}
+    isEmpty([[]])
+      //=> false
+    
     
 [^wellactually]: Well, actually, this does not work for arrays that contain `undefined` as a value, but we are not going to see that in our examples. A more robust implementation would be `(array) => array.length === 0`, but we are doing backflips to keep this within a very small and contrived playground.
     
@@ -78,34 +76,34 @@ Armed with our definition of an empty list and with what we've already learned, 
 
 First, we pick what we call a *terminal case*. What is the length of an empty array? `0`. So let's start our function with the observation that if an array is empty, the length is `0`:
 
-{% highlight javascript %}
-const length = ([first, ...rest]) =>
-  first === undefined
-    ? 0
-    : // ???
-{% endhighlight %}
+    
+    const length = ([first, ...rest]) =>
+      first === undefined
+        ? 0
+        : // ???
+    
       
 We need something for when the array isn't empty. If an array is not empty, and we break it into two pieces, `first` and `rest`, the length of our array is going to be `length(first) + length(rest)`. Well, the length of `first` is `1`, there's just one element at the front. But we don't know the length of `rest`. If only there was a function we could call... Like `length`!
 
-{% highlight javascript %}
-const length = ([first, ...rest]) =>
-  first === undefined
-    ? 0
-    : 1 + length(rest);
-{% endhighlight %}
+    
+    const length = ([first, ...rest]) =>
+      first === undefined
+        ? 0
+        : 1 + length(rest);
+    
     
 Let's try it!
 
-{% highlight javascript %}
-length([])
-  //=> 0
+    
+    length([])
+      //=> 0
   
-length(["foo"])
-  //=> 1
+    length(["foo"])
+      //=> 1
   
-length(["foo", "bar", "baz"])
-  //=> 3
-{% endhighlight %}
+    length(["foo", "bar", "baz"])
+      //=> 3
+    
       
 Our `length` function is *recursive*, it calls itself. This makes sense because our definition of a list is recursive, and if a list is self-similar, it is natural to create an algorithm that is also self-similar.
 

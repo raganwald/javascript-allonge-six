@@ -130,14 +130,12 @@ Destructuring can nest:
 
 Sometimes we need to extract arrays from arrays. Here is the most common pattern: Extracting the head and gathering everything but the head from an array:
 
-{% highlight javascript %}
-const [car, ...cdr] = [1, 2, 3, 4, 5];
+    const [car, ...cdr] = [1, 2, 3, 4, 5];
 
-car
-  //=> 1
-cdr
-  //=> [2, 3, 4, 5]
-{% endhighlight %}
+    car
+      //=> 1
+    cdr
+      //=> [2, 3, 4, 5]
       
 [`car` and `cdr`](https://en.wikipedia.org/wiki/CAR_and_CDR) are archaic terms that go back to an implementation of Lisp running on the IBM 704 computer. Some other languages call them `first` and `butFirst`, or `head` and `tail`. We will use a common convention and call variables we gather `rest`, but refer to the `...` operation as a "gather," follow Kyle Simpson's example.[^getify]
 
@@ -145,46 +143,34 @@ cdr
 
 Alas, the `...` notation does not provide a universal patten-matching capability. For example, we cannot write
 
-{% highlight javascript %}
-const [...butLast, last] = [1, 2, 3, 4, 5];
-  //=> ERROR
+    const [...butLast, last] = [1, 2, 3, 4, 5];
+      //=> ERROR
   
-const [first, ..., last] = [1, 2, 3, 4, 5];
-  //=> ERROR
-{% endhighlight %}
+    const [first, ..., last] = [1, 2, 3, 4, 5];
+      //=> ERROR
       
 Now, when we introduced destructuring, we saw that it is kind-of-sort-of the reverse of array literals. So if
 
-{% highlight javascript %}
-const wrapped = [something];
-{% endhighlight %}
+    const wrapped = [something];
     
 Then:
 
-{% highlight javascript %}
-const [unwrapped] = something;
-{% endhighlight %}
+    const [unwrapped] = something;
     
 What is the reverse of gathering? We know that:
 
-{% highlight javascript %}
-const [car, ...cdr] = [1, 2, 3, 4, 5];
-{% endhighlight %}
+    const [car, ...cdr] = [1, 2, 3, 4, 5];
     
 What is the reverse? It would be:
 
-{% highlight javascript %}
-const cons = [car, ...cdr];
-{% endhighlight %}
+    const cons = [car, ...cdr];
     
 Let's try it:
 
-{% highlight javascript %}
 const oneTwoThree = ["one", "two", "three"];
 
-["zero", ...oneTwoThree]
-  //=> ["zero","one","two","three"]
-{% endhighlight %}
+    ["zero", ...oneTwoThree]
+      //=> ["zero","one","two","three"]
       
 It works! We can use `...` to place the elements of an array inside another array. We say that using `...` to destructure is gathering, and using it in a literal to insert elements is called "spreading."
 
@@ -249,33 +235,28 @@ Some languages support multiple return values: A function can return several thi
 
 Consider the way we pass arguments to parameters:
 
-{% highlight javascript %}
-foo()
-bar("smaug")
-baz(1, 2, 3)
-{% endhighlight %}
+    foo()
+    bar("smaug")
+    baz(1, 2, 3)
     
 It is very much like an array literal. And consider how we bind values to parameter names:
 
-{% highlight javascript %}
-const foo = () => ...
-const bar = (name) => ...
-const baz = (a, b, c) => ...
-{% endhighlight %}
+    const foo = () => ...
+    const bar = (name) => ...
+    const baz = (a, b, c) => ...
    
 It *looks* like destructuring. It acts like destructuring. There is only one difference: We have not tried gathering. Let's do that:
 
-{% highlight javascript %}
 const numbers = (...nums) => nums;
 
-numbers(1, 2, 3, 4, 5)
-  //=> [1,2,3,4,5]
+    numbers(1, 2, 3, 4, 5)
+      //=> [1,2,3,4,5]
   
-const headAndTail = (head, ...tail) => [head, tail];
+    const headAndTail = (head, ...tail) => [head, tail];
 
-headAndTail(1, 2, 3, 4, 5)
-  //=> [1,[2,3,4,5]]
-{% endhighlight %}
+    headAndTail(1, 2, 3, 4, 5)
+      //=> [1,[2,3,4,5]]
+
       
 Gathering works with parameters! This is very useful indeed, and we'll see more of it in a moment.[^rest]
 
