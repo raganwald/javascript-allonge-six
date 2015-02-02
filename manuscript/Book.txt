@@ -56,6 +56,8 @@ mainmatter:
 
       markdown/Functions/recipes/unary.md
 
+      markdown/Functions/recipes/tap.md
+
     markdown/ValuesAndExpressions/strings.md
 
 backmatter:

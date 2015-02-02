@@ -1,80 +1,70 @@
 ## Tap {#tap}
 
-One of the most basic combinators is the "K Combinator," nicknamed the "kestrel:"
+One of the most basic combinators is the "K Combinator," nicknamed the "Kestrel:"
 
-    function K (x) {
-      return function (y) {
-        return x
-      }
-    };
+    const K = (x) => (y) => x;
 
 It has some surprising applications. One is when you want to do something with a value for side-effects, but keep the value around. Behold:
 
-    function tap (value) {
-      return function (fn) {
-        if (typeof(fn) === 'function') {
-          fn(value)
-        }
-        return value
-      }
-    }
+    const tap = (value) =>
+      (fn) => (
+        typeof(fn) === 'function' && fn(value),
+        value
+      )
 
 `tap` is a traditional name borrowed from various Unix shell commands. It takes a value and returns a function that always returns the value, but if you pass it a function, it executes the function for side-effects. Let's see it in action as a poor-man's debugger:
 
-    var drink = tap('espresso')(function (it) {
-      console.log("Our drink is", it) 
+    tap('espresso')((it) => {
+      console.log(`Our drink is '${it}'`) 
     });
+    //=> Our drink is 'espresso'
+         'espresso'
     
-    // outputs "Our drink is 'espresso'" to the console
 
 It's easy to turn off:
 
-    var drink = tap('espresso')();
-    
-    // doesn't output anything to the console
+    tap('espresso')();
+      //=> 'espresso'
 
 Libraries like [Underscore] use a version of `tap` that is "uncurried:"
 
-    var drink = _.tap('espresso', function () { 
-      console.log("Our drink is", this) 
-    });
+    _.tap('espresso', () =>
+      console.log(`Our drink is '${it}'`) 
+    );
+      //=> Our drink is 'espresso'
+           'espresso'
     
-Let's enhance our recipe so it works both ways:
+Let's enhance our recipe so that it works both ways:
 
-    function tap (value, fn) {
-      if (fn === void 0) {
-        return curried
-      }
-      else return curried(fn);
+    const tap = (value, fn) => {
+      const curried = (fn) => (
+          typeof(fn) === 'function' && fn(value),
+          value
+        );
       
-      function curried (fn) {
-        if (typeof(fn) === 'function') {
-          fn(value)
-        }
-        return value
-      }
+      return fn === undefined
+             ? curried
+             : curried(fn);
     }
 
-Now you can write:
+Now we can write:
 
-    var drink = tap('espresso')(function (it) { 
-      console.log("Our drink is", it) 
+    tap('espresso')((it) => {
+      console.log(`Our drink is '${it}'`) 
     });
+    //=> Our drink is 'espresso'
+         'espresso'
     
 Or:
 
-    var drink = tap('espresso', function (it) { 
-      console.log("Our drink is", it) 
+    tap('espresso', (it) => {
+      console.log(`Our drink is '${it}'`) 
     });
+    //=> Our drink is 'espresso'
+         'espresso'
     
-And if you wish it to do nothing at all, You can write either:
+And if we wish it to do nothing at all, We can write either `tap('espresso')()` or `tap('espresso', null)`
 
-    var drink = tap('espresso')();
-
-Or:
-
-    var drink = tap('espresso', null);
-
-`tap` can do more than just act as a debugging aid. It's also useful for working with [object and instance methods](#tap-methods).
+p.s. `tap` can do more than just act as a debugging aid. It's also useful for working with [object and instance methods](#tap-methods).
 
 [Underscore]: http://underscorejs.org
