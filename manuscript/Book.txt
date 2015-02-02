@@ -54,6 +54,8 @@ mainmatter:
 
       markdown/Functions/recipes/partial.md
 
+      markdown/Functions/recipes/unary.md
+
     markdown/ValuesAndExpressions/strings.md
 
 backmatter:
