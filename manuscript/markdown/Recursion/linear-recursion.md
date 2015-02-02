@@ -203,7 +203,7 @@ We can write it out using a ternary operator. Even in this small function, we ca
 
 ### folding
 
-With the exception of the `length` example at the beginning, our examples so far all involve rebuilding a solution using splats.  But they needn't. A function to compute the sum of the squares of a list of numbers might look like this:
+With the exception of the `length` example at the beginning, our examples so far all involve rebuilding a solution using spreads.  But they needn't. A function to compute the sum of the squares of a list of numbers might look like this:
 
     const sumSquares = ([first, ...rest]) => first === undefined
                                              ? 0
