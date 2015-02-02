@@ -39,6 +39,7 @@
 * [Saltspring Processing Facility Pictures](http://www.flickr.com/photos/kk/sets/72157626168201654/with/5484839102/) (c) 2011 Kris Krug. [Some rights reserved][by-sa].
 * [Coffee and Mathematics](https://www.flickr.com/photos/kellan/434503323) (c) 2007 [Some rights reserved][by].
 * [Coffee and a Book](https://www.flickr.com/photos/whitneyinchicago/3835218626) (c) 2009 [Some rights reserved][by].
+* [Stacked Coffee Cups](https://www.flickr.com/photos/sankarshan/5165312159) (c) 2010 Sankarshan Sen. [Some rights reserved][by-sa].
 
 [by-sa]: http://creativecommons.org/licenses/by-sa/2.0/deed.en
 [by-nd]: http://creativecommons.org/licenses/by-nd/2.0/deed.en

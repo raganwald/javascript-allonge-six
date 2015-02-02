@@ -12,7 +12,7 @@ JavaScript does have "boolean" values, they're written `true` and `false`:
     false
       //=> false
       
-`true` and `false` are value types. All values of `true` are `===` all other values of true. We can see that is teh case by looking at some operators we can perform on boolean values, `!`, `&&`, and `||`. To being with, `!` is a unary prefix operator that negates its argument. So:
+`true` and `false` are value types. All values of `true` are `===` all other values of true. We can see that is the case by looking at some operators we can perform on boolean values, `!`, `&&`, and `||`. To being with, `!` is a unary prefix operator that negates its argument. So:
 
     !true
       //=> false
@@ -36,7 +36,9 @@ Now, note well: We have said what happens if you pass boolean values to `!`, `&&
 
 ### truthiness and the ternary operator
 
-In JavaScript, there is a notion of "truthiness." Every value in JavaScript is "truthy" except `false`, `null`, and `undefined`. The reason why this matters is that the various logical operators (as well as the if statement) actually operate on *truthiness*, not on boolean values. This affects the way the `!`, `&&`, and `||` operators work. We'll look at them in a moment, but first, we'll look at one more operator.
+In JavaScript, there is a notion of "truthiness." Every value in JavaScript is "truthy" except `false`, `null`, and `undefined`. The opposite of "truthy" is "falsy," and the aforementioned `false`, `null`, and `undefined` are considered "falsy."
+
+The reason why this matters is that the various logical operators (as well as the if statement) actually operate on *truthiness*, not on boolean values. This affects the way the `!`, `&&`, and `||` operators work. We'll look at them in a moment, but first, we'll look at one more operator.
 
 JavaScript inherited an operator from the C family of languages, the *ternary* operator. It's the only operator that takes *three* arguments. It looks like this: `first ? second : third`. It evaluates `first`, and if `first` is "truthy", it evaluates `second` and that is its value. If `first` is not truthy, it evaluates `third` and that is its value.
 
@@ -93,6 +95,6 @@ If we look at our examples above, we see that when we pass `true` and `false` to
     undefined && null
       //=> undefined
       
-In JavaScript, `&&` and `||` aren't really boolean logical oeprators in the strict logical sense. They don't operate strictly on logical values, and they aren't reflexive: `a || b` is not always equal to `b || a`, and teh same goes for `&&`.
+In JavaScript, `&&` and `||` aren't really boolean logical operators in the strict logical sense. They don't operate strictly on logical values, and they aren't reflexive: `a || b` is not always equal to `b || a`, and the same goes for `&&`.
 
 The difference can be subtle, but important for certain use cases.

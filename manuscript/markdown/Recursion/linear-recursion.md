@@ -1,4 +1,4 @@
-## Building Blocks {#recursionbuildingblocks}
+## Linear Recursion {#linear-recursion}
 
 In [Arrays and Destructuring Arguments](#arraysanddestructuring), we worked with the basic idea that putting an array together with a literal array expression was the reverse or opposite of taking it apart with a destructuring assignment.
 
@@ -173,6 +173,13 @@ And if we like, we can write `mapWith` using `foldWith`:
     
     squareAll([1, 2, 3, 4, 5])
       //=> [1,4,9,16,25]
+          
+And to return to our first example, our version of `length` can be written as a fold:
+
+    const length = (array) => foldWith((first, rest) => 1 + rest, 0, array);
+    
+    length([1, 2, 3, 4, 5])
+      //=> 5
           
 ### summary
 
