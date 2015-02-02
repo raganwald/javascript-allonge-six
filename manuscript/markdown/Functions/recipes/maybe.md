@@ -4,11 +4,10 @@ A common problem in programming is checking for `null` or `undefined` (hereafter
 
 This recipe concerns a pattern that is very common: A function `fn` takes a value as a parameter, and its behaviour by design is to do nothing if the parameter is nothing:
 
-    function isSomething (value) {
-      return value !== null && value !== void 0;
-    }
+    const isSomething = (value) =>
+      value !== null && value !== void 0;
 
-    function checksForSomething (value) {
+    const checksForSomething = (value) => {
       if (isSomething(value)) {
         // function's true logic
       }
@@ -16,36 +15,33 @@ This recipe concerns a pattern that is very common: A function `fn` takes a valu
 
 Alternately, the function may be intended to work with any value, but the code calling the function wishes to emulate the behaviour of doing nothing by design when given nothing:
 
-    var something = isSomething(value) ? 
-      doesntCheckForSomething(value) : value;
+    var something =
+      isSomething(value)
+        ? doesntCheckForSomething(value)
+        : value;
     
-Naturally, there's a recipe for that, borrowed from Haskell's [maybe monad][maybe], Ruby's [andand], and CoffeeScript's existential method invocation:
+Naturally, there's a function decorator recipe for that, borrowed from Haskell's [maybe monad][maybe], Ruby's [andand], and CoffeeScript's existential method invocation:
 
-    function maybe (fn) {
-      return function () {
-        var i;
-        
-        if (arguments.length === 0) {
+    const maybe = (fn) =>
+      function (...args) {
+        if (args.length === 0) {
           return
         }
         else {
-          for (i = 0; i < arguments.length; ++i) {
-            if (arguments[i] == null) return
+          for (let arg in args) {
+            if (arg == null) return;
           }
-          return fn.apply(this, arguments)
+          return fn.apply(this, args)
         }
       }
-    }
 
-`maybe` reduces the logic of checking for nothing to a function call, either:
+`maybe` reduces the logic of checking for nothing to a function call:
 
-    var checksForSomething = maybe(function (value) {
-      // function's true logic
-    });
-    
-Or:
-    
-    var something = maybe(doesntCheckForSomething)(value);
+    maybe((a, b, c) => a + b + c)(1, 2, 3)
+      //=> 6
+      
+    maybe((a, b, c) => a + b + c)(1, null, 3)
+      //=> undefined
     
 As a bonus, `maybe` plays very nicely with instance methods, we'll discuss those [later](#methods):
 

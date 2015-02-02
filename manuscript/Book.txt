@@ -58,6 +58,8 @@ mainmatter:
 
       markdown/Functions/recipes/tap.md
 
+      markdown/Functions/recipes/maybe.md
+
     markdown/ValuesAndExpressions/strings.md
 
 backmatter:
