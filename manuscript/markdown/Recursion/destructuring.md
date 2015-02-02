@@ -108,7 +108,7 @@ The statement `const [something] = wrapped;` *destructures* the array represente
       return last;
     }
     
-    last(["Reginald", "Braithwaite"])
+    surname["Reginald", "Braithwaite"])
       //=> "Braithwaite"
       
 We could do the same thing with `(name) => name[1]`, but destructuring is code that resembles the data it consumes, a valuable coding style.
@@ -126,7 +126,7 @@ Destructuring can nest:
       
 ### rest
 
-Sometimes wee need to extract arrays from arrays. Here is the most common pattern: Extracting the head and everything but the head from an array:
+Sometimes we need to extract arrays from arrays. Here is the most common pattern: Extracting the head and everything but the head from an array:
 
     const [car, ...cdr] = [1, 2, 3, 4, 5];
     
