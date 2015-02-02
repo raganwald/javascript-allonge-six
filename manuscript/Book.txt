@@ -40,8 +40,6 @@ mainmatter:
 
       markdown/Functions/summary.md
 
-    markdown/cheat-sheet.md
-
     markdown/Functions/recipes/title.md
 
       markdown/Functions/recipes/partial.md
