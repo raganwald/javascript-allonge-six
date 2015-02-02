@@ -1,6 +1,6 @@
 ## Building Blocks {#recursionbuildingblocks}
 
-In [Arrays and Destructuring Arguments](#arraysanddestructuring), we worked with the basic idea that putting an array together with a literal array expression was the reverse or opposite of taking it apart with a destucturing assignment.
+In [Arrays and Destructuring Arguments](#arraysanddestructuring), we worked with the basic idea that putting an array together with a literal array expression was the reverse or opposite of taking it apart with a destructuring assignment.
 
 Let's take that philosophy forward and work with some functions. Starting with this. To make an empty array, we write `[]`. And we can detect an empty array using what we've already learned:[^wellactually]
 
@@ -17,7 +17,7 @@ Let's take that philosophy forward and work with some functions. Starting with t
     
 [^wellactually]: Well, actually, this does not work for arrays that contain `undefined` as a value, but we are not going to see that in our examples. A more robust implementation would be `(array) => array.length === 0`.
     
-Armed with `isEmpty` and with what we've already learned, we can build a great many functions that operate on arrays. We know that we can get the length of an array using its `.length` property (even thoughw ehaven't talked about properties yet). But as an exercise, how would we write a `length` function?
+Armed with `isEmpty` and with what we've already learned, we can build a great many functions that operate on arrays. We know that we can get the length of an array using its `.length` property (even though we haven't talked about properties yet). But as an exercise, how would we write a `length` function?
 
 First, we pick what we call a *terminal case*. What is the length of an empty array? `0`. So let's start our function with the observation that if an array is empty, the length is `0`:
 
@@ -44,20 +44,20 @@ Our `length` function is *recursive*, it calls itself.
 
 "Recursion" sometimes seems like an elaborate party trick. There's even a joke about this:
 
-> When promising studensta retrying to choose between pure mathematics and applied engineering, they are given a two-part aptitude test. In teh first part, they are led to a laboratory bench and told to follow the instructions primted on the card. They find a bunsen burner, a sparker, a tap, an empty beaker, a stand, and a card with the instructions "boil water."
+> When promising students are trying to choose between pure mathematics and applied engineering, they are given a two-part aptitude test. In the first part, they are led to a laboratory bench and told to follow the instructions printed on the card. They find a bunsen burner, a sparker, a tap, an empty beaker, a stand, and a card with the instructions "boil water."
 
-> Of course, all teh students knwo what to do: They fill the beaker with water, place the stand on teh burner and the beaker on teh stand, then they turn the burner on and use the sparker to ignite the flame. After a bit the water boils, and they turn off the burner and are lead to a second bench.
+> Of course, all the students know what to do: They fill the beaker with water, place the stand on the burner and the beaker on the stand, then they turn the burner on and use the sparker to ignite the flame. After a bit the water boils, and they turn off the burner and are lead to a second bench.
 
 > Once again, there is a card that reads, "boil water." But this time, the beaker is on the stand over the burner, as left behind by the previous student. The engineers light the burner immediately. Whereas the mathematicians take the beaker off the stand and empty it, thus reducing the situation to a problem they have already solved.
 
 There is more to recursive solutions that simply functions that invoke themselves. Recursive algorithms follow the "divide and conquer" strategy for solving a problem:
 
 0. Divide the problem into smaller problems
-0. If a smaller problem is solveable, solve the small problem
+0. If a smaller problem is solvable, solve the small problem
 0. If a smaller problem is not solvable, divide and conquer that problem
 0. When all small problems have been solved, compose the solutions into one big solution
 
-The big elements of divide and conquer are a method for decomposing a problem into smaller problems, a test for the smallest possible problem, and a means of putting the pieces back together. Our solutions are a little simpler in that we don't really break a problem down into multiple pieces, we break a piece off the problem that may or may not be solvable, and solve that before sticking it onto a solution for the est of the problem.
+The big elements of divide and conquer are a method for decomposing a problem into smaller problems, a test for the smallest possible problem, and a means of putting the pieces back together. Our solutions are a little simpler in that we don't really break a problem down into multiple pieces, we break a piece off the problem that may or may not be solvable, and solve that before sticking it onto a solution for the rest of the problem.
 
 This simpler form of "divide and conquer" is called *linear recursion*. It's very useful and simple to understand. Let's take another example. Sometimes we want to *flatten* an array, that is, an array of arrays needs to be turned into one array of elements that aren't arrays.[^unfold]
 
@@ -71,7 +71,7 @@ We already know how to divide arrays into smaller pieces. How do we decide wheth
     Array.isArray(["foo"])
       //=> true
       
-The usual "terminal case" will be that flattening an empty array will produce an empty array. The next terminal case is that if an element isn't an array, we don't flatten it, and can put it togther with the rest of our solution directly. Whereas if an element is an array, we'll flatten it and put it together with the rest of our solution.
+The usual "terminal case" will be that flattening an empty array will produce an empty array. The next terminal case is that if an element isn't an array, we don't flatten it, and can put it together with the rest of our solution directly. Whereas if an element is an array, we'll flatten it and put it together with the rest of our solution.
 
 So our first cut at a `flatten` function will look like this:
 
@@ -114,7 +114,7 @@ And if we wanted to "truthify" each element in a list, we could write:
     truthyAll([null, true, 25, false, "foo"])
       //=> [false,true,true,false,true]
                                                 
-This specific case of linear recursion is called "mapping," and it is not necessary to constantly write out teh same pattern again and again. Functions can take functions as arguments, so let's "extract" the thing to do to each element and separate it from the business of taking an array apart, doing the thing,a nd putting the array back together.
+This specific case of linear recursion is called "mapping," and it is not necessary to constantly write out the same pattern again and again. Functions can take functions as arguments, so let's "extract" the thing to do to each element and separate it from the business of taking an array apart, doing the thing, and putting the array back together.
 
 Given the signature:
 
