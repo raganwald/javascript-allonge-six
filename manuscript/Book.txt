@@ -45,6 +45,8 @@ mainmatter:
     markdown/Recursion/title.md
     
       markdown/Recursion/destructuring.md
+    
+      markdown/Recursion/buildingblocks.md
 
     markdown/ValuesAndExpressions/strings.md
 

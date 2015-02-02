@@ -94,3 +94,5 @@ If we look at our examples above, we see that when we pass `true` and `false` to
       //=> undefined
       
 In JavaScript, `&&` and `||` aren't really boolean logical oeprators in the strict logical sense. They don't operate strictly on logical values, and they aren't reflexive: `a || b` is not always equal to `b || a`, and teh same goes for `&&`.
+
+The difference can be subtle, but important for certain use cases.

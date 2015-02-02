@@ -1,4 +1,4 @@
-## Arrays and Destructuring Arguments
+## Arrays and Destructuring Arguments {#arraysanddestructuring}
 
 While we have already mentioned arrays briefly, we haven't had a close look at them. Arrays are JavaScript's "native" representation of lists. Strings are important because they represent writing. Lists are important because they represent ordered collections of things, and ordered collections are a fundamental abstraction for making sense of reality.
 
@@ -167,6 +167,40 @@ Let's try it:
       //=> ["zero","one","two","three"]
       
 It works! We can use `...` to place the elements of an array inside another array. In JavaScript, using `...` to destructure is called a "rest," and using it in a literal is called a "spread." The two words are not inverses of each other for some strange reason, but we can see the symmetry for ourselves.
+
+### destructuring is not pattern matching
+
+Some other languages have something called *pattern matching*, where you can write something like a destructuring assignment, and the language decides whether the "patterns" matches at all. If it does, assignments are made where appropriate.
+
+In such a language, if you wrote something like:
+
+    const [what] = [];
+    
+That match would fail because the array doesn't have an element to assign to `what`. But this is not how JavaScript works. JavaScript tries its best to assign things, and if there isn't something that fits, JavaScript binds `undefined` to the name. Therefore:
+
+    const [what] = [];
+    
+    what
+      //=> undefined
+      
+    const [which, what, who] = ["duck feet", "tiger tail"];
+    
+    who
+      //=> undefined
+      
+And if there aren't any items to assign with `...`, JavaScript assigns an empty array:
+      
+    const [...they] = [];
+    
+    they
+      //=> []
+      
+    const [which, what, ...they] = ["duck feet", "tiger tail"];
+    
+    they
+      //=> []
+      
+From its very inception, JavaScript has striven to avoid catastrophic errors. As a result, it often coerces values, passes `undefined` around, or does whatever it can to keep executing without failing. This often means that we must write our own code to detect failure conditions, as we cannot reply on the language to point out when we are doing semantically meaningless things.
       
 ### destructuring and return values
 
@@ -187,6 +221,7 @@ Some languages support multiple return values: A function can return several thi
     
     reg
       //=> "Reginald is a programmer"
+      
     status
        //=> "ok"
        
