@@ -176,5 +176,5 @@ And if we like, we can write `mapWith` using `foldWith`:
           
 ### summary
 
-Linear recursion is a basic building block of algorithms, because its form "reverses" the way linear data structures like lists are constructed. Its specialized cases of mapping and folding are especially useful and can be used to build other functions.
+Linear recursion is a basic building block of algorithms. Its basic form parallels the way linear data structures like lists are constructed: This helps make it understandable. Its specialized cases of mapping and folding are especially useful and can be used to build other functions. And finally, while folding is a special case of linear recursion, mapping is a special case of folding.
     
