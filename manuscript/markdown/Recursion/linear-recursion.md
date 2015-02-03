@@ -189,9 +189,10 @@ Given the signature:
     
 We can write it out using a ternary operator. Even in this small function, we can identify the terminal condition, the piece being broken off, and recomposing the solution.
 
-    const mapWith = (fn, [first, ...rest]) => first === undefined
-                                                  ? []
-                                                  : [fn(first), ...mapWith(fn, rest)];
+    const mapWith = (fn, [first, ...rest]) =>
+      first === undefined
+        ? []
+        : [fn(first), ...mapWith(fn, rest)];
                                                   
     mapWith((x) => x * x, [1, 2, 3, 4, 5])
       //=> [1,4,9,16,25]
