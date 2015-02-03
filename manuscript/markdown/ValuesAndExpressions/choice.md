@@ -95,6 +95,64 @@ If we look at our examples above, we see that when we pass `true` and `false` to
     undefined && null
       //=> undefined
       
-In JavaScript, `&&` and `||` aren't really boolean logical operators in the strict logical sense. They don't operate strictly on logical values, and they aren't reflexive: `a || b` is not always equal to `b || a`, and the same goes for `&&`.
+In JavaScript, `&&` and `||` aren't boolean logical operators in the logical sense. They don't operate strictly on logical values, and they don't commute: `a || b` is not always equal to `b || a`, and the same goes for `&&`.
 
-The difference can be subtle, but important for certain use cases.
+This is not a subtle distinction.
+
+### `||` and `&&` are control-flow operators
+
+We've seen the ternary operator: It is a *control-flow* operator, not a logical operator. The same is true of `&&` and `||`. Consider this [tail-recursive](#tail) function that determines whether a positive integer is even:
+
+For example:
+
+    const even = (n) =>
+      n === 0 || (n !== 1 && even(n - 2))
+    
+    even(42)
+      //=> true
+      
+If `n === 0`, JavaScript does not evaluate `(n !== 1 && even(n - 2))`. This is very important! Imagine that JavaScript evaluated both sides of the `||` operator before determining its value. `n === 0` would be true. What about `(n !== 1 && even(n - 2))`? Well, it would evalute `even(n - 2)`, or `even(-2)`
+
+This leads us to evaluate `n === 0 || (n !== 1 && even(n - 2))` all over again, and this time we end up evaluating `even(-4)`. And then `even(-6)`. and so on and so forth until JavaScript throws up its hands and runs out of stack space.
+
+But that's not what happens. `||` and `&&` have *short-cut semantics*. In this case, if `n === 0`, JavaScript does not evaluate `(n !== 1 && even(n - 2))`. Likewise, if `n === 1`, JavaScript evaluates `n !== 1 && even(n - 2)` as `false` without ever evaluating `even(n - 2)`.
+
+This is more than just an optimization. It's best to think of `||` and `&&` as control-flow operators. The expression on the left is always evaluated, and its value determines whether the expression on the right is evaluated or not.
+
+### function parameters are eager
+
+In contrast to the behaviour of the ternary operator, `||`, and `&&`, function parameters are always *eagerly evaluated*:
+
+    const or = (a, b) => a || b
+    
+    const and = (a, b) => a && b
+
+    const even = (n) =>
+      or(n === 0, and(n !== 1, even(n - 2)))
+    
+    even(42)
+      //=> Maximum call stack size exceeded.
+      
+Now our expression `or(n === 0, and(n !== 1, even(n - 2)))` is calling functions, and JavaScript always evaluates the expressions for parameters before passing the values to a function to invoke. This leads to the infinite recursion we fear.
+
+If we need to have functions with control-flow semantics, we can pass anonymous functions. We obviously don't need anything like this for `or` and `and`, but to demonstrate the technique:
+
+
+    const or = (a, b) => a() || b()
+    
+    const and = (a, b) => a() && b()
+
+    const even = (n) =>
+      or(() => n === 0, () => and(() => n !== 1, () => even(n - 2)))
+    
+    even(7)
+      //=> false
+
+Here we've passed functions that contain the expressions we want to evaluate, and now we can write our own functions that can delay evaluation.
+
+### summary
+
+- Logical operators are based on truthiness and falsiness, not the strict values `true` and `false`.
+- `!` is a logical operator, it always returns `true` or `false`.
+- The ternary operator (`?:`), `||`, and `&&` are control flow operators, they do not always return `true` or `false`, and they have short-cut sementics.
+- Function invocation uses eager evalauation, so if we need to roll our own control-flow semantics, we pass it functions, not expressions.

@@ -1,4 +1,4 @@
-## Tail Calls and Excessive Recycling
+## Tail Calls and Excessive Recycling {#tail}
 
 The `mapWith` and `foldWith` functions we wrote are useful for illustrating the basic principles behind using recursion to work with self-similar data structures, but they are not "production-ready" implementations. One of the reasons they are not production-ready is that they consume memory proportional to the size of the array being folded.
 
