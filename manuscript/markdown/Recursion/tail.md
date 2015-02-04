@@ -1,4 +1,4 @@
-## Tail Calls and Excessive Recycling {#tail}
+## Tail Calls,  Excessive Recycling, and the 704 {#tail}
 
 The `mapWith` and `foldWith` functions we wrote are useful for illustrating the basic principles behind using recursion to work with self-similar data structures, but they are not "production-ready" implementations. One of the reasons they are not production-ready is that they consume memory proportional to the size of the array being folded.
 
@@ -163,3 +163,53 @@ Now that being said, if we profile our new version of `mapWith`, we'll discover 
 Ever time we call `mapWithDelaysWork`, we're calling `[...prepend, fn(first)]`. This creates a new array in memory, populates it with the contents of the `prepend` array, and then copies the value of `fn(first)` into the last position.
 
 We never use `prepend` again, so that array is discarded. We may not be creating 3,000 stack frames, but we are creating an empty array, an array with one element, and array with two elements, an array with three elements, and so on upt to an array with three thousand elements that we eventually use. Although the maximum amount of memory does not grow, the thrashing as we create short-lived arrays is very bad, and we do a lot of work copying elements from one array to another.
+
+If this is so bad, why do many examples of "functional" algrithms work this exact way?
+
+![The IBM 704](images/IBM704.jpg)
+
+### some history
+
+Once upon a time, there was a programming language called [Lisp], an acronym for LISt Processing. Lisp was one of the very first high-level languages. As mentioned previously, the very first implementation was written for the [IBM 704] computer. (The very first FORTRAN implementationw as also written for the 704).
+
+[Lisp]: https://en.wikipedia.org/wiki/Lisp_(programming_language)
+[IBM 704]: https://en.wikipedia.org/wiki/IBM_704
+
+The 704 had a 36-bit word, meaning that it was very fast to store and retrive 36-bit values. The CPU's instruction set featured two important macros: `CAR` would fetch 15 bits representing the Contents of the Address part of the Register, while `CDR` would fetch the Contents of the Decrement part of the register. In broad terms, this means that a single 36-bit word could store two separate 15-bit values and it was very fast to save and retrieve pairs of values. If you had two 15-bit values and wished to write them to the register, the `CONS` macro would take the values and write them to a 36-bit word.
+
+Thus, `CONS` put two values together, `CAR` extracted one, and `CDR` extracted the other. Lisp's basic data type is often said to be the list, but in actuality it was the "cons cell," the term used to describe two 15-bit values stored in one word. The 15-bit values were used as pointers that could refer to a location in memory, so in effect, a Cons Cell was a little data strcuture with two pointers to other Cons Cells.
+
+Lists were represented as linked lists of Cons Cells, with each cell's head pointing to an element and the tail pointing to another Cons Cell.
+
+Here's the scheme in JavaScript, using two-element arrays to represent cons cells:
+
+    const cons = (a, d) => [a, d],
+          car  = ([a, d]) => a,
+          cdr  = ([a, d]) => d;
+      
+We can make a list by calling `cons` repeatedly, and terminating it with `null`:
+
+    const oneToFive = cons(1, cons(2, cons(3, cons(4, cons(5, null)))));
+    
+    oneToFive
+      //=> [1,[2,[3,[4,[5,null]]]]]
+
+Here's where things get interesting. If we want the head of a list, we call `car` on it:
+
+    car(oneToFive)
+      //=> 1
+      
+`car` is very fast, it simply extracts the first element of the cons cell.
+
+But what about the rest of the list? `cdr` does the trick:
+
+    cdr(oneToFive)
+      //=> [2,[3,[4,[5,null]]]]
+      
+Again, it's just extracting a reference from a cons cell, it's very fast. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed.
+
+Thus, an operation like `[first, ...rest] = someArray`  that can be very slow with JavaScript is lightning-fast in Lisp, because `[first, ...rest]` is really a `car` and a `cdr` if we're making lists our of cons cells. Likewise, an operation like `someArray = [something, ...moreElements]` is lightning-fast in Lisp because we're only creating one new cons cell, we aren't duplicating the entire array.
+
+Alas, although lists made out of cons cells are very fast for prepending elements and "shifting" elements off the front, they are slow for iterating over elements because the computer has to "pointer chase" through memory, it's much faster to increment a register and fetch the next item. And it's excruciating to attempt to access an arbitrary item, you have to iterate from the beginning, every time.
+
+So FORTRAN used arrays, and in time Lisp added vectors that work like arrays, and with a new data structure came new algorithms. And so it is today. Although we showed how to map and fold over arrays with `[first, ...rest]`, in reality this is not how it ought to be done. But it is an extremely simple illustration of how recursion works when you have a self-similar means of constructing a data structure.

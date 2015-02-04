@@ -57,6 +57,8 @@ mainmatter:
       markdown/Recursion/destructuring.md
     
       markdown/Recursion/linear-recursion.md
+    
+      markdown/Recursion/tail.md
 
     markdown/ValuesAndExpressions/strings.md
 
