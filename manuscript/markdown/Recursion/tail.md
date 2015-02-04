@@ -31,9 +31,9 @@ This is roughly equivalent to writing:
     
 Note that while evaluating `mapWith(fn, rest)`, JavaScript must retain the value `first` or `fn(first)`, plus some housekeeping information so it remembers what to do with `mapWith(fn, rest)` when it has a result. JavaScript cannot throw `first` away. So we know that JavaScript is going to hang on to `1`.
 
-Next, JavaScript invokes `mapWith(fn, rest)`, which is semantically equivalent to `mapWith((x) => x * x, [2, 3, 4, 5])`. And the same thing happens: JavaScript has to hang on to `2` (or `4`, or both, depending o the implementation), plus some hosuekeeping information so it remembers what to do with that value, while it calls the equivalent of `mapWith((x) => x * x, [3, 4, 5])`.
+Next, JavaScript invokes `mapWith(fn, rest)`, which is semantically equivalent to `mapWith((x) => x * x, [2, 3, 4, 5])`. And the same thing happens: JavaScript has to hang on to `2` (or `4`, or both, depending on the implementation), plus some housekeeping information so it remembers what to do with that value, while it calls the equivalent of `mapWith((x) => x * x, [3, 4, 5])`.
 
-This keeps on happening, so that JavaScript collects the values `1`, `2`, `3`, `4`, and `5` plus housekeeping information by the time it calls `mapWith((x) => x * x, [])`. It can start assembing the resulting array and start discarding the information it is saving.
+This keeps on happening, so that JavaScript collects the values `1`, `2`, `3`, `4`, and `5` plus housekeeping information by the time it calls `mapWith((x) => x * x, [])`. It can start assembling the resulting array and start discarding the information it is saving.
 
 That information is saved on a *call stack*, and it is quite expensive. Furthermore, doubling the length of an array will double the amount of space we need on the stack, plus double all the work required to set up and tear down the housekeeping data for each call (these are called *call frames*, and they include the place where the function was called, an environment, and so on).
 
@@ -65,7 +65,7 @@ In practice, using a method like this with more than about 50 items in an array 
 
 Is there a better way? Several, in fact, fast algorithms is a very highly studied field of computer science. The one we're going to look at here is called *tail-call optimization*, or "TCO."
 
-### tco
+### tail-call optimization
 
 A "tail-call" occurs when a function's last act is to invoke another function, and then return whatever the other function returns. For example, consider the `maybe` function decorator we saw earlier:
 
@@ -133,7 +133,7 @@ This version of `length` calls uses `lengthDelaysWork`, and JavaScript optimizes
     mapWith((x) => x * x, [1, 2, 3, 4, 5])
       //=> [1,4,9,16,25]
       
-We can use it with ridiculusly large arrays:
+We can use it with ridiculously large arrays:
 
     mapWith((x) => x * x, [
          0,    1,    2,    3,    4,    5,    6,    7,    8,    9,  
@@ -154,7 +154,7 @@ We can use it with ridiculusly large arrays:
       
     //=> [0,1,4,9,16,25,36,49,64,81,100,121,144,169,196, ...
     
-Brilliant! We can map over large arrays without incurring all the memory and performance overhead of non-tail-calls. And this basic trasnformation from a recursive function that does not make a tail call into a tail call is 
+Brilliant! We can map over large arrays without incurring all the memory and performance overhead of non-tail-calls. And this basic transformation from a recursive function that does not make a tail call, into a recursive function that calls itself in tail position, is a bread-and-butter pattern for programmers using a language that incorporates tail-call optimization.
 
 ### recycling
     
@@ -162,22 +162,22 @@ Now that being said, if we profile our new version of `mapWith`, we'll discover 
 
 Ever time we call `mapWithDelaysWork`, we're calling `[...prepend, fn(first)]`. This creates a new array in memory, populates it with the contents of the `prepend` array, and then copies the value of `fn(first)` into the last position.
 
-We never use `prepend` again, so that array is discarded. We may not be creating 3,000 stack frames, but we are creating an empty array, an array with one element, and array with two elements, an array with three elements, and so on upt to an array with three thousand elements that we eventually use. Although the maximum amount of memory does not grow, the thrashing as we create short-lived arrays is very bad, and we do a lot of work copying elements from one array to another.
+We never use `prepend` again, so that array is discarded. We may not be creating 3,000 stack frames, but we are creating an empty array, an array with one element, and array with two elements, an array with three elements, and so on up to an array with three thousand elements that we eventually use. Although the maximum amount of memory does not grow, the thrashing as we create short-lived arrays is very bad, and we do a lot of work copying elements from one array to another.
 
-If this is so bad, why do many examples of "functional" algrithms work this exact way?
+If this is so bad, why do many examples of "functional" algorithms work this exact way?
 
 ![The IBM 704](images/IBM704.jpg)
 
 ### some history
 
-Once upon a time, there was a programming language called [Lisp], an acronym for LISt Processing. Lisp was one of the very first high-level languages. As mentioned previously, the very first implementation was written for the [IBM 704] computer. (The very first FORTRAN implementationw as also written for the 704).
+Once upon a time, there was a programming language called [Lisp], an acronym for LISt Processing. Lisp was one of the very first high-level languages. As mentioned previously, the very first implementation was written for the [IBM 704] computer. (The very first FORTRAN implementation was also written for the 704).
 
 [Lisp]: https://en.wikipedia.org/wiki/Lisp_(programming_language)
 [IBM 704]: https://en.wikipedia.org/wiki/IBM_704
 
-The 704 had a 36-bit word, meaning that it was very fast to store and retrive 36-bit values. The CPU's instruction set featured two important macros: `CAR` would fetch 15 bits representing the Contents of the Address part of the Register, while `CDR` would fetch the Contents of the Decrement part of the register. In broad terms, this means that a single 36-bit word could store two separate 15-bit values and it was very fast to save and retrieve pairs of values. If you had two 15-bit values and wished to write them to the register, the `CONS` macro would take the values and write them to a 36-bit word.
+The 704 had a 36-bit word, meaning that it was very fast to store and retrieve 36-bit values. The CPU's instruction set featured two important macros: `CAR` would fetch 15 bits representing the Contents of the Address part of the Register, while `CDR` would fetch the Contents of the Decrement part of the register. In broad terms, this means that a single 36-bit word could store two separate 15-bit values and it was very fast to save and retrieve pairs of values. If you had two 15-bit values and wished to write them to the register, the `CONS` macro would take the values and write them to a 36-bit word.
 
-Thus, `CONS` put two values together, `CAR` extracted one, and `CDR` extracted the other. Lisp's basic data type is often said to be the list, but in actuality it was the "cons cell," the term used to describe two 15-bit values stored in one word. The 15-bit values were used as pointers that could refer to a location in memory, so in effect, a Cons Cell was a little data strcuture with two pointers to other Cons Cells.
+Thus, `CONS` put two values together, `CAR` extracted one, and `CDR` extracted the other. Lisp's basic data type is often said to be the list, but in actuality it was the "cons cell," the term used to describe two 15-bit values stored in one word. The 15-bit values were used as pointers that could refer to a location in memory, so in effect, a Cons Cell was a little data structure with two pointers to other Cons Cells.
 
 Lists were represented as linked lists of Cons Cells, with each cell's head pointing to an element and the tail pointing to another Cons Cell.
 
