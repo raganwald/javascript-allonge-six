@@ -1,4 +1,4 @@
-## References and Objects {#objects}
+## DEPRECATED! References and Objects {#pojos}
 
 JavaScript also provides objects. The word "object" is loaded in programming circles, due to the widespread use of the term "object-oriented programming" that was coined by Alan Kay but has since come to mean many, many things to many different people.
 

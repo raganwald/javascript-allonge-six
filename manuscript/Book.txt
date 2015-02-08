@@ -52,15 +52,17 @@ mainmatter:
 
     markdown/ValuesAndExpressions/choice.md
     
-    markdown/Recursion/title.md
+    markdown/ComposingData/title.md
     
-      markdown/Recursion/destructuring.md
+      markdown/ComposingData/destructuring.md
     
-      markdown/Recursion/linear-recursion.md
+      markdown/ComposingData/linear-recursion.md
     
-      markdown/Recursion/tail.md
+      markdown/ComposingData/tail.md
     
-      markdown/Recursion/garbage.md
+      markdown/ComposingData/garbage.md
+    
+      markdown/ComposingData/objects.md
 
     markdown/ValuesAndExpressions/strings.md
 

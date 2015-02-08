@@ -15,7 +15,7 @@ mapWith((x) => x * x, [1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
 ~~~~~~~~
 
-Let's step through its execution. First, `mapWith((x) => x * x, [1, 2, 3, 4, 5])` is invoked. `first` is not `undefined`, so it evaluates [fn(first), ...mapWith(fn, rest)]. To do that, it has to evaluate `fn(first)` and `mapWith(fn, rest)`, then evaluate [fn(first), ...mapWith(fn, rest)].
+Let's step through its execution. First, `mapWith((x) => x * x, [1, 2, 3, 4, 5])` is invoked. `first` is not `undefined`, so it evaluates [fn(first), ...mapWith(fn, rest)]. To do that, it has to evaluate `fn(first)` and `mapWith(fn, rest)`, then evaluate `[fn(first), ...mapWith(fn, rest)]`.
 
 This is roughly equivalent to writing:
 
@@ -320,3 +320,23 @@ mapWith((x) => x * x, [1, 2, 3, 4, 5])
 ~~~~~~~~
 
 Now we don't need to use two functions. A default argument is concise and readable.
+
+### defaults and destructuring
+
+We saw earlier that destructuring parameters works the same way as destructuring assignment. Now we learn that we can create a default parameter argument. Can we create a default destructuring assignment?
+
+{:lang="javascript"}
+~~~~~~~~
+
+const [first, second = "two"] = ["one"];
+
+`${first} . ${second}`
+  //=> "one . two"
+  
+const [first, second = "two"] = ["primus", "secundus"];
+
+`${first} . ${second}`
+  //=> "primus . secundus"
+~~~~~~~~
+
+How very useful: defaults can be supplied for destructuring assignments, just like defaults for parameters.

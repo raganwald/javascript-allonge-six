@@ -106,7 +106,7 @@ And if you don't use `a.b()` or `a['b']()` or `a[n]()` or `(a.b)()`, you get the
 
 ### setting your own context
 
-There are actually two other ways to set the context of a function. And once again, both are determined by the caller. At the very end of [objects everywhere?](#objectseverywhere), we'll see that everything in JavaScript behaves like an object, including functions. We'll learn that functions have methods themselves, and one of them is `call`.
+There are actually two other ways to set the context of a function. And once again, both are determined by the caller. At the very end of [objects everywhere?](#pojoseverywhere), we'll see that everything in JavaScript behaves like an object, including functions. We'll learn that functions have methods themselves, and one of them is `call`.
 
 Here's `call` in action:
 

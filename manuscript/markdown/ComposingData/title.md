@@ -1,4 +1,4 @@
-# Recursion: See "Recursion" {#recursion}
+# Composing Data {#composing-data}
 
 ![Stacked Cups](images/stacked-cups.jpg)
 

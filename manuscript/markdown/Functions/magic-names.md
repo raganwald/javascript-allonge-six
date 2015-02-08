@@ -52,7 +52,7 @@ When discussing objects, we'll discuss properties in more depth. Here's somethin
       
 The most common use of the `arguments` binding is to build functions that can take a variable number of arguments. We'll see it used in many of the recipes, starting off with [partial application](#simple-partial) and [ellipses](#ellipses).
       
-[^pojo]: We'll look at [arrays](#arrays) and [plain old javascript objects](#objects) in depth later.
+[^pojo]: We'll look at [arrays](#arrays) and [plain old javascript objects](#pojos) in depth later.
 
 ### magic names and fat arrows
 

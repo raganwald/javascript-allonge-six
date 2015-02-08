@@ -125,7 +125,7 @@ You recall that when we first looked at `this`, we only covered the case where a
 
 You can see why `this` is so handy in JavaScript: We wouldn't be able to define functions in the prototype that worked on the instance if JavaScript didn't give us an easy way to refer to the instance itself.
 
-### objects everywhere? {#objectseverywhere}
+### objects everywhere? {#objects-everywhere}
 
 Now that you know about prototypes, it's time to acknowledge something that even small children know: Everything in JavaScript behaves like an object, everything in JavaScript behaves like an instance of a function, and therefore everything in JavaScript behaves as if it inherits some methods from its constructor's prototype and/or has some elements of its own.
 
