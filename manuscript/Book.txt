@@ -62,7 +62,7 @@ mainmatter:
     
       markdown/ComposingData/garbage.md
     
-      markdown/ComposingData/objects.md
+      markdown/ComposingData/pojos.md
 
     markdown/ValuesAndExpressions/strings.md
 
