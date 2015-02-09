@@ -72,6 +72,8 @@ mainmatter:
 
       markdown/References and Rebinding/reassignment.md
 
+      markdown/References and Rebinding/mutation.md
+
 #      markdown/References and Rebinding/var.md
 
 #      markdown/References and Rebinding/recursion.md

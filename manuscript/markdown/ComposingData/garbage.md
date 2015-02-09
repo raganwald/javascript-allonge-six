@@ -119,7 +119,7 @@ Well, linked lists are fast for a few things, like taking the front element off 
 
 We have avoided discussing rebinding and mutating values, but if we want to change elements of our lists, the naïve linked list implementation suffers as well: When we take the `cdr` of a linked list, we are sharing the elements. If we make any change other than cons-ing a new element to the front, we are changing both the new list and the old list.
 
-Arrays avoid this problem by pessimistically copying all the references whenever we extract an element or sequence of elements from them.
+Arrays avoid this problem by pessimistically copying all the references whenever we extract an element or sequence of elements from them (We'll see this explained later in [Mutation](#mutation)).
 
 For these and other reasons, almost all languages today make it possible to use a fast array or vector type that is optimized for iteration, and even Lisp now has a variety of data structures that are optimized for specific use cases.
 
