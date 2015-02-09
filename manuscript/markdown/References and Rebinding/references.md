@@ -2,8 +2,8 @@
 
 Consider this code:
 
-    var x = 'June 14, 1962',
-        y = x;
+    const x = 'June 14, 1962',
+          y = x;
         
     x === y
       //=> true
@@ -12,8 +12,8 @@ This makes obvious sense, because we know that strings are a value type, so no m
 
 But what about this code?
 
-    var x = [2012, 6, 14],
-        y = x;
+    const x = [2012, 6, 14],
+          y = x;
         
     x === y
       //=> true
@@ -28,11 +28,9 @@ What this means is that when we write something like `y = x`, the name `x` is lo
 
 The same thing happens with binding a variable through a more conventional means of applying a function to arguments:
 
-    var x = [2012, 6, 14];
+    const x = [2012, 6, 14];
     
-    (function (y) {
-      return x === y
-    })(x)
+    ((y) => x === y)(x)
       //=> true
 
 `x` and `y` both end up bound to the exact same array, not two different arrays that look the same to our eyes.

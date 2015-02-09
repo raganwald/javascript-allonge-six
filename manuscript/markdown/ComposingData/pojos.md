@@ -72,16 +72,15 @@ Names needn't be alphanumeric strings. For anything else, enclose the label in q
 
 If the name is an alphanumeric string conforming to the same rules as names of variables, there's a simplified syntax for accessing the values:
 
-    { year: 2012, month: 6, day: 14 }['day'] ===
-        { year: 2012, month: 6, day: 14 }.day
+    const date = { year: 2012, month: 6, day: 14 };
+    
+    date['day'] === date.day
       //=> true
 
 All containers can contain any value, including functions or other containers:
 
     const Mathematics = {
-      abs: function (a) {
-             return a < 0 ? -a : a
-           }
+      abs: (a) =>a < 0 ? -a : a
     };
 
     Mathematics.abs(-5)
@@ -281,5 +280,3 @@ mapWith((x) => x * x, OneTwoThree)
 Our `mapWith` function takes twice as long as a straight iteration, because it iterates over the entire list twice, once to map, and once to reverse the list. Likewise, it takes twice as much memory, because it constructs a reverse of the desired result before throwing it away.
 
 Mind you, this is still much, much faster than making partial copies of arrays. For a list of length *n*, we created *n* superfluous nodes and copied *n* superfluous values. Whereas our naîve array algorithm created 2*n* superfluous arrays and copied *n*^2^ superfluous values.
-
-But there are even faster ways to work with linked lists.

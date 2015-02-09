@@ -413,7 +413,7 @@ Again, confusing. Typically, we want to bind our names as close to where we need
 
 [plp]: https://en.wikipedia.org/wiki/Principle_of_least_privilege
     
-### rebinding
+### rebinding {#rebinding-peek}
 
 By default, JavaScript permits us to *rebind* new values to names bound with a parameter. For example, we can write:
 
@@ -448,6 +448,6 @@ The line `n = n - 2;` *rebinds* a new value to the name `n`. We will discuss thi
     }
       //=> ERROR, evenStevens is read-only
       
-  JavaScript does not permit us to rebind a name that has been bound with `const`. We can *shadow* it by using `const` to declare a new binding with a new function or block scope, but we cannot rebind a name that was bound with `const` in an existing scope.
-  
-  This is valuable, as it greatly simplifies the analysis of programs to see at a glance that when something is bound with `const`, we need never worry that its value may change.
+JavaScript does not permit us to rebind a name that has been bound with `const`. We can *shadow* it by using `const` to declare a new binding with a new function or block scope, but we cannot rebind a name that was bound with `const` in an existing scope.
+
+This is valuable, as it greatly simplifies the analysis of programs to see at a glance that when something is bound with `const`, we need never worry that its value may change.
