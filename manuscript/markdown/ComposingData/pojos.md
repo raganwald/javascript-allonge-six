@@ -1,6 +1,6 @@
 ## Plain Old JavaScript Objects {#pojos}
 
-Lists are not the only way to represent collections of things, but they are the "oldest" data structure in the history of high level languages, because they map very closely to the way the hardware is organized in a computer. List are obviously very handy for homogeneous collections of things, like a shopping list:
+Lists are not the only way to represent collections of things, but they are the "oldest" data structure in the history of high level languages, because they map very closely to the way the hardware is organized in a computer. Lists are obviously very handy for homogeneous collections of things, like a shopping list:
 
 {:lang="javascript"}
 ~~~~~~~~
@@ -36,7 +36,7 @@ Dictionaries store key-value pairs, so instead of binding `NAME` to `0` and then
 
 Java has dictionaries, and it calls them "objects." The word "object" is loaded in programming circles, due to the widespread use of the term "object-oriented programming" that was coined by Alan Kay but has since come to mean many, many things to many different people.
 
-In JavaScript, an object[^pojo] is a map from string keys to values.
+In JavaScript, an object is a map from string keys to values.
 
 ### literal object syntax
 
@@ -163,3 +163,123 @@ const abbrev = ({name: { first, last }, occupation: { title } }) => {
 abbrev(user)
   //=> {"first":"Reginald","last":"Braithwaite","title":"Author"}
 ~~~~~~~~
+
+### revisiting linked lists
+
+Earlier, we used two-element arrays as nodes in a linked list:
+
+{:lang="javascript"}
+~~~~~~~~
+const cons = (a, d) => [a, d],
+      car  = ([a, d]) => a,
+      cdr  = ([a, d]) => d;
+~~~~~~~~
+
+In essence, this simple implementation used functions to create an abstraction with named elements. But now that we've looked at objects, we can use an object instead of a two-element array. While we're at it, let's use contemporary names. So our linked list nodes will be formed from `{ first, rest }`
+
+In that case, a linked list of the numbers `1`, `2`, and `3` will look like this: `{ first: 1, rest: { first: 2, rest: { first: 3, rest: EMPTY } } }`.
+
+We can then perform the equivalent of `[first, ...rest]` with direct property accessors:
+
+{:lang="javascript"}
+~~~~~~~~
+const EMPTY = {};
+const OneTwoThree = { first: 1, rest: { first: 2, rest: { first: 3, rest: EMPTY } } };
+
+OneTwoThree.first
+  //=> 1
+  
+OneTwoThree.rest
+  //=> {"first":2,"rest":{"first":3,"rest":{}}}
+  
+OneTwoThree.rest.rest.first
+  //=> 3
+~~~~~~~~
+
+Taking the length of a linked list is easy:
+
+{:lang="javascript"}
+~~~~~~~~
+const length = (node, delayed = 0) =>
+  node === EMPTY
+    ? delayed
+    : length(node.rest, delayed + 1);
+
+length(OneTwoThree)
+  //=> 3
+~~~~~~~~
+
+What about mapping? Well, let's start with the simplest possible thing, making a *copy* of a list. As we saw above, and discussed in [Garbage, Garbage Everywhere](#garbage), it is fast to iterate forward through a linked list. What isn't fast is naïvely copying a list:
+
+{:lang="javascript"}
+~~~~~~~~
+const slowcopy = (node) =>
+  node === EMPTY
+    ? EMPTY
+    : { first: node.first, rest: slowcopy(node.rest)};
+    
+slowcopy(OneTwoThree)
+  //=> {"first":1,"rest":{"first":2,"rest":{"first":3,"rest":{}}}}
+~~~~~~~~
+
+The problem here is that linked lists are constructed bask-to-front, but we iterate over them front-to-back. So to copy a list, we have to save all the bits on the call stack and then construct the list from back-to-front as all the recursive calls return.
+
+We could follow the strategy of delaying the work. Let's write that naively:
+
+{:lang="javascript"}
+~~~~~~~~
+const copy2 = (node, delayed = EMPTY) =>
+  node === EMPTY
+    ? delayed
+    : copy2(node.rest, { first: node.first, rest: delayed });
+    
+copy2(OneTwoThree)
+  //=> {"first":3,"rest":{"first":2,"rest":{"first":1,"rest":{}}}}
+~~~~~~~~
+
+Well, well, well. We have unwittingly *reversed* the list. This makes sense, if lists are constructed from back to front, and we make a linked list out of items as we iterate through it, we're going to get a backwards copy of the list. This isn't a bad thing by any stretch of the imagination. Let's call it what it is:
+
+{:lang="javascript"}
+~~~~~~~~
+const reverse = (node, delayed = EMPTY) =>
+  node === EMPTY
+    ? delayed
+    : reverse(node.rest, { first: node.first, rest: delayed });
+~~~~~~~~
+
+And now, we can make a reversing map:
+
+{:lang="javascript"}
+~~~~~~~~
+const reverseMapWith = (fn, node, delayed = EMPTY) =>
+  node === EMPTY
+    ? delayed
+    : reverseMapWith(fn, node.rest, { first: fn(node.first), rest: delayed });
+    
+reverseMapWith((x) => x * x, OneTwoThree)
+  //=> {"first":9,"rest":{"first":4,"rest":{"first":1,"rest":{}}}}
+~~~~~~~~
+
+And a regular `mapWith` follows:
+
+{:lang="javascript"}
+~~~~~~~~
+const reverse = (node, delayed = EMPTY) =>
+  node === EMPTY
+    ? delayed
+    : reverse(node.rest, { first: node.first, rest: delayed });
+
+const mapWith = (fn, node, delayed = EMPTY) =>
+  node === EMPTY
+    ? reverse(delayed)
+    : mapWith(fn, node.rest, { first: fn(node.first), rest: delayed });
+    
+mapWith((x) => x * x, OneTwoThree)
+  //=> {"first":1,"rest":{"first":4,"rest":{"first":9,"rest":{}}}}
+~~~~~~~~
+
+Our `mapWith` function takes twice as long as a straight iteration, because it iterates over the entire list twice, once to map, and once to reverse the list. Likewise, it takes twice as much memory, because it constructs a reverse of the desired result before throwing it away.
+
+Mind you, this is still much, much faster than making partial copies of arrays. For a list of length *n*, we created *n* superfluous nodes and copied *n* superfluous values. Whereas our naîve array algorithm created 2*n* superfluous arrays and copied *n*^2^ superfluous values.
+
+But there are even faster ways to work with linked lists.

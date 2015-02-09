@@ -70,10 +70,6 @@ mainmatter:
 #
 #      markdown/References and Rebinding/references.md
 #
-#      markdown/References and Rebinding/arrays.md
-#
-#      markdown/References and Rebinding/objects.md
-#
 #      markdown/References and Rebinding/reassignment.md
 #
 #      markdown/References and Rebinding/var.md

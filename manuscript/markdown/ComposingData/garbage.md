@@ -1,4 +1,4 @@
-## Garbage, Garbage Everywhere
+## Garbage, Garbage Everywhere {#garbage}
 
 ![Garbage Day](images/garbage.jpg)
     
@@ -108,6 +108,8 @@ So now we understand that in Lisp, a lot of things use linked lists, and they do
 Getting back to JavaScript now, when we write `[first, ...rest]` to gather or spread arrays, we're emulating the semantics of `car` and `cdr`, but not the implementation. We're doing something laborious and memory-inefficient compared to using a linked list as Lisp did and as we can still do if we choose.
 
 That being said, it is easy to understand and helps us grasp how literals and destructuring works, and how recursive algorithms ought to mirror the self-similarity of the data structures they manipulate. And so it is today that languages like JavaScript have arrays that are slow to split into the equivalent of a `car`/`cdr` pair, but instructional examples of recursive programs still have echoes of their Lisp origins.
+
+We'll look at linked lists again when we look at [Plain Old JavaScript Objects](#pojos).
 
 ### so why arrays
 

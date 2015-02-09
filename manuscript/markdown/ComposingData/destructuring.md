@@ -70,6 +70,17 @@ As we can see, JavaScript Arrays are [zero-based].
 
 [zero-based]: https://en.wikipedia.org/wiki/Zero-based_numbering
 
+We know that every array is its own unique entity, with its own unique reference. What about the contents of an array?Does it store references to the things we give it? Or copies of some kind?
+
+{:lang="javascript"}
+~~~~~~~~
+const x = [],
+      a = [x];
+
+a === x
+  //=> true, arrays store references to the things you put in them.
+~~~~~~~~
+
 ### destructuring arrays
 
 There is another way to extract elements from arrays: *Destructuring*, a feature going back to Common Lisp, if not before. We saw how to construct an array literal using `[`, expressions, `,` and `]`. Here's an example of an array literal that uses a name:
