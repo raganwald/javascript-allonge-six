@@ -2,7 +2,7 @@
 
 ![Cupping Grinds](images/cupping.jpg)
 
-Now that we can reassign things, there's another important factor to consider: Some values can *mutate*. Their identities stay the same, but not their structure. Specifically, arrays and objects can mutate. Recall that you can access a value from within an array or an object using `[]`. You can reassign a value using `[]` as well:
+In JavaScript, almost every type of value can *mutate*. Their identities stay the same, but not their structure. Specifically, arrays and objects can mutate. Recall that you can access a value from within an array or an object using `[]`. You can reassign a value using `[] =`:
 
     const oneTwoThree = [1, 2, 3];
     oneTwoThree[0] = 'one';
@@ -160,11 +160,13 @@ const copy = (node, head = null, tail = null) => {
     return head;
   }
   else if (tail === null) {
-    newNode = { first, rest } = node;
+    const { first, rest } = node;
+    const newNode = { first, rest };
     return copy(rest, newNode, newNode);
   }
   else {
-    newNode = { first, rest } = node;
+    const { first, rest } = node;
+    const newNode = { first, rest };
     tail.rest = newNode;
     return copy(node.rest, head, newNode);
   }
@@ -172,3 +174,28 @@ const copy = (node, head = null, tail = null) => {
 ~~~~~~~~
 
 This algorithm makes copies of nodes as it goes, and mutates the last node in the list so that it can splice the next one on. Adding a node to an existing list is risky, as we saw when considering the fact that `OneToFive` and `ThreeToFive` share the same nodes. But when we're in the midst of creating a brand new list, we aren't sharing any nodes with any other lists, and we can afford to be more liberal about using mutation to save space and/or time.
+
+Armed with this basic copy implementation, we can write `mapWith`:
+
+{:lang="javascript"}
+~~~~~~~~
+const mapWith = (fn, node, head = null, tail = null) => {
+  if (node === EMPTY) {
+    return head;
+  }
+  else if (tail === null) {
+    const { first, rest } = node;
+    const newNode = { first: fn(first), rest };
+    return mapWith(fn, rest, newNode, newNode);
+  }
+  else {
+    const { first, rest } = node;
+    const newNode = { first: fn(first), rest };
+    tail.rest = newNode;
+    return mapWith(fn, node.rest, head, newNode);
+  }
+}
+
+mapWith((x) => 1.0 / x, OneToFive)
+  //=> {"first":1,"rest":{"first":0.5,"rest":{"first":0.3333333333333333,"rest":{"first":0.25,"rest":{"first":0.2,"rest":{}}}}}}
+~~~~~~~~

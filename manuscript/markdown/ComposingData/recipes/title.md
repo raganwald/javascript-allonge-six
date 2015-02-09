@@ -1,4 +1,4 @@
-# Recipes with Rebinding and References
+# Recipes with Data
 
 ![Café Diplomatico in Toronto's Little Italy](images/diplomatico.jpg)
 

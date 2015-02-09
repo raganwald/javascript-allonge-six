@@ -64,15 +64,23 @@ mainmatter:
     
       markdown/ComposingData/pojos.md
 
+      markdown/ComposingData/mutation.md
+
+      markdown/ComposingData/reassignment.md
+
+      markdown/ComposingData/recipes/title.md
+
+        markdown/ComposingData/recipes/once.md
+
+#        markdown/ComposingData/recipes/flip.md
+
+#        markdown/ComposingData/recipes/extend.md
+
+#        markdown/ComposingData/recipes/y.md
+
     markdown/ValuesAndExpressions/strings.md
 
-    markdown/References and Rebinding/title.md
-
-      markdown/References and Rebinding/references.md
-
-      markdown/References and Rebinding/reassignment.md
-
-      markdown/References and Rebinding/mutation.md
+#    markdown/References and Rebinding/title.md
 
 #      markdown/References and Rebinding/var.md
 
@@ -81,18 +89,6 @@ mainmatter:
 #      markdown/References and Rebinding/modules.md
 
 #      markdown/References and Rebinding/summary.md
-
-#      markdown/References and Rebinding/recipes/title.md
-
-#        markdown/References and Rebinding/recipes/once.md
-
-#        markdown/References and Rebinding/recipes/map-with.md
-
-#        markdown/References and Rebinding/recipes/flip.md
-
-#        markdown/References and Rebinding/recipes/extend.md
-
-#        markdown/References and Rebinding/recipes/y.md
 
 #    markdown/Objects, Mutation, and State/title.md
 
