@@ -86,8 +86,6 @@ mainmatter:
 
 #      markdown/References and Rebinding/var.md
 
-#      markdown/References and Rebinding/recursion.md
-
 #      markdown/References and Rebinding/modules.md
 
 #      markdown/References and Rebinding/summary.md
