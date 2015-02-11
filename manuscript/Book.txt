@@ -68,13 +68,15 @@ mainmatter:
 
       markdown/ComposingData/reassignment.md
 
+      markdown/ComposingData/copy-on-write.md
+
       markdown/ComposingData/recipes/title.md
 
         markdown/ComposingData/recipes/once.md
 
 #        markdown/ComposingData/recipes/flip.md
 
-#        markdown/ComposingData/recipes/extend.md
+        markdown/ComposingData/recipes/extend.md
 
 #        markdown/ComposingData/recipes/y.md
 

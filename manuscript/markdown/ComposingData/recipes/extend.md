@@ -2,7 +2,7 @@
 
 It's very common to want to "extend" an object by adding properties to it:
 
-    var inventory = {
+    const inventory = {
       apples: 12,
       oranges: 12
     };
@@ -14,27 +14,23 @@ It's also common to want to add a [shallow copy] of the properties of one object
 
 [shallow copy]: https://en.wikipedia.org/wiki/Object_copy#Shallow_copy
 
-      for (var fruit in shipment) {
+      for (let fruit in shipment) {
         inventory[fruit] = shipment[fruit]
       }
 
 Both needs can be met with this recipe for `extend`:
 
-    var extend = variadic( function (consumer, providers) {
-      var key,
-          i,
-          provider;
-      
-      for (i = 0; i < providers.length; ++i) {
-        provider = providers[i];
-        for (key in provider) {
+    const extend = function (consumer, ...providers) {
+      for (let i = 0; i < providers.length; ++i) {
+        const provider = providers[i];
+        for (let key in provider) {
           if (provider.hasOwnProperty(key)) {
             consumer[key] = provider[key]
           }
         }
       }
       return consumer
-    });
+    };
     
 You can copy an object by extending an empty object:
 
@@ -46,12 +42,12 @@ You can copy an object by extending an empty object:
 
 You can extend one object with another:
 
-    var inventory = {
+    const inventory = {
       apples: 12,
       oranges: 12
     };
     
-    var shipment = {
+    const shipment = {
       bananas: 54,
       pears: 24
     }
@@ -64,7 +60,7 @@ You can extend one object with another:
       
 And when we discuss prototypes, we will use `extend` to turn this:
 
-    var Queue = function () {
+    const Queue = function () {
       this.array = [];
       this.head = 0;
       this.tail = -1
@@ -82,7 +78,7 @@ And when we discuss prototypes, we will use `extend` to turn this:
 
 Into this:
 
-    var Queue = function () {
+    const Queue = function () {
       extend(this, {
         array: [],
         head: 0,
