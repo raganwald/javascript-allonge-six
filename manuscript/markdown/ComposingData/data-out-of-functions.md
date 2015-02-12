@@ -343,3 +343,114 @@ But without building our way up to something insane like writing a JavaScript in
 We used functions to replace arrays and POJOs, but we still use JavaScript's built-in operators to test for equality (`===`) and to branch `?:`.
 
 We'll see how to do that, next.
+
+### say "please"
+
+We keep using the same pattern in our functions: `aTuple === EMPTY ? doSomething : doSomethingElse`. This follows the philosophy we used with data structures: The function doing the work inspects the data structure.
+
+We can reverse this: Instead of asking a tuple if it is empty and then deciding what to do, we can ask the tuple to do it for us. Here's `length` again:
+
+{:lang="javascript"}
+~~~~~~~~
+const length = (aTuple) =>
+  aTuple === EMPTY
+    ? delayed
+    : 1 + length(rest(aTuple));
+~~~~~~~~
+
+Let's presume we are working with a slightly higher abstraction, we'll call it a `list`. Instead of writing `length(list)` and examining a list, we'll write something like:
+
+{:lang="javascript"}
+~~~~~~~~
+const length = (list) => list(
+  () => 0,
+  (aTuple) => 1 + length(aTuple(rest)))
+);
+~~~~~~~~
+
+Now we'll need to write `first` and `rest` functions for a list, and those names will collide with the `first` and `rest` we wrote for tuples. So let's disambinuage our names:
+
+{:lang="javascript"}
+~~~~~~~~
+const tupleFirst = K,
+      tupleRest  = K(I),
+      tuple = V;
+      
+const first = (list) => list(
+    () => "ERROR: Can't take first of an empty list",
+    (aTuple) => aTuple(tupleFirst)
+  );
+      
+const rest = (list) => list(
+    () => "ERROR: Can't take first of an empty list",
+    (aTuple) => aTuple(tupleRest)
+  );
+
+const length = (list) => list(
+    () => 0,
+    (aTuple) => 1 + length(aTuple(tupleRest)))
+  );
+~~~~~~~~
+
+We'll also write a handy list printer:
+
+{:lang="javascript"}
+~~~~~~~~
+const print = (list) => list(
+    () => "",
+    (aTuple) => `${aTuple(tupleFirst)} ${print(aTuple(tupleRest))}`
+  );
+~~~~~~~~
+
+How would all this work? Let's start with the obvious. What is an empty list?
+
+{:lang="javascript"}
+~~~~~~~~
+const EMPTYLIST = (whenEmpty, unlessEmpty) => whenEmpty()
+~~~~~~~~
+
+And what is a node of a list?
+
+{:lang="javascript"}
+~~~~~~~~
+const node = (x) => (y) =>
+  (whenEmpty, unlessEmpty) => unlessEmpty(tuple(x)(y));
+~~~~~~~~
+
+Let's try it:
+
+{:lang="javascript"}
+~~~~~~~~
+const l123 = node(1)(node(2)(node(3)(EMPTYLIST)));
+
+print(l123)
+  //=> 1 2 3
+~~~~~~~~
+
+We can write `reverse` and `mapWith` as well. We aren't being super-strict about emulating combinatory logic, we'll use default parameters:
+
+{:lang="javascript"}
+~~~~~~~~
+const reverse = (list, delayed = EMPTYLIST) => list(
+  () => delayed,
+  (aTuple) => reverse(aTuple(tupleRest), node(aTuple(tupleFirst))(delayed))
+);
+
+print(reverse(l123));
+  //=> 3 2 1
+  
+const mapWith = (fn, list, delayed = EMPTYLIST) =>
+  list(
+    () => reverse(delayed),
+    (aTuple) => mapWith(fn, aTuple(tupleRest), node(fn(aTuple(tupleFirst)))(delayed))
+  );
+  
+print(mapWith(x => x * x, reverse(l123)))
+  //=> 941
+~~~~~~~~
+
+We have managed to provide the exact same functionality that `===` and `?:` provided, but using  functions only.
+
+### summary
+
+Functions are a fundamental building block of computation. They are "axioms" of combinatory logic, and can be used to comput anything that JavaScript can compute. We've taken a cusory look at how this can be done by using functions to represent linked lists and some of the operations on them.
