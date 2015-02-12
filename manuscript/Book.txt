@@ -70,6 +70,8 @@ mainmatter:
 
       markdown/ComposingData/copy-on-write.md
 
+      markdown/ComposingData/data-out-of-functions.md
+
       markdown/ComposingData/recipes/title.md
 
         markdown/ComposingData/recipes/once.md
