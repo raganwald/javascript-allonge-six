@@ -50,6 +50,8 @@ mainmatter:
 
       markdown/Functions/recipes/maybe.md
 
+      markdown/Functions/recipes/once.md
+
     markdown/ValuesAndExpressions/choice.md
     
     markdown/ComposingData/title.md
@@ -74,11 +76,9 @@ mainmatter:
 
       markdown/ComposingData/recipes/title.md
 
-        markdown/ComposingData/recipes/once.md
-
 #        markdown/ComposingData/recipes/flip.md
 
-        markdown/ComposingData/recipes/extend.md
+#        markdown/ComposingData/recipes/extend.md
 
 #        markdown/ComposingData/recipes/y.md
 
