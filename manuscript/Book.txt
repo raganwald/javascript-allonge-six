@@ -74,7 +74,7 @@ mainmatter:
 
       markdown/ComposingData/data-out-of-functions.md
 
-      markdown/ComposingData/recipes/title.md
+#      markdown/ComposingData/recipes/title.md
 
 #        markdown/ComposingData/recipes/flip.md
 
