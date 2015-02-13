@@ -8,6 +8,18 @@ For example, this `length` function uses a functions to bind values to names, PO
 
 {:lang="javascript"}
 ~~~~~~~~
+const EMPTY = {};
+const OneTwoThree = { first: 1, rest: { first: 2, rest: { first: 3, rest: EMPTY } } };
+
+OneTwoThree.first
+  //=> 1
+  
+OneTwoThree.rest.first
+  //=> 2
+  
+OneTwoThree.rest.rest.first
+  //=> 3
+  
 const length = (node, delayed = 0) =>
   node === EMPTY
     ? delayed
@@ -17,16 +29,18 @@ length(OneTwoThree)
   //=> 3
 ~~~~~~~~
 
-A very long time ago, mathematicians like Alonzo Church, Moses Schönfinkel, and Alan Turning, and Haskell Curry and asked themselves if we really needed all these features to perform computations. They searched for a radically simpler set of tools that could accomplish all of the same things.
+A very long time ago, mathematicians like Alonzo Church, Moses Schönfinkel, Alan Turning, and Haskell Curry and asked themselves if we really needed all these features to perform computations. They searched for a radically simpler set of tools that could accomplish all of the same things.
 
-They established that arbitrary computations could be represented with radically simple sets of tools. For example, we don't need arrays to represent lists, or even POJOs to represent nodes in a linked list. We can model lists just using functions.
+They established that arbitrary computations could be represented a small set of axiomatic components. For example, we don't need arrays to represent lists, or even POJOs to represent nodes in a linked list. We can model lists just using functions.
 
-> [To Mock a Mockingbird](http://www.amazon.com/gp/product/0192801422/ref=as_li_ss_tl?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0192801422) established the metaphor of songbirds for the combinators, and ever since then logicians have called the K combinator a "kestrel," the B combinator a "bluebird," and so forth. The [osin.es] library contains code for all of the standard combinators and for experimenting using the standard notation.
+> [To Mock a Mockingbird](http://www.amazon.com/gp/product/0192801422/ref=as_li_ss_tl?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0192801422) established the metaphor of songbirds for the combinators, and ever since then logicians have called the K combinator a "kestrel," the B combinator a "bluebird," and so forth. 
+
+> The [oscin.es] library contains code for all of the standard combinators and for experimenting using the standard notation.
 
 [To Mock a Mockingbird]: http://www.amazon.com/gp/product/0192801422/ref=as_li_ss_tl?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0192801422
-[osin.es]: http://oscin.es
+[oscin.es]: http://oscin.es
 
-Let's start with some of the building blocks of combinatory logic, the K, I, and V combinators, nicknamed the "Kestrel", "Idiot Bird", and the "Vireo:"
+Let's start with some of the building blocks of combinatory logic, the K, I, and V combinators, nicknamed the "Kestrel", the "Idiot Bird", and the "Vireo:"
 
 {:lang="javascript"}
 ~~~~~~~~
@@ -64,7 +78,7 @@ K(6)(7)
   //=> 6
   
 K(12)(24)
-  //=> 6
+  //=> 12
 ~~~~~~~~
 
 This is very interesting. Given two values, we can say that `K` always returns the *first* value: `K(x)(y) => x` (that's not valid JavaScript, but it's essentially how it works).
@@ -106,6 +120,8 @@ first("primus")("secundus")
 second("primus")("secundus")
   //=> "secundus"
 ~~~~~~~~
+
+> This is very interesting. Given two values, we can say that `K` always returns the *first* value, and given two values, `K(I)` always returns the *second* value.
 
 ### backwardness
 
@@ -161,7 +177,7 @@ latin(second)
   //=> "secundus"
 ~~~~~~~~
 
-Our `latin` data structure is no longer a dumb data structure, its a function. And instead of passing `latin` to `first` or `second`, we pass `first` or `second` to `latin`. It's *exactly backwards* of the way we write functions that operate on data.
+Our `latin` data structure is no longer a dumb data structure, it's a function. And instead of passing `latin` to `first` or `second`, we pass `first` or `second` to `latin`. It's *exactly backwards* of the way we write functions that operate on data.
 
 ### the vireo
 
@@ -183,15 +199,15 @@ For consistency with the way combinators are written as functions taking just on
 
 [curry]: https://en.wikipedia.org/wiki/Currying
 
-Let's try it, we'll use the word `tuple` for the function that makes data (When we need to refer to a specific tuple, we'll use the name `aTuple` by default):
+Let's try it, we'll use the word `pair` for the function that makes data (When we need to refer to a specific pair, we'll use the name `aPair` by default):
 
 {:lang="javascript"}
 ~~~~~~~~
 const first = K,
       second = K(I),
-      tuple = (first) => (second) => (selector) => selector(first)(second);
+      pair = (first) => (second) => (selector) => selector(first)(second);
 
-const latin = tuple("primus")("secundus");
+const latin = pair("primus")("secundus");
 
 latin(first)
   //=> "primus"
@@ -206,9 +222,9 @@ It works! Now what is this `node` function? If we change the names to `x`, `y`, 
 ~~~~~~~~
 const first = K,
       second = K(I),
-      tuple = V;
+      pair = V;
 
-const latin = tuple("primus")("secundus");
+const latin = pair("primus")("secundus");
 
 latin(first)
   //=> "primus"
@@ -216,6 +232,8 @@ latin(first)
 latin(second)
   //=> "secundus"
 ~~~~~~~~
+
+> As an aside, the Vireo is a little like JavaScript's `.apply` function. It says, "take these two values and apply them to this function." There are other, similar combinators that apply values to functions. One notable example is the "thrush" or T combinator: It takes one value and applies it to a function. It is known to most programmers as `.tap`.
 
 Armed with nothing more than `K`, `I`, and `V`, we can make a little data structure that holds two values, the `cons` cell of Lisp and the node of a linked list. Without arrays, and without objects, just with functions. We'd better try it out to check.
 
@@ -227,10 +245,10 @@ Here's another look at linked lists using POJOs. We use the term `rest` instead 
 ~~~~~~~~
 const first = ({first, rest}) => first,
       rest  = ({first, rest}) => rest,
-      tuple = (first, rest) => ({first, rest}),
+      pair = (first, rest) => ({first, rest}),
       EMPTY = ({});
       
-const l123 = tuple(1, tuple(2, tuple(3, EMPTY)));
+const l123 = pair(1, pair(2, pair(3, EMPTY)));
 
 first(l123)
   //=> 1
@@ -246,23 +264,23 @@ We can write `length` and `mapWith` functions over it:
 
 {:lang="javascript"}
 ~~~~~~~~
-const length = (aTuple) =>
-  aTuple === EMPTY
-    ? delayed
-    : 1 + length(rest(aTuple));
+const length = (aPair) =>
+  aPair === EMPTY
+    ? 0
+    : 1 + length(rest(aPair));
 
 length(l123)
   //=> 3
 
-const reverse = (aTuple, delayed = EMPTY) =>
-  aTuple === EMPTY
+const reverse = (aPair, delayed = EMPTY) =>
+  aPair === EMPTY
     ? delayed
-    : reverse(rest(aTuple), tuple(first(aTuple), delayed));
+    : reverse(rest(aPair), pair(first(aPair), delayed));
 
-const mapWith = (fn, aTuple, delayed = EMPTY) =>
-  aTuple === EMPTY
+const mapWith = (fn, aPair, delayed = EMPTY) =>
+  aPair === EMPTY
     ? reverse(delayed)
-    : mapWith(fn, rest(aTuple), tuple(fn(first(aTuple)), delayed));
+    : mapWith(fn, rest(aPair), pair(fn(first(aPair)), delayed));
     
 const doubled = mapWith((x) => x * 2, l123);
 
@@ -282,10 +300,10 @@ Can we do the same with the linked lists we build out of functions? Yes:
 ~~~~~~~~
 const first = K,
       rest  = K(I),
-      tuple = V,
+      pair = V,
       EMPTY = (() => {});
       
-const l123 = tuple(1)(tuple(2)(tuple(3)(EMPTY)));
+const l123 = pair(1)(pair(2)(pair(3)(EMPTY)));
 
 l123(first)
   //=> 1
@@ -301,10 +319,10 @@ We write them in a backwards way, but they seem to work. How about `length`?
 
 {:lang="javascript"}
 ~~~~~~~~
-const length = (aTuple) =>
-  aTuple === EMPTY
+const length = (aPair) =>
+  aPair === EMPTY
     ? 0
-    : 1 + length(aTuple(rest));
+    : 1 + length(aPair(rest));
     
 length(l123)
   //=> 3
@@ -314,15 +332,15 @@ And `mapWith`?
 
 {:lang="javascript"}
 ~~~~~~~~
-const reverse = (aTuple, delayed = EMPTY) =>
-  aTuple === EMPTY
+const reverse = (aPair, delayed = EMPTY) =>
+  aPair === EMPTY
     ? delayed
-    : reverse(aTuple(rest), tuple(aTuple(first))(delayed));
+    : reverse(aPair(rest), pair(aPair(first))(delayed));
 
-const mapWith = (fn, aTuple, delayed = EMPTY) =>
-  aTuple === EMPTY
+const mapWith = (fn, aPair, delayed = EMPTY) =>
+  aPair === EMPTY
     ? reverse(delayed)
-    : mapWith(fn, aTuple(rest), tuple(fn(aTuple(first)))(delayed));
+    : mapWith(fn, aPair(rest), pair(fn(aPair(first)))(delayed));
     
 const doubled = mapWith((x) => x * 2, l123)
 
@@ -342,20 +360,18 @@ But without building our way up to something insane like writing a JavaScript in
 
 We used functions to replace arrays and POJOs, but we still use JavaScript's built-in operators to test for equality (`===`) and to branch `?:`.
 
-We'll see how to do that, next.
-
 ### say "please"
 
-We keep using the same pattern in our functions: `aTuple === EMPTY ? doSomething : doSomethingElse`. This follows the philosophy we used with data structures: The function doing the work inspects the data structure.
+We keep using the same pattern in our functions: `aPair === EMPTY ? doSomething : doSomethingElse`. This follows the philosophy we used with data structures: The function doing the work inspects the data structure.
 
-We can reverse this: Instead of asking a tuple if it is empty and then deciding what to do, we can ask the tuple to do it for us. Here's `length` again:
+We can reverse this: Instead of asking a pair if it is empty and then deciding what to do, we can ask the pair to do it for us. Here's `length` again:
 
 {:lang="javascript"}
 ~~~~~~~~
-const length = (aTuple) =>
-  aTuple === EMPTY
-    ? delayed
-    : 1 + length(rest(aTuple));
+const length = (aPair) =>
+  aPair === EMPTY
+    ? 0
+    : 1 + length(aPair(rest));
 ~~~~~~~~
 
 Let's presume we are working with a slightly higher abstraction, we'll call it a `list`. Instead of writing `length(list)` and examining a list, we'll write something like:
@@ -364,31 +380,31 @@ Let's presume we are working with a slightly higher abstraction, we'll call it a
 ~~~~~~~~
 const length = (list) => list(
   () => 0,
-  (aTuple) => 1 + length(aTuple(rest)))
+  (aPair) => 1 + length(aPair(rest)))
 );
 ~~~~~~~~
 
-Now we'll need to write `first` and `rest` functions for a list, and those names will collide with the `first` and `rest` we wrote for tuples. So let's disambiguate our names:
+Now we'll need to write `first` and `rest` functions for a list, and those names will collide with the `first` and `rest` we wrote for pairs. So let's disambiguate our names:
 
 {:lang="javascript"}
 ~~~~~~~~
-const tupleFirst = K,
-      tupleRest  = K(I),
-      tuple = V;
+const pairFirst = K,
+      pairRest  = K(I),
+      pair = V;
       
 const first = (list) => list(
     () => "ERROR: Can't take first of an empty list",
-    (aTuple) => aTuple(tupleFirst)
+    (aPair) => aPair(pairFirst)
   );
       
 const rest = (list) => list(
     () => "ERROR: Can't take first of an empty list",
-    (aTuple) => aTuple(tupleRest)
+    (aPair) => aPair(pairRest)
   );
 
 const length = (list) => list(
     () => 0,
-    (aTuple) => 1 + length(aTuple(tupleRest)))
+    (aPair) => 1 + length(aPair(pairRest)))
   );
 ~~~~~~~~
 
@@ -398,7 +414,7 @@ We'll also write a handy list printer:
 ~~~~~~~~
 const print = (list) => list(
     () => "",
-    (aTuple) => `${aTuple(tupleFirst)} ${print(aTuple(tupleRest))}`
+    (aPair) => `${aPair(pairFirst)} ${print(aPair(pairRest))}`
   );
 ~~~~~~~~
 
@@ -414,7 +430,7 @@ And what is a node of a list?
 {:lang="javascript"}
 ~~~~~~~~
 const node = (x) => (y) =>
-  (whenEmpty, unlessEmpty) => unlessEmpty(tuple(x)(y));
+  (whenEmpty, unlessEmpty) => unlessEmpty(pair(x)(y));
 ~~~~~~~~
 
 Let's try it:
@@ -433,7 +449,7 @@ We can write `reverse` and `mapWith` as well. We aren't being super-strict about
 ~~~~~~~~
 const reverse = (list, delayed = EMPTYLIST) => list(
   () => delayed,
-  (aTuple) => reverse(aTuple(tupleRest), node(aTuple(tupleFirst))(delayed))
+  (aPair) => reverse(aPair(pairRest), node(aPair(pairFirst))(delayed))
 );
 
 print(reverse(l123));
@@ -442,46 +458,53 @@ print(reverse(l123));
 const mapWith = (fn, list, delayed = EMPTYLIST) =>
   list(
     () => reverse(delayed),
-    (aTuple) => mapWith(fn, aTuple(tupleRest), node(fn(aTuple(tupleFirst)))(delayed))
+    (aPair) => mapWith(fn, aPair(pairRest), node(fn(aPair(pairFirst)))(delayed))
   );
   
 print(mapWith(x => x * x, reverse(l123)))
   //=> 941
 ~~~~~~~~
 
-We have managed to provide the exact same functionality that `===` and `?:` provided, but using  functions only.
+We have managed to provide the exact same functionality that `===` and `?:` provided, but using functions and nothing else.
 
 ### functions are not the real point
 
-There are lots of similar texts explaining how to construct complex semantics out of functions. The superficial conclusion reads something like this:
+There are lots of similar texts explaining how to construct complex semantics out of functions. You can establish that `K` and `K(I)` can represent `true` and `false`, model magnitudes with [Church Numerals] or [Surreal Numbers], and build your way up to printing FizzBuzz.
 
-> Functions are a fundamental building block of computation. They are "axioms" of combinatory logic, and can be used to compute anything that JavaScript can compute. We've taken a cursory look at how this can be done by using functions to represent linked lists and some of the operations on them.
+The superficial conclusion reads something like this:
 
-However, that is not the interesting thing to note here. Practically speaking, languages like JavaScript do provide arrays with mapping and folding methods, choice operations, and other rich constructs. Knowing how to make a linked list out of functions is not really necessary for the working programmer. (Knowing that it can be done, on the other hand, is very important to understanding computer science.)
+[Church Numerals]: https://en.wikipedia.org/wiki/Church_encoding
+[Surreal Numbers]: https://en.wikipedia.org/wiki/Surreal_number
 
-Knowing how to make a list our of just functions is a little like knowing that quarks combine in quark-antiquark pairs or in complementary triplets. It's the QED of physics that underpins the Maxwell's Equations of programming. Deeply important, but not practical when you're building a bridge.
+> Functions are a fundamental building block of computation. They are "axioms" of combinatory logic, and can be used to compute anything that JavaScript can compute.
+
+However, that is not the interesting thing to note here. Practically speaking, languages like JavaScript already provide arrays with mapping and folding methods, choice operations, and other rich constructs. Knowing how to make a linked list out of functions is not really necessary for the working programmer. (Knowing that it can be done, on the other hand, is very important to understanding computer science.)
+
+Knowing how to make a list out of just functions is a little like knowing that photons are the [Gauge Bosons] of the electromagnetic force. It's the QED of physics that underpins the Maxwell's Equations of programming. Deeply important, but not practical when you're building a bridge.
+
+[Gauge Bosons]: https://en.wikipedia.org/wiki/Gauge_boson
 
 So what *is* interesting about this? What nags at our brain as we're falling asleep after working our way through this?
 
-### backwardness
+### a return to backward thinking
 
-To make tuples work, we did things *backwards*, we passed the `first` and `rest` functions to the tuple, and the tuple called our function. As it happened, the tuple was composed by the vireo (or V combinator): `(x) => (y) => (z) => z(x)(y)`.
+To make pairs work, we did things *backwards*, we passed the `first` and `rest` functions to the pair, and the pair called our function. As it happened, the pair was composed by the vireo (or V combinator): `(x) => (y) => (z) => z(x)(y)`.
 
-But we could have done something completely different. We could have written a tuple that stored its elements in an array, or a tuple that stored its elements in a POJO. All we know is that we can pass the tuple function a function of our own, at it will be called with the elements of the tuple.
+But we could have done something completely different. We could have written a pair that stored its elements in an array, or a pair that stored its elements in a POJO. All we know is that we can pass the pair function a function of our own, at it will be called with the elements of the pair.
 
-The exact implementation of a tuple is hidden from the code that uses a tuple. Here, we'll prove it:
+The exact implementation of a pair is hidden from the code that uses a pair. Here, we'll prove it:
 
 {:lang="javascript"}
 ~~~~~~~~
 const first = K,
       second = K(I),
-      tuple = (first) => (second) => {
+      pair = (first) => (second) => {
         const pojo = {first, second};
         
         return (selector) => selector(pojo.first)(pojo.second);
       };
 
-const latin = tuple("primus")("secundus");
+const latin = pair("primus")("secundus");
 
 latin(first)
   //=> "primus"
@@ -498,7 +521,7 @@ The same thing happens with our lists. Here's `length` for lists:
 ~~~~~~~~
 const length = (list) => list(
     () => 0,
-    (aTuple) => 1 + length(aTuple(tupleRest)))
+    (aPair) => 1 + length(aPair(pairRest)))
   );
 ~~~~~~~~
 
