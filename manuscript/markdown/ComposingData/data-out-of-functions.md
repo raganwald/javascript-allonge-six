@@ -21,7 +21,7 @@ A very long time ago, mathematicians like Alonzo Church, Moses Schönfinkel, and
 
 They established that arbitrary computations could be represented with radically simple sets of tools. For example, we don't need arrays to represent lists, or even POJOs to represent nodes in a linked list. We can model lists just using functions.
 
-> [To Mock a Mockingbird](http://www.amazon.com/gp/product/0192801422/ref=as_li_ss_tl?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0192801422) established the metaphor of songbirds for the combinators, and ever since then logicians have called the K combinator a "kestrel," the B combinator a "bluebird," and so forth. The [osin.es] library contains code for all of teh standard combinators and for experimenting using the standard notation.
+> [To Mock a Mockingbird](http://www.amazon.com/gp/product/0192801422/ref=as_li_ss_tl?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0192801422) established the metaphor of songbirds for the combinators, and ever since then logicians have called the K combinator a "kestrel," the B combinator a "bluebird," and so forth. The [osin.es] library contains code for all of the standard combinators and for experimenting using the standard notation.
 
 [To Mock a Mockingbird]: http://www.amazon.com/gp/product/0192801422/ref=as_li_ss_tl?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0192801422
 [osin.es]: http://oscin.es
@@ -125,7 +125,7 @@ second(latin)
   //=> "secundus"
 ~~~~~~~~
 
-Or if we were usinga POJO, we'd write them like this:
+Or if we were using a POJO, we'd write them like this:
 
 {:lang="javascript"}
 ~~~~~~~~
@@ -368,7 +368,7 @@ const length = (list) => list(
 );
 ~~~~~~~~
 
-Now we'll need to write `first` and `rest` functions for a list, and those names will collide with the `first` and `rest` we wrote for tuples. So let's disambinuage our names:
+Now we'll need to write `first` and `rest` functions for a list, and those names will collide with the `first` and `rest` we wrote for tuples. So let's disambiguate our names:
 
 {:lang="javascript"}
 ~~~~~~~~
@@ -451,6 +451,74 @@ print(mapWith(x => x * x, reverse(l123)))
 
 We have managed to provide the exact same functionality that `===` and `?:` provided, but using  functions only.
 
-### summary
+### functions are not the real point
 
-Functions are a fundamental building block of computation. They are "axioms" of combinatory logic, and can be used to comput anything that JavaScript can compute. We've taken a cusory look at how this can be done by using functions to represent linked lists and some of the operations on them.
+There are lots of similar texts explaining how to construct complex semantics out of functions. The superficial conclusion reads something like this:
+
+> Functions are a fundamental building block of computation. They are "axioms" of combinatory logic, and can be used to compute anything that JavaScript can compute. We've taken a cursory look at how this can be done by using functions to represent linked lists and some of the operations on them.
+
+However, that is not the interesting thing to note here. Practically speaking, languages like JavaScript do provide arrays with mapping and folding methods, choice operations, and other rich constructs. Knowing how to make a linked list out of functions is not really necessary for the working programmer. (Knowing that it can be done, on the other hand, is very important to understanding computer science.)
+
+Knowing how to make a list our of just functions is a little like knowing that quarks combine in quark-antiquark pairs or in complementary triplets. It's the QED of physics that underpins the Maxwell's Equations of programming. Deeply important, but not practical when you're building a bridge.
+
+So what *is* interesting about this? What nags at our brain as we're falling asleep after working our way through this?
+
+### backwardness
+
+To make tuples work, we did things *backwards*, we passed the `first` and `rest` functions to the tuple, and the tuple called our function. As it happened, the tuple was composed by the vireo (or V combinator): `(x) => (y) => (z) => z(x)(y)`.
+
+But we could have done something completely different. We could have written a tuple that stored its elements in an array, or a tuple that stored its elements in a POJO. All we know is that we can pass the tuple function a function of our own, at it will be called with the elements of the tuple.
+
+The exact implementation of a tuple is hidden from the code that uses a tuple. Here, we'll prove it:
+
+{:lang="javascript"}
+~~~~~~~~
+const first = K,
+      second = K(I),
+      tuple = (first) => (second) => {
+        const pojo = {first, second};
+        
+        return (selector) => selector(pojo.first)(pojo.second);
+      };
+
+const latin = tuple("primus")("secundus");
+
+latin(first)
+  //=> "primus"
+  
+latin(second)
+  //=> "secundus"
+~~~~~~~~
+
+This is a little gratuitous, but it makes the point: The code that uses the data doesn't reach in and touch it: The code that uses the data provides some code and asks the data to do something with it.
+
+The same thing happens with our lists. Here's `length` for lists:
+
+{:lang="javascript"}
+~~~~~~~~
+const length = (list) => list(
+    () => 0,
+    (aTuple) => 1 + length(aTuple(tupleRest)))
+  );
+~~~~~~~~
+
+We're passing `list` what we want done with an empty list, and what we want done with a list that has at least one element. We then ask `list` to do it, and provide a way for `list` to call the code we pass in.
+
+We won't bother here, but it's easy to see how to swap our functions out and replace them with an array. Or a column in a database. This is fundamentally *not* the same thing as this code for the length of a linked list:
+
+{:lang="javascript"}
+~~~~~~~~
+const length = (node, delayed = 0) =>
+  node === EMPTY
+    ? delayed
+    : length(node.rest, delayed + 1);
+~~~~~~~~
+
+The line `node === EMPTY` presumes a lot of things. It presumes there is one canonical empty list value. It presumes you can compare these things with the `===` operator. We can fix this with an `isEmpty` function, but now we're pushing even more knowledge about the structure of lists into the code that uses them.
+
+Having a list know itself whether it is empty hides implementation information from the code that uses lists. This is a fundamental principle of good design. It is a tenet of Object-Oriented Programming, but it is **not** exclusive to OOP: We can and should design data structures to hide implementation information from the code that use them, whether we are working with functions, objects, or both.
+
+There are many tools for hiding implementation information, and we have now seen two particularly powerful patterns:
+
+* Instead of directly manipulating part of an entity, pass it a function and have it call our function with the part we want.
+* And instead of testing some property of an entity and making a choice of our own with `?:` (or `if`), pass the entity the work we want done for each case and let it test itself.
