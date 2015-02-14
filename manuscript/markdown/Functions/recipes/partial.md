@@ -29,4 +29,16 @@ These two recipes are for quickly and simply applying a single argument, either 
       
 As noted above, our partial recipe allows us to create functions that are partial applications of functions that are context aware. We'd need a different recipe if we wish to create partial applications of object methods.
 
+### gathering and spreading
+
+We can use gathering and spreading to allow for partial application with more than one argument:
+
+    const callLeft = (fn, ...args) =>
+        (...remainingArgs) =>
+          fn(...args, ...remainingArgs);
+
+    const callRight = (fn, ...args) =>
+        (...remainingArgs) =>
+          fn(...remainingArgs, ...args);
+
 [^inspired]: `callFirst` and `callLast` were inspired by Michael Fogus' [Lemonad](https://github.com/fogus/lemonad). Thanks!

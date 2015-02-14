@@ -72,6 +72,8 @@ mainmatter:
 
       markdown/ComposingData/copy-on-write.md
 
+      markdown/ComposingData/functional-iterators.md
+
       markdown/ComposingData/data-out-of-functions.md
 
 #      markdown/ComposingData/recipes/title.md
@@ -155,8 +157,6 @@ mainmatter:
 #      markdown/Ideas/class-decorators.md
 
 #      markdown/Ideas/turtles.md
-
-#      markdown/Ideas/iterators.md
 
 #      markdown/Ideas/drunken.md
 

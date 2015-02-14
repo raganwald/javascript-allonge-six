@@ -1,4 +1,4 @@
-# Composing Data {#composing-data}
+# Composing and Decomposing Data {#composing-data}
 
 ![Stacked Cups](images/stacked-cups.jpg)
 

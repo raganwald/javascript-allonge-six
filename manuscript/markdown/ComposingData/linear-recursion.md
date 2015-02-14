@@ -218,9 +218,10 @@ There are two differences between `sumSquares` and our maps above:
 
 Let's rewrite `mapWith` so that we can use it to sum squares.
 
-    const foldWith = (fn, terminalValue, [first, ...rest]) => first === undefined
-                                                              ? terminalValue
-                                                              : fn(first, foldWith(fn, terminalValue, rest));
+    const foldWith = (fn, terminalValue, [first, ...rest]) =>
+      first === undefined
+        ? terminalValue
+        : fn(first, foldWith(fn, terminalValue, rest));
                                                            
 And now we supply a function that does slightly more than our mapping functions:
 

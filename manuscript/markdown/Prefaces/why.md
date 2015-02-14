@@ -69,7 +69,7 @@ In ECMAScript-5, you could use it like this:
       
 But in ECMAScript-6, you can write:
 
-    var callLeft = (fn, ...args) =>
+    const callLeft = (fn, ...args) =>
         (...remainingArgs) =>
           fn(...args, ...remainingArgs);
 
