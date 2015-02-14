@@ -262,4 +262,99 @@ factorial(4)
   //=> undefined is not a function (evaluating 'innerFactorial(n, 1)')
 ~~~~~~~~
 
-In that way, `var` is a little like `const` and `let`, we should always declare and bind names before using them. But it's not like `const` and `let` in that it's function scoped, not block scoped. In this book, we will use function declarations sparingly, and not use `var` at all.
+In that way, `var` is a little like `const` and `let`, we should always declare and bind names before using them. But it's not like `const` and `let` in that it's function scoped, not block scoped.
+
+### why `const` and `let` were invented
+
+`const` and `let` are receent additions to JavaScript. For nearly twenty years, variables were declared with `var` (not counting parameters and function declarations, of course). However, its functional scope was a problem.
+
+We haven't looked at it yet, but JavaScript provides a `for` loop for your iterating pleasure and convenience. It looks a lot like the `for` loop in C. Here it is with `var`:
+
+    var sum = 0;
+    for (var i = 1; i <= 100; i++) {
+      sum = sum + i
+    }
+    sum
+      #=> 5050
+
+Hopefully, you can think of a faster way to calculate this sum.[^gauss] And perhaps you have noticed that `var i = 1` is tucked away instead of being at the top as we prefer. But is this ever a problem?
+
+[^gauss]: There is a well known story about Karl Friedrich Gauss when he was in elementary school. His teacher got mad at the class and told them to add the numbers 1 to 100 and give him the answer by the end of the class. About 30 seconds later Gauss gave him the answer. The other kids were adding the numbers like this: `1 + 2 + 3 + . . . . + 99 + 100 = ?` But Gauss rearranged the numbers to add them like this: `(1 + 100) + (2 + 99) + (3 + 98) + . . . . + (50 + 51) = ?` If you notice every pair of numbers adds up to 101. There are 50 pairs of numbers, so the answer is 50*101 = 5050. Of course Gauss came up with the answer about 20 times faster than the other kids.
+
+Yes. Consider this variation:
+
+    var introductions = [],
+        names = ['Karl', 'Friedrich', 'Gauss'];
+      
+    for (var i = 0; i < 3; i++) {
+      introductions[i] = "Hello, my name is " + names[i]
+    }
+    introductions
+      //=> [ 'Hello, my name is Karl',
+      //     'Hello, my name is Friedrich',
+      //     'Hello, my name is Gauss' ]
+
+So far, so good. Hey, remember that functions in JavaScript are values? Let's get fancy!
+
+    var introductions = [],
+        names = ['Karl', 'Friedrich', 'Gauss'];
+      
+    for (var i = 0; i < 3; i++) {
+      introductions[i] = (soAndSo) =>
+        `Hello, ${soAndSo}, my name is ${names[i]}`
+    }
+    introductions
+      //=> [ [Function],
+      //     [Function],
+      //     [Function] ]
+    
+So far, so good. Let's try one of our functions:
+
+    introductions[1]('Raganwald')
+      //=> 'Hello, Raganwald, my name is undefined'
+    
+What went wrong? Why didn't it give us 'Hello, Raganwald, my name is Friedrich'? The answer is that pesky `var i`. Remember that `i` is bound in the surrounding environment, so it's as if we wrote:
+
+    var introductions = [],
+        names = ['Karl', 'Friedrich', 'Gauss'],
+        i = undefined;
+      
+    for (i = 0; i < 3; i++) {
+      introductions[i] = function (soAndSo) {
+        return "Hello, " + soAndSo + ", my name is " + names[i]
+      }
+    }
+    introductions
+  
+Now, at the time we created each function, `i` had a sensible value, like `0`, `1`, or `2`. But at the time we *call* one of the functions, `i` has the value `3`, which is why the loop terminated. So when the function is called, JavaScript looks `i` up in its enclosing environment (its  closure, obviously), and gets the value `3`. That's not what we want at all.
+
+The error wouldnt exist at all if we'd used `let` in the first place
+
+    let introductions = [],
+        names = ['Karl', 'Friedrich', 'Gauss'];
+      
+    for (let i = 0; i < 3; i++) {
+      introductions[i] = (soAndSo) =>
+        `Hello, ${soAndSo}, my name is ${names[i]}`
+    }
+    introductions[1]('Raganwald')
+      //=> 'Hello, Raganwald, my name is Friedrich'
+    
+This small error was a frequent cause of confusion, and in the days when there was no block-scoped `let`, programmers would need to know how to fake it, usually with an IIFE:
+
+    var introductions = [],
+        names = ['Karl', 'Friedrich', 'Gauss'];
+      
+    for (var i = 0; i < 3; i++) {
+      ((i) => {
+        introductions[i] = (soAndSo) =>
+          `Hello, ${soAndSo}, my name is ${names[i]}`
+        }
+      })(i)
+    }
+    introductions[1]('Raganwald')
+      //=> 'Hello, Raganwald, my name is Friedrich'
+    
+Now we're creating a new inner parameter, `i` and binding it to the value of the outer `i`. This works, but `let` is so much simpler and cleaner that it was added to the language in the EcmaScript-6 specification.
+
+In this book, we will use function declarations sparingly, and not use `var` at all.
