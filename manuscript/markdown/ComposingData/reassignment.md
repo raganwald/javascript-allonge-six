@@ -257,6 +257,9 @@ const factorial = (n) => {
     }
   }
 }
+
+factorial(4)
+  //=> undefined is not a function (evaluating 'innerFactorial(n, 1)')
 ~~~~~~~~
 
-In that way, `var` is a little like `const` and `let`, we should always declare and bind names before using them. The exception is that JavaScript does allow us to use a function declaration after we use it. In this book, we will use function declarations sparingly, and not use `var` at all.
+In that way, `var` is a little like `const` and `let`, we should always declare and bind names before using them. But it's not like `const` and `let` in that it's function scoped, not block scoped. In this book, we will use function declarations sparingly, and not use `var` at all.
