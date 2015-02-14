@@ -77,6 +77,13 @@ If the name is an alphanumeric string conforming to the same rules as names of v
     date['day'] === date.day
       //=> true
 
+Expressions can be used for keys as well. The syntax is to enclose the key's expression in `[` and `]`:
+
+    {
+      ["p" + "i"]: 3.14159265
+    }
+      //=> {"pi":3.14159265}
+
 All containers can contain any value, including functions or other containers:
 
     const Mathematics = {
