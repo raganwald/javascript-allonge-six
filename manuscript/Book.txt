@@ -82,19 +82,11 @@ mainmatter:
 
 #        markdown/ComposingData/recipes/y.md
 
-    markdown/ValuesAndExpressions/strings.md
+   markdown/ValuesAndExpressions/strings.md
 
-#    markdown/References and Rebinding/title.md
+   markdown/Objects, Mutation, and State/title.md
 
-#      markdown/References and Rebinding/var.md
-
-#      markdown/References and Rebinding/modules.md
-
-#      markdown/References and Rebinding/summary.md
-
-#    markdown/Objects, Mutation, and State/title.md
-
-#      markdown/Objects, Mutation, and State/encapsulation.md
+     markdown/Objects, Mutation, and State/encapsulation.md
 
 #      markdown/Objects, Mutation, and State/composition-and-extension.md
 

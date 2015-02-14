@@ -36,10 +36,12 @@ Hiding information (or "state") is the design principle that allows us to limit 
 
 We've been introduced to JavaScript's objects, and it's fairly easy to see that objects can be used to model what other programming languages call (variously) records, structs, frames, or what-have-you. And given that their elements are mutable, they can clearly model state.
 
-Given an object that holds our state (an array and an index[^length]), we can easily implement our three operations as functions. Bundling the functions with the state does not require any special "magic" features. JavaScript objects can have elements of any type, including functions:
+Given an object that holds our state (an array and an index[^length]), we can easily implement our three operations as functions. Bundling the functions with the state does not require any special "magic" features. JavaScript objects can have elements of any type, including functions.
 
-    var stack = (function () {
-      var obj = {
+To make our stack work, we need a way for our functions to refer to our stack. We'lldo that by making sure it has a name. We can do that with an IIFE:
+
+    const stack = (() => {
+      const obj = {
         array: [],
         index: -1,
         push: function (value) {
@@ -78,7 +80,7 @@ Given an object that holds our state (an array and an index[^length]), we can ea
       
 ### method-ology
 
-In this text, we lurch from talking about "functions that belong to an object" to "methods." Other languages may separate methods from functions very strictly, but in JavaScript every method is a function but not all functions are methods.
+In this text, we lurch from talking about "functions that belong to an object" to "methods." Other languages may separate methods from functions very strictly, but in JavaScript every method is a function, but not all functions are methods.
 
 The view taken in this book is that a function is a method of an object if it belongs to that object and interacts with that object in some way. So the functions implementing the operations on the stack are all absolutely methods of the stack.
 
@@ -107,9 +109,9 @@ But these two wouldn't be methods. Although they "belong" to an object, they don
 
 Our stack does bundle functions with data, but it doesn't hide its state. "Foreign" code could interfere with its array or index. So how do we hide these? We already have a closure, let's use it:
 
-    var stack = (function () {
-      var array = [],
-          index = -1;
+    var stack = (() => {
+      const array = [];
+      let index = -1;
           
       return {
         push: function (value) {
@@ -147,34 +149,33 @@ Our stack does bundle functions with data, but it doesn't hide its state. "Forei
 
 We don't want to repeat this code every time we want a stack, so let's make ourselves a "stack maker." The temptation is to wrap what we have above in a function:
 
-    var StackMaker = function () {
-      return (function () {
-        var array = [],
-            index = -1;
+    const StackMaker = () =>
+      (() => {
+            const array = [];
+            let index = -1;
           
-        return {
-          push: function (value) {
-            array[index += 1] = value
-          },
-          pop: function () {
-            var value = array[index];
-            if (index >= 0) {
-              index -= 1
+            return {
+              push: function (value) {
+                array[index += 1] = value
+              },
+              pop: function () {
+                var value = array[index];
+                if (index >= 0) {
+                  index -= 1
+                }
+                return value
+              },
+              isEmpty: function () {
+                return index < 0
+              }
             }
-            return value
-          },
-          isEmpty: function () {
-            return index < 0
-          }
-        }
-      })() 
-    }
+          })();
 
 But there's an easier way :-)
 
-    var StackMaker = function () {
-      var array = [],
-          index = -1;
+    const StackMaker = () => {
+      const array = [];
+      let index = -1;
           
       return {
         push: function (value) {
@@ -191,9 +192,9 @@ But there's an easier way :-)
           return index < 0
         }
       }
-    };
+    }
 
-    stack = StackMaker()
+    const stack = StackMaker();
 
 Now we can make stacks freely, and we've hidden their internal data elements. We have methods and encapsulation, and we've built them out of JavaScript's fundamental functions and objects. In [Instances and Classes](#methods), we'll look at JavaScript's support for class-oriented programming and some of the idioms that functions bring to the party.
 
