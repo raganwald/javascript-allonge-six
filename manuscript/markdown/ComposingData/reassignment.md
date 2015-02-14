@@ -119,3 +119,144 @@ Shadowing a `let` with a `const` does not change our ability to rebind the varia
       //=> ERROR: age is read-only
 
 Shadowing a `const` with a `let` does not permit it to be rebound in its original scope.
+
+### `var`
+
+JavaScript has one *more* way to bind a name to a value, `var`.[^namecount]
+
+[^namecount]: How many have we seen so far? Well, parameters bind names. Function declarations bind names. Named function expressions bind names. `const` and `let` bind names. So that's five different ways so far. And there are more!
+
+`var` looks a lot like `let`:
+
+{:lang="javascript"}
+~~~~~~~~
+const factorial = (n) => {
+  let x = n;
+  if (x === 1) {
+    return 1;
+  }
+  else {
+    --x;
+    return n * factorial(x);
+  }
+}
+
+factorial(5)
+  //=> 120
+  
+const factorial2 = (n) => {
+  var x = n;
+  if (x === 1) {
+    return 1;
+  }
+  else {
+    --x;
+    return n * factorial2(x);
+  }
+}
+
+factorial2(5)
+  //=> 120
+~~~~~~~~
+
+But of course, it's not exactly like `let`. It's just different enough to present a source of confusion. First, `var` is not block scoped, it's function scoped, just like [function declarations](#function-declarations):
+
+{:lang="javascript"}
+~~~~~~~~
+(() => {
+  var age = 49;
+  
+  if (true) {
+    var age = 50;
+  }
+  return age;
+})()
+  //=> 50
+~~~~~~~~
+
+Declaring `age` twice does not cause an error(!), and the inner declaration does not shadow the outer declaration. All `var` declarations behave as if they were hoisted to the top of the function, a little like function declarations.
+
+But, again, it is unwise to expect consistency. A function declaration can appear anywhere within a function, but the declaration *and* the definition are hoisted. Note this example of a function that uses a helper:
+
+{:lang="javascript"}
+~~~~~~~~
+const factorial = (n) => {
+  
+  return innerFactorial(n, 1);
+  
+  function innerFactorial (x, y) {
+    if (x == 1) {
+      return y;
+    }
+    else {
+      return innerFactorial(x-1, x * y);
+    }
+  }
+}
+
+factorial(4)
+  //=> 24
+~~~~~~~~
+
+JavaScript interprets this code as if we had written:
+
+{:lang="javascript"}
+~~~~~~~~
+const factorial = (n) => {
+  let innerFactorial = function innerFactorial (x, y) {
+      if (x == 1) {
+        return y;
+      }
+      else {
+        return innerFactorial(x-1, x * y);
+      }
+    }
+  
+  return innerFactorial(n, 1);
+}
+~~~~~~~~
+
+JavaScript hoists the `let` and the assignment. But not so with `var`:
+
+{:lang="javascript"}
+~~~~~~~~
+const factorial = (n) => {
+  
+  return innerFactorial(n, 1);
+  
+  var innerFactorial = function innerFactorial (x, y) {
+    if (x == 1) {
+      return y;
+    }
+    else {
+      return innerFactorial(x-1, x * y);
+    }
+  }
+}
+
+factorial(4)
+  //=> undefined is not a function (evaluating 'innerFactorial(n, 1)')
+~~~~~~~~
+
+JavaScript hoists the declaration, but not the assignment. It is as if we'd written:
+
+{:lang="javascript"}
+~~~~~~~~
+const factorial = (n) => {
+  
+  let innerFactorial = undefined;
+  
+  return innerFactorial(n, 1);
+  
+  innerFactorial = function innerFactorial (x, y) {
+    if (x == 1) {
+      return y;
+    }
+    else {
+      return innerFactorial(x-1, x * y);
+    }
+  }
+}
+~~~~~~~~
+
+In that way, `var` is a little like `const` and `let`, we should always declare and bind names before using them. The exception is that JavaScript does allow us to use a function declaration after we use it. In this book, we will use function declarations sparingly, and not use `var` at all.

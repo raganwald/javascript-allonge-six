@@ -106,7 +106,7 @@ Clearly, the name `even` is bound to the function *within the function's body*. 
       
 `even` is bound within the function itself, but not outside it. This is useful for making recursive functions as we see above, and it speaks to the principle of least privilege: If you don't *need* to name it anywhere else, you needn't.
     
-### function declarations
+### function declarations {#function-declarations}
 
 There is another syntax for naming and/or defining a function. It's called a *function declaration statement*, and it looks a lot like a named function expression, only we use it as a statement:
 
