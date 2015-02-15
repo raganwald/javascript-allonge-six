@@ -1,8 +1,8 @@
 ## What Context Applies When We Call a Function? {#context}
 
-In [This and That](#this), we learned that when a function is called as an object method, the name `this` is bound in its environment to the object acting as a "receiver." For example:
+In [This and That](#this), we learned that when a function is denoted using the `function` keyword, and is called as an object method, the name `this` is bound in its environment to the object acting as a "receiver." For example:
 
-    var someObject = {
+    const someObject = {
       returnMyThis: function () {
         return this;
       }
@@ -25,7 +25,7 @@ This is an important distinction. Consider closures: As we discussed in [Closure
 
 A function's context cannot be determined by examining the source code of a JavaScript program. Let's look at our example again:
 
-    var someObject = {
+    const someObject = {
       someFunction: function () {
         return this;
       }
@@ -36,7 +36,7 @@ A function's context cannot be determined by examining the source code of a Java
     
 What is the context of the function `someObject.someFunction`? Don't say `someObject`! Watch this:
 
-    var someFunction = someObject.someFunction;
+    const someFunction = someObject.someFunction;
 
     someFunction === someObject.someFunction
       //=> true
@@ -46,7 +46,7 @@ What is the context of the function `someObject.someFunction`? Don't say `someOb
       
 It gets weirder:
 
-    var anotherObject = {
+    const anotherObject = {
       someFunction: someObject.someFunction
     }
     
@@ -59,7 +59,9 @@ It gets weirder:
     anotherObject.someFunction() === someObject
       //=> false
       
-So it amounts to this: The exact same function can be called in two different ways, and you end up with two different contexts. If you call it using `someObject.someFunction()` syntax, the context is set to the receiver. If you call it using any other expression for resolving the function's value (such as `someFunction()`), you get something else. Let's investigate:
+So it amounts to this: The exact same function can be called in two different ways, and you end up with two different contexts. If you call it using `someObject.someFunction()` syntax, the context is set to the receiver. If you call it using any other expression for resolving the function's value (such as `someFunction()`), you get something else.
+
+Let's investigate:
 
     (someObject.someFunction)() == someObject
       //=> true
@@ -67,30 +69,30 @@ So it amounts to this: The exact same function can be called in two different wa
     someObject['someFunction']() === someObject
       //=> true
       
-    var name = 'someFunction';
+    const name = 'someFunction';
     
     someObject[name]() === someObject
       //=> true
 
 Interesting!
 
-    var baz;
+    let baz;
     
     (baz = someObject.someFunction)() === this
       //=> true
       
 How about:
 
-    var arr = [ someObject.someFunction ];
+    const arr = [ someObject.someFunction ];
     
     arr[0]() == arr
       //=> true
     
 It seems that whether you use `a.b()` or `a['b']()` or `a[n]()` or `(a.b)()`, you get context `a`. 
 
-    var returnThis = function () { return this };
+    const returnThis = function () { return this };
 
-    var aThirdObject = {
+    const aThirdObject = {
       someFunction: function () {
         return returnThis()
       }
@@ -121,7 +123,7 @@ Here's `call` in action:
       
 When You call a function with `call`, you set the context by passing it in as the first parameter. Other arguments are passed to the function in the normal manner. Much hilarity can result from `call` shenanigans like this:
 
-    var a = [1,2,3],
+    const a = [1,2,3],
         b = [4,5,6];
         
     a.concat([2,1])
@@ -132,7 +134,7 @@ When You call a function with `call`, you set the context by passing it in as th
       
 But now we thoroughly understand what `a.b()` really means: It's synonymous with `a.b.call(a)`. Whereas in a browser, `c()` is synonymous with `c.call(window)`.
 
-### apply, arguments, and contextualization
+### arguments
 
 JavaScript has another automagic binding in every function's environment. `arguments` is a special object that behaves a little like an array.[^little]
 
@@ -140,12 +142,20 @@ JavaScript has another automagic binding in every function's environment. `argum
 
 For example:
 
-    var third = function () {
+    const third = function () {
       return arguments[2]
     }
 
     third(77, 76, 75, 74, 73)
       //=> 75
+      
+Gathering arguments with `...` accomplishes most of the use cases people have for using the `arguments` special binding, and in addition, gathering works with both fat arrows and with the `function` keyword, whereas `arguments` only works with the function keyword.
+
+There are a few things that `arguments` can do that gathering cannot do, for example if you declare a function with `function (a, b, c) { ... }`, `arguments` holds the arguments passed to the function even though you haven't declared a parameter to be gathered. It works alongside the declared parameters.
+
+But by and large, we will gather parameters in this book.
+
+### application and contextualization
 
 Hold that thought for a moment. JavaScript also provides a fourth way to set the context for a function. `apply` is a method implemented by every function that takes a context as its first argument, and it takes an array or array-like thing of arguments as its second argument. That's a mouthful, let's look at an example:
 
@@ -157,15 +167,15 @@ Hold that thought for a moment. JavaScript also provides a fourth way to set the
       
 Now let's put the two together. Here's another travesty:
 
-    var a = [1,2,3],
-        accrete = a.concat;
+    const a = [1,2,3],
+          accrete = a.concat;
         
     accrete([4,5])
       //=> Gobbledygook!
 
 We get the result of concatenating `[4,5]` onto an array containing the global environment. Not what we want! Behold:
 
-    var contextualize = function (fn, context) {
+    const contextualize = function (fn, context) {
       return function () {
         return fn.apply(context, arguments);
       }
