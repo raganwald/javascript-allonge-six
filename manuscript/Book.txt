@@ -90,7 +90,7 @@ mainmatter:
 
      markdown/Objects, Mutation, and State/encapsulation.md
 
-#      markdown/Objects, Mutation, and State/composition-and-extension.md
+     markdown/Objects, Mutation, and State/composition-and-extension.md
 
 #      markdown/Objects, Mutation, and State/this.md
 

@@ -8,67 +8,91 @@ A deeply fundamental practice is to build components out of smaller components. 
 
 The simplest and easiest way to build components out of smaller components in JavaScript is also the most obvious: Each component is a value, and the components can be put together into a single object or encapsulated with a closure.
 
-Here's an abstract "model" that supports undo and redo composed from a pair of stacks (see [Encapsulating State](#encapsulation)) and a Plain Old JavaScript Object:
+Here's an abstract "model" that supports undo and redo composed from a pair of stacks (see [Encapsulating State](#encapsulation)), and a Plain Old JavaScript Object:
 
-    // helper function
-    //
-    // For production use, consider what to do about
-    // deep copies and own keys
-    var shallowCopy = function (source) {
-      var dest = {},
-          key;
-          
-      for (key in source) {
-        dest[key] = source[key]
-      }
-      return dest
-    };
+We can `set` and `get` attributes on a model
 
-    // our model maker
-    var ModelMaker = function (initialAttributes) {
-      var attributes = shallowCopy(initialAttributes || {}), 
-          undoStack = StackMaker(), 
-          redoStack = StackMaker(),
-          obj = {
-            set: function (attrsToSet) {
-              var key;
-              
-              undoStack.push(shallowCopy(attributes));
-              if (!redoStack.isEmpty()) {
-                redoStack = StackMaker()
-              }
-              for (key in (attrsToSet || {})) {
-                attributes[key] = attrsToSet[key]
-              }
-              return obj
-            },
-            undo: function () {
-              if (!undoStack.isEmpty()) {
-                redoStack.push(shallowCopy(attributes));
-                attributes = undoStack.pop()
-              }
-              return obj
-            },
-            redo: function () {
-              if (!redoStack.isEmpty()) {
-                undoStack.push(shallowCopy(attributes));
-                attributes = redoStack.pop()
-              }
-              return obj
-            },
-            get: function (key) {
-              return attributes(key)
-            },
-            has: function (key) {
-              return attributes.hasOwnProperty(key)
-            },
-            attributes: function {
-              shallowCopy(attributes)
-            }
-          };
-        return obj
-      };
+{:lang="js"}
+~~~~~~~~
+// helper function
+//
+// For production use, consider what to do about
+// deep copies and own keys
+const shallowCopy = (source) => {
+  const dest = {};
       
+  for (let key in source) {
+    dest[key] = source[key]
+  }
+  return dest
+};
+
+const Stack = () => {
+  const array = [];
+  let index = -1;
+      
+  return {
+    push: function (value) {
+      array[index += 1] = value
+    },
+    pop: function () {
+      var value = array[index];
+      if (index >= 0) {
+        index -= 1
+      }
+      return value
+    },
+    isEmpty: function () {
+      return index < 0
+    }
+  }
+}
+    
+const Model = function (initialAttributes) {
+  let   redoStack = Stack(),
+        attributes = shallowCopy(initialAttributes || {});
+        
+  const undoStack = Stack(),
+      obj = {
+        set: (attrsToSet) => {
+          undoStack.push(shallowCopy(attributes));
+          if (!redoStack.isEmpty()) {
+            redoStack = Stack()
+          }
+          for (let key in (attrsToSet || {})) {
+            attributes[key] = attrsToSet[key]
+          }
+          return obj
+        },
+        undo: () => {
+          if (!undoStack.isEmpty()) {
+            redoStack.push(shallowCopy(attributes));
+            attributes = undoStack.pop()
+          }
+          return obj
+        },
+        redo: () => {
+          if (!redoStack.isEmpty()) {
+            undoStack.push(shallowCopy(attributes));
+            attributes = redoStack.pop()
+          }
+          return obj
+        },
+        get: (key) => attributes[key],
+        has: (key) => attributes.hasOwnProperty(key),
+        attributes: () => shallowCopy(attributes)
+      };
+    return obj
+  };
+
+const model = Model();
+model.set({"Doctor": "de Grasse"});
+model.set({"Doctor": "Who"});
+model.undo()
+model.get("Doctor")
+  //=> "de Grasse"
+~~~~~~~~
+ 
 The techniques used for encapsulation work well with composition. In this case, we have a "model" that hides its attribute store as well as its implementation that is composed of an undo stack and redo stack.
 
 ### extension {#extensible}
@@ -77,30 +101,37 @@ Another practice that many people consider fundamental is to *extend* an impleme
 
 Consider a [queue]:
 
-    var QueueMaker = function () {
-      var array = [], 
+    const Queue = () => {
+      let array = [], 
           head = 0, 
           tail = -1;
-      return {
-        pushTail: function (value) {
-          return array[tail += 1] = value
-        },
-        pullHead: function () {
-          var value;
           
+      return {
+        pushTail: (value) => array[++tail] = value,
+        pullHead: () => {
           if (tail >= head) {
-            value = array[head];
-            array[head] = void 0;
-            head += 1;
+            const value = array[head];
+            
+            array[head] = undefined;
+            ++head;
             return value
           }
         },
-        isEmpty: function () {
-          return tail < head
-        }
+        isEmpty: () => tail < head
       }
     };
 
+
+    const queue = Queue();
+    queue.pushTail("Hello");
+    queue.pushTail("JavaScript");
+    queue.pushTail("Allongé");
+
+    queue.pullHead()
+      //=> "HellO"
+    queue.pullHead()
+      //=> "JavaScript"
+    
 Now we wish to create a [deque] by adding `pullTail` and `pushHead` operations to our queue.[^wasa] Unfortunately, encapsulation prevents us from adding operations that interact with the hidden data structures.
 
 [queue]: http://duckduckgo.com/Queue_(data_structure)
@@ -111,20 +142,18 @@ This isn't really surprising: The entire point of encapsulation is to create an 
 
 Let's "de-encapsulate" our queue:
 
-    var QueueMaker = function () {
-      var queue = {
+    const Queue = function () {
+      const queue = {
         array: [], 
         head: 0, 
         tail: -1,
-        pushTail: function (value) {
-          return queue.array[queue.tail += 1] = value
-        },
-        pullHead: function () {
-          var value;
-          
+        pushTail: (value) =>
+          queue.array[++queue.tail] = value,
+        pullHead: () => {
           if (queue.tail >= queue.head) {
-            value = queue.array[queue.head];
-            queue.array[queue.head] = void 0;
+            const value = queue.array[queue.head];
+            
+            queue.array[queue.head] = undefined;
             queue.head += 1;
             return value
           }
@@ -138,29 +167,36 @@ Let's "de-encapsulate" our queue:
 
 Now we can extend a queue into a deque:
 
-    var DequeMaker = function () {
-      var deque = QueueMaker(),
+    const extend = function (consumer, ...providers) {
+      for (let i = 0; i < providers.length; ++i) {
+        const provider = providers[i];
+        for (let key in provider) {
+          if (provider.hasOwnProperty(key)) {
+            consumer[key] = provider[key]
+          }
+        }
+      }
+      return consumer
+    };
+
+    const Dequeue = function () {
+      const deque = Queue(),
           INCREMENT = 4;
       
       return extend(deque, {
-        size: function () {
-          return deque.tail - deque.head + 1
-        },
-        pullTail: function () {
-          var value;
-          
+        size: () => deque.tail - deque.head + 1,
+        pullTail: () => {
           if (!deque.isEmpty()) {
-            value = deque.array[deque.tail];
-            deque.array[deque.tail] = void 0;
+            const value = deque.array[deque.tail];
+            
+            deque.array[deque.tail] = undefined;
             deque.tail -= 1;
             return value
           }
         },
-        pushHead: function (value) {
-          var i;
-          
+        pushHead: (value) => {
           if (deque.head === 0) {
-            for (i = deque.tail; i <= deque.head; i++) {
+            for (let i = deque.tail; i <= deque.head; i++) {
               deque.array[i + INCREMENT] = deque.array[i]
             }
             deque.tail += INCREMENT

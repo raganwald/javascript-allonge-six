@@ -44,20 +44,17 @@ To make our stack work, we need a way for our functions to refer to our stack. W
       const obj = {
         array: [],
         index: -1,
-        push: function (value) {
-          return obj.array[obj.index += 1] = value
-        },
-        pop: function () {
-          var value = obj.array[obj.index];
-          obj.array[obj.index] = void 0;
+        push: (value) => obj.array[obj.index += 1] = value,
+        pop: () => {
+          const value = obj.array[obj.index];
+          
+          obj.array[obj.index] = undefined;
           if (obj.index >= 0) { 
             obj.index -= 1 
           }
           return value
         },
-        isEmpty: function () {
-          return obj.index < 0
-        }
+        isEmpty: () => obj.index < 0
       };
       
       return obj;
@@ -87,47 +84,35 @@ The view taken in this book is that a function is a method of an object if it be
 But these two wouldn't be methods. Although they "belong" to an object, they don't interact with it:
 
     {
-      min: function (x, y) {
-        if (x < y) {
-          return x
-        }
-        else {
-          return y
-        }
-      } 
-      max: function (x, y) {
-        if (x > y) {
-          return x
-        }
-        else {
-          return y
-        }
-      } 
+      min: (x, y) =>
+        x < y ? x : y
+      max: (x, y) =>
+        x > y ? x : y
     }
 
 ### hiding state
 
 Our stack does bundle functions with data, but it doesn't hide its state. "Foreign" code could interfere with its array or index. So how do we hide these? We already have a closure, let's use it:
 
-    var stack = (() => {
-      const array = [];
-      let index = -1;
+    const stack = (() => {
+      let array = [],
+          index = -1;
           
-      return {
-        push: function (value) {
-          array[index += 1] = value
-        },
-        pop: function () {
-          var value = array[index];
-          if (index >= 0) {
-            index -= 1
+      const obj = {
+        push: (value) => array[index += 1] = value,
+        pop: () => {
+          const value = array[index];
+          
+          array[index] = undefined;
+          if (index >= 0) { 
+            index -= 1 
           }
           return value
         },
-        isEmpty: function () {
-          return index < 0
-        }
-      }
+        isEmpty: () => index < 0
+      };
+      
+      return obj;
     })();
 
     stack.isEmpty()
@@ -149,52 +134,57 @@ Our stack does bundle functions with data, but it doesn't hide its state. "Forei
 
 We don't want to repeat this code every time we want a stack, so let's make ourselves a "stack maker." The temptation is to wrap what we have above in a function:
 
-    const StackMaker = () =>
+    const Stack = () =>
       (() => {
-            const array = [];
-            let index = -1;
+        let array = [],
+            index = -1;
           
-            return {
-              push: function (value) {
-                array[index += 1] = value
-              },
-              pop: function () {
-                var value = array[index];
-                if (index >= 0) {
-                  index -= 1
-                }
-                return value
-              },
-              isEmpty: function () {
-                return index < 0
-              }
+        const obj = {
+          push: (value) => array[index += 1] = value,
+          pop: () => {
+            const value = array[index];
+          
+            array[index] = undefined;
+            if (index >= 0) { 
+              index -= 1 
             }
-          })();
+            return value
+          },
+          isEmpty: () => index < 0
+        };
+      
+        return obj;
+      })();
 
 But there's an easier way :-)
 
-    const StackMaker = () => {
+    const Stack = () => {
       const array = [];
       let index = -1;
           
       return {
-        push: function (value) {
-          array[index += 1] = value
-        },
-        pop: function () {
-          var value = array[index];
-          if (index >= 0) {
-            index -= 1
+        push: (value) => array[index += 1] = value,
+        pop: () => {
+          const value = array[index];
+        
+          array[index] = undefined;
+          if (index >= 0) { 
+            index -= 1 
           }
           return value
         },
-        isEmpty: function () {
-          return index < 0
-        }
+        isEmpty: () => index < 0
       }
     }
 
-    const stack = StackMaker();
+    const stack = Stack();
+    stack.push("Hello");
+    stack.push("Good bye");
+  
+    stack.pop()
+      //=> "Good bye"
+    stack.pop()
+      //=> "Hello"
 
 Now we can make stacks freely, and we've hidden their internal data elements. We have methods and encapsulation, and we've built them out of JavaScript's fundamental functions and objects. In [Instances and Classes](#methods), we'll look at JavaScript's support for class-oriented programming and some of the idioms that functions bring to the party.
 
