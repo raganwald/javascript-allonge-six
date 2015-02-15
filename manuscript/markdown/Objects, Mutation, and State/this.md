@@ -2,20 +2,18 @@
 
 Let's take another look at [extensible objects](#extensible). Here's a Queue:
 
-    var QueueMaker = function () {
-      var queue = {
+    const Queue = function () {
+      const queue = {
         array: [], 
         head: 0, 
         tail: -1,
-        pushTail: function (value) {
-          return queue.array[queue.tail += 1] = value
-        },
-        pullHead: function () {
-          var value;
-          
+        pushTail: (value) =>
+          queue.array[++queue.tail] = value,
+        pullHead: () => {
           if (queue.tail >= queue.head) {
-            value = queue.array[queue.head];
-            queue.array[queue.head] = void 0;
+            const value = queue.array[queue.head];
+            
+            queue.array[queue.head] = undefined;
             queue.head += 1;
             return value
           }
@@ -27,7 +25,7 @@ Let's take another look at [extensible objects](#extensible). Here's a Queue:
       return queue
     };
 
-    queue = QueueMaker()
+    queue = Queue()
     queue.pushTail('Hello')
     queue.pushTail('JavaScript')
 
@@ -61,8 +59,46 @@ A> This is a general issue with closures. Closures couple functions to environme
 
 Let's take an impossibly optimistic flight of fancy:
 
-    var AmnesiacQueueMaker = function () {
-      return {
+    const AmnesiacQueue = () =>
+      ({
+        array: [], 
+        head: 0, 
+        tail: -1,
+        pushTail: (myself, value) =>
+          myself.array[myself.tail += 1] = value,
+        pullHead: function (myself) {
+          if (myself.tail >= myself.head) {
+            let value = myself.array[myself.head];
+            
+            myself.array[myself.head] = void 0;
+            myself.head += 1;
+            return value
+          }
+        },
+        isEmpty: (myself) =>
+          myself.tail < myself.head
+      });
+
+    const queueWithAmnesia = AmnesiacQueue();
+    
+    queueWithAmnesia.pushTail(queueWithAmnesia, 'Hello');
+    queueWithAmnesia.pushTail(queueWithAmnesia, 'JavaScript');
+    queueWithAmnesia.pullHead(queueWithAmnesia)
+      //=> "Hello"
+  
+
+The `AmnesiacQueue` makes queues with amnesia: They don't know who they are, so every time we invoke one of their functions, we have to tell them who they are. You can work out the implications for copying queues as a thought experiment: We don't have to worry about environments, because every function operates on the queue you pass in.
+
+The killer drawback, of course, is making sure we are always passing the correct queue in every time we invoke a function. What to do?
+
+### what's all `this`?
+
+Any time we must do the same repetitive thing over and over and over again, we industrial humans try to build a machine to do it for us. JavaScript is one such machine. When we write a function expression using the `function` keyword instead of the fat arrow, JavaScript binds the "receiver" of a "method invocation" to the special name `this`.
+
+So we'll rewrite our `AmnesiacQueue` to use `function` expressions:
+
+    const AmnesiacQueue = () =>
+      ({
         array: [], 
         head: 0, 
         tail: -1,
@@ -70,35 +106,23 @@ Let's take an impossibly optimistic flight of fancy:
           return myself.array[myself.tail += 1] = value
         },
         pullHead: function (myself) {
-          var value;
-          
           if (myself.tail >= myself.head) {
-            value = myself.array[myself.head];
+            let value = myself.array[myself.head];
+            
             myself.array[myself.head] = void 0;
             myself.head += 1;
             return value
           }
         },
         isEmpty: function (myself) {
-          return myself.tail < myself.head
+          myself.tail < myself.head
         }
-      }
-    };
+      });
+      
+Then we'll remove `myself` from the parameter list, and rename it to `this` within the body of each function:
 
-    queueWithAmnesia = AmnesiacQueueMaker();
-    queueWithAmnesia.pushTail(queueWithAmnesia, 'Hello');
-    queueWithAmnesia.pushTail(queueWithAmnesia, 'JavaScript')
-    
-The `AmnesiacQueueMaker` makes queues with amnesia: They don't know who they are, so every time we invoke one of their functions, we have to tell them who they are. You can work out the implications for copying queues as a thought experiment: We don't have to worry about environments, because every function operates on the queue you pass in.
-
-The killer drawback, of course, is making sure we are always passing the correct queue in every time we invoke a function. What to do?
-
-### what's all `this`?
-
-Any time we must do the same repetitive thing over and over and over again, we industrial humans try to build a machine to do it for us. JavaScript is one such machine:
-
-    BanksQueueMaker = function () {
-      return {
+    const BetterQueue = () =>
+      ({
         array: [], 
         head: 0, 
         tail: -1,
@@ -106,40 +130,48 @@ Any time we must do the same repetitive thing over and over and over again, we i
           return this.array[this.tail += 1] = value
         },
         pullHead: function () {
-          var value;
-          
           if (this.tail >= this.head) {
-            value = this.array[this.head];
+            let value = this.array[this.head];
+            
             this.array[this.head] = void 0;
             this.head += 1;
             return value
           }
         },
         isEmpty: function () {
-          return this.tail < this.head
+          this.tail < this.head
         }
-      }
-    };
+      });
+      
+Now we are relying on JavaScript to set the value of `this` whenever we invoke one of these functions using the `.` or `[` and `]` operators.
 
-    banksQueue = BanksQueueMaker();
-    banksQueue.pushTail('Hello');
-    banksQueue.pushTail('JavaScript') 
+In other words, when we write:
 
-Every time you invoke a function that is a member of an object, JavaScript binds that object to the name `this` in the environment of the function just as if it was an argument.[^this] Now we can easily make copies:
+    const betterQueue = BetterQueue();
+    
+    betterQueue.pushTail('Hello');
+    betterQueue.pushTail('JavaScript');
+    betterQueue.pullHead()
+    
+We expect that JavaScript will invoke the functions we've bound to `pushTail` and `pullHead`, and automatically bind `betterQueue` to the name `this` within them. And indeed it does: Every time you invoke a function that is a member of an object, JavaScript binds that object to the name `this` in the environment of the function just as if it was an argument.[^this]
 
-    copyOfQueue = extend({}, banksQueue)
+Now, does this solve our original problem? Can we make copies of an object? Recall that the problem was that when we used a closure for private data, copying references to an object's functions meant that we were using functions that still referred to the original closure, and therefore shared the same private data.
+
+Now our functions refer to members of the object, and use `this` to ensure  that they are referring to the object receiving a message. Let's see if this does, indeed, allow us to copy objects:
+
+    const copyOfQueue = extend({}, betterQueue)
     copyOfQueue.array = []
     for (var i = 0; i < 2; ++i) {
-      copyOfQueue.array[i] = banksQueue.array[i]
+      copyOfQueue.array[i] = betterQueue.array[i]
     }
       
-    banksQueue.pullHead()
+    betterQueue.pullHead()
       //=> 'Hello'
 
     copyOfQueue.pullHead()
       //=> 'Hello'
 
-Presto, we now have a way to copy arrays. By getting rid of the closure and taking advantage of `this`, we have functions that are more easily portable between objects, and the code is simpler as well.
+Presto, we now have a way to copy arrays. By getting rid of the closure and taking advantage of `this`, we have functions that are more easily portable between objects, and the code is simpler as well. **This is very important**. Being able to copy objects is an example of a larger concern: Being able to share functions between objects. That's how classes work. That's how extending objects works. Being able to share functions means being able to compose and reuse functionality.
 
 There is more to `this` than we've discussed here. We'll explore things in more detail later, in [What Context Applies When We Call a Function?](#context).
 
