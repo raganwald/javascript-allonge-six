@@ -1,4 +1,4 @@
-## Iterables and Generators {#iterables}
+## Iterables {#iterables}
 
 Objects in JavaScript can model all sorts of things. At a very abstract level, models usually represent either heterogeneous or homogeneous collections of things. Or what we might call "things" and "collections of things."
 
@@ -69,7 +69,7 @@ Recall how we wrote a `sum` function that was a fold over an iterator function:
 ~~~~~~~~
 const iteratorSum = (iterator) => {
   let eachIteration,
-      sum = 0;;
+      sum = 0;
   
   while ((eachIteration = iterator(), !eachIteration.done)) {
     sum += eachIteration.value;
@@ -100,7 +100,7 @@ const collectionSum = (collection) => {
   const iterator = collection.iterator();
   
   let eachIteration,
-      sum = 0;;
+      sum = 0;
   
   while ((eachIteration = iterator(), !eachIteration.done)) {
     sum += eachIteration.value;
@@ -128,9 +128,9 @@ Like this:
 
 {:lang="js"}
 ~~~~~~~~
-const Stack = () =>
+const Stack = ()) =>
   ({
-    array:[],
+    array: [],
     index: -1,
     push: function (value) {
       return this.array[this.index += 1] = value;
@@ -176,7 +176,7 @@ const collectionSum = (collection) => {
   const iterator = collection.iterator();
   
   let eachIteration,
-      sum = 0;;
+      sum = 0;
   
   while ((eachIteration = iterator.next(), !eachIteration.done)) {
     sum += eachIteration.value;
@@ -206,7 +206,7 @@ Our stack does, so instead of binding the existing iterator method to the name `
 ~~~~~~~~
 const Stack = () =>
   ({
-    array:[],
+    array: [],
     index: -1,
     push: function (value) {
       return this.array[this.index += 1] = value;
@@ -242,17 +242,13 @@ const Stack = () =>
     }
   });
 
-const stack = Stack();
-
-stack.push(2000);
-stack.push(10);
-stack.push(5);
+const stack = Stack(2000, 10, 5);
 
 const collectionSum = (collection) => {
   const iterator = collection[Symbol.iterator]();
   
   let eachIteration,
-      sum = 0;;
+      sum = 0;
   
   while ((eachIteration = iterator.next(), !eachIteration.done)) {
     sum += eachIteration.value;
@@ -293,7 +289,7 @@ const EMPTY = {
 
 const isEmpty = (node) => node === EMPTY;
 
-const pair = (first, rest = EMPTY) =>
+const Pair = (first, rest = EMPTY) =>
   ({
     first,
     rest,
@@ -322,7 +318,7 @@ const list = (...elements) => {
   
   return elements.length === 0
     ? EMPTY
-    : pair(first, list(...rest))
+    : Pair(first, list(...rest))
 }
 
 const someSquares = list(1, 4, 9, 16, 25);
@@ -382,7 +378,7 @@ However, iterables are extremely useful. And since they do the same thing as fun
 
 {:lang="js"}
 ~~~~~~~~
-const mapIteratableWith = (fn, iterable) =>
+const mapIterableWith = (fn, iterable) =>
   ({
     [Symbol.iterator]: () => {
       const iterator = iterable[Symbol.iterator]();
@@ -402,7 +398,7 @@ And here's `filterIterableWith` and `until`:
 
 {:lang="js"}
 ~~~~~~~~
-const filterIteratableWith = (fn, iterable) =>
+const mapIterableWith = (fn, iterable) =>
   ({
     [Symbol.iterator]: () => {
       const iterator = iterable[Symbol.iterator]();
@@ -441,8 +437,12 @@ const compose = (fn, ...rest) =>
       ? fn(...args)
       : fn(compose(...rest)(...args))
 
-const squaresOf = callLeft(mapIteratableWith, (x) => x * x);
-const oddsOf = callLeft(filterIteratableWith, (x) => x % 2 === 1);
+const callLeft = (fn, ...args) =>
+    (...remainingArgs) =>
+      fn(...args, ...remainingArgs);
+
+const squaresOf = callLeft(mapIterableWith, (x) => x * x);
+const oddsOf = callLeft(mapIterableWith, (x) => x % 2 === 1);
 const untilTooBig = callLeft(until, (x) => x > 100);
 
 for (let s of compose(untilTooBig, oddsOf, squaresOf)(Numbers)) {
@@ -456,8 +456,101 @@ for (let s of compose(untilTooBig, oddsOf, squaresOf)(Numbers)) {
     81
 ~~~~~~~~
 
+For completeness, here are two more handy iterable functions. `firstIterable` returns the first element of an iterable (if it has one), and `restIterable` returns an iterable that iterates over all but the first element of an iterable. They are eqivalent to destructuring arrays with `[first, ...rest]`:
+
+{:lang="js"}
+~~~~~~~~
+const firstIterable = (iterable) =>
+  iterable[Symbol.iterator]().next().value;
+
+const restIterable = (iterable) => 
+  ({
+    [Symbol.iterator]: () => {
+      const iterator = iterable[Symbol.iterator]();
+      
+      iterator.next();
+      return iterator;
+    }
+  });
+~~~~~~~~
+
+### from
+
+Having iterated over a collection, are we limited to `for..do` and/or gathering the elements in an array literal and/or gathering the elements into the parameters of a function? No, of course not, we can do anything we like with them.
+
+One useful thing is to write a `.from` function that gathers an iterable into a particular collection type. JavaScript's built-in `Array` class already has one:
+
+{:lang="js"}
+~~~~~~~~
+Array.from(compose(untilTooBig, oddsOf, squaresOf)(Numbers))
+  //=> [1, 9, 25, 49, 81]
+~~~~~~~~
+
+We can do the same with our own collections. As you recall, functions are mutable objects. And we can assign properties to functions with a `.` or even `[` and `]`. And if we assign a function to a property, we've created a method.
+
+So let's do that:
+
+{:lang="js"}
+~~~~~~~~
+Stack.from = function (iterable) {
+  const stack = this();
+  
+  for (let element of iterable) {
+    stack.push(element);
+  }
+  return stack;
+}
+
+Pair.from = (iterable) =>
+  (function interationToList (iteration) {
+    const {done, value} = iteration.next();
+    
+    return done ? EMPTY : Pair(value, interationToList(iteration));
+  })(iterable[Symbol.iterator]())
+~~~~~~~~
+
+Now we can go "end to end," If we want to map a linked list of numbers to a linked list of the squares of some numbers, we can do that:
+
+{:lang="js"}
+~~~~~~~~
+const numberList = Pair.from(until((x) => x > 10, Numbers));
+
+Pair.from(squaresOf(numberList))
+  //=> {"first":0,
+        "rest":{"first":1,
+                "rest":{"first":4,
+                        "rest":{ ...
+~~~~~~~~
+
 ### why do we care about iterables?
 
 These are all interesting, but let's reiterate why we care. We build single-responsibility objects, and single-responsibility functions, and we compose these together to build more full-featured objects and algorithms.
 
+in the older style of object-oriented programming, we built "fat" objects. Each collection knew how to map itself (`.map`), how to fold itself (`.reduce`), how to filter itself (`.filter`) and how to find one element within itself (`.find`). If we wanted to flatten collections to arrays, we wrote a `.toArray` method for each type of collection.
 
+Over time, this informal "interface" for collections grows by accretion. Some methods are only added to a few collections, some are added to all. But our objects grow fatter and fatter. We tell ourselves that, well, a collection ought to know how to map itself.
+
+But we end up recreating the same bits of code in each `.map` method we create, in each `.reduce` method we create, in each `.filter` method we create, and in each `.find` method. Each one has its own variation, but the overall form is identical. That's a sign that we shoudl work at a higher level of abstraction, and working with iterables is that higher level of abstraction.
+
+Composing an iterable with a `mapIterable` method cleaves the responsibility for knowing how to map from the fiddly bits of how a linked list differs from a stack. And if we want to create convenience methods, we can reuse common pieces:
+
+{:lang="js"}
+~~~~~~~~
+const Stack = () =>
+ ({
+   // ...
+   
+   map: function (fn) {
+     return Stack.from(mapIterableWith(fn, this));
+   },
+   filter: function (fn) {
+     return Stack.from(filterIterableWith(fn, this));
+   },
+   find: function (fn) {
+     firstIterable(filterIterableWith(fn, this));
+   }
+}
+
+Stack.from([1, 2, 3, 4, 5]).map((x) => x * 2).pop()
+  //=> 10
+~~~~~~~~
