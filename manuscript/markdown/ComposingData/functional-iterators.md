@@ -302,7 +302,7 @@ const mapIteratorWith = (fn, iterator) =>
   () => {
     const {done, value} = iterator();
     
-    return (done, value: done ? undefined : fn(value));
+    return ({done, value: done ? undefined : fn(value)});
   }
   
 const squares = mapIteratorWith((x) => x * x, NumberIterator(1));
