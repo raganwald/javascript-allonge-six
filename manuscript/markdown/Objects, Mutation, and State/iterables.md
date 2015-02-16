@@ -532,6 +532,8 @@ Over time, this informal "interface" for collections grows by accretion. Some me
 
 But we end up recreating the same bits of code in each `.map` method we create, in each `.reduce` method we create, in each `.filter` method we create, and in each `.find` method. Each one has its own variation, but the overall form is identical. That's a sign that we shoudl work at a higher level of abstraction, and working with iterables is that higher level of abstraction.
 
+> Composing an iterable with a `mapIterable` method cleaves the responsibility for knowing how to map from the fiddly bits of how a linked list differs from a stack
+
 Composing an iterable with a `mapIterable` method cleaves the responsibility for knowing how to map from the fiddly bits of how a linked list differs from a stack. And if we want to create convenience methods, we can reuse common pieces:
 
 {:lang="js"}
@@ -553,4 +555,8 @@ const Stack = () =>
 
 Stack.from([1, 2, 3, 4, 5]).map((x) => x * 2).pop()
   //=> 10
-~~~~~~~~
+~~~~~~~~  
+
+This speaks to JavaScript's fundamental nature: It's a language that *wants* to compose functionality out of small, singe-responsibility pieces, whether thos epieces are functions or objects built out of functions.
+
+And there are many ways to compose those smaller pieces in JavaScript, including functional iterators for functions, object iterators for objects, and iterable objects. We'll leanr about classes and prototypes later, but it is important to userstand that there are many ways to factor an object-oriented program, and "inheritance" is just one of the tools in the JavaScript toolbox.
