@@ -188,15 +188,15 @@ collectionSum(stack)
   //=> 2015
 ~~~~~~~~
 
-Nowour `.iterator()` method is returning an iterator object. When working with objects, we do things the object way. But having started by building functional iterators, we understand what is happening underneath the object's scaffolding.
+Now our `.iterator()` method is returning an iterator object. When working with objects, we do things the object way. But having started by building functional iterators, we understand what is happening underneath the object's scaffolding.
 
 ### Iterables
 
-Prople have been writing iterators since JavaScript was first released in the late 1990s. Since there was no particular standard way to do it, people used all sorts of methods, and their methods returned all sorts of things: Objects with various interfaces, functional iterators, you name it.
+People have been writing iterators since JavaScript was first released in the late 1990s. Since there was no particular standard way to do it, people used all sorts of methods, and their methods returned all sorts of things: Objects with various interfaces, functional iterators, you name it.
 
 So, when a standard way to write iterators was added to the JavaScript language, it didn't make sense to use a method like `.iterator()` for it: That would conflict with existing code. Instead, the language encourages new code to be written with a different name for the method that a collection object uses to return its iterator.
 
-To ensure that the method would not confluct with any existing code, JavaScript provides a *symbol*. Symbols are unique constants that are guaranteed not to conflict with existing strings. Symbols are a longstanding technique in programming going back to Lisp, where the `GENSYM` function generated... You guessed it... Symbols.
+To ensure that the method would not conflict with any existing code, JavaScript provides a *symbol*. Symbols are unique constants that are guaranteed not to conflict with existing strings. Symbols are a longstanding technique in programming going back to Lisp, where the `GENSYM` function generated... You guessed it... Symbols.
 
 The expression `Symbol.iterator` evaluates to a special symbol representing the name of the method that objects should use if they return an iterator object.
 
@@ -350,7 +350,7 @@ firstAndSecondElement(...stack)
 
 This can be extremely useful.
 
-One caveat of spreading iterables: JavaScript creates an array out of the elements of the iterable. That might be very wasteful for extremely large collections. For example, if we spread a large collection just to find an element in teh collection, it might have been wiser to iterate over the element using its iterator directly.
+One caveat of spreading iterables: JavaScript creates an array out of the elements of the iterable. That might be very wasteful for extremely large collections. For example, if we spread a large collection just to find an element in the collection, it might have been wiser to iterate over the element using its iterator directly.
 
 And if we have an infinite collection, spreading is going to fail outright.
 
@@ -456,7 +456,7 @@ for (let s of compose(untilTooBig, oddsOf, squaresOf)(Numbers)) {
     81
 ~~~~~~~~
 
-For completeness, here are two more handy iterable functions. `firstIterable` returns the first element of an iterable (if it has one), and `restIterable` returns an iterable that iterates over all but the first element of an iterable. They are eqivalent to destructuring arrays with `[first, ...rest]`:
+For completeness, here are two more handy iterable functions. `firstIterable` returns the first element of an iterable (if it has one), and `restIterable` returns an iterable that iterates over all but the first element of an iterable. They are equivalent to destructuring arrays with `[first, ...rest]`:
 
 {:lang="js"}
 ~~~~~~~~
@@ -530,7 +530,7 @@ in the older style of object-oriented programming, we built "fat" objects. Each 
 
 Over time, this informal "interface" for collections grows by accretion. Some methods are only added to a few collections, some are added to all. But our objects grow fatter and fatter. We tell ourselves that, well, a collection ought to know how to map itself.
 
-But we end up recreating the same bits of code in each `.map` method we create, in each `.reduce` method we create, in each `.filter` method we create, and in each `.find` method. Each one has its own variation, but the overall form is identical. That's a sign that we shoudl work at a higher level of abstraction, and working with iterables is that higher level of abstraction.
+But we end up recreating the same bits of code in each `.map` method we create, in each `.reduce` method we create, in each `.filter` method we create, and in each `.find` method. Each one has its own variation, but the overall form is identical. That's a sign that we should work at a higher level of abstraction, and working with iterables is that higher level of abstraction.
 
 > Composing an iterable with a `mapIterable` method cleaves the responsibility for knowing how to map from the fiddly bits of how a linked list differs from a stack
 
@@ -557,6 +557,6 @@ Stack.from([1, 2, 3, 4, 5]).map((x) => x * 2).pop()
   //=> 10
 ~~~~~~~~  
 
-This speaks to JavaScript's fundamental nature: It's a language that *wants* to compose functionality out of small, singe-responsibility pieces, whether thos epieces are functions or objects built out of functions.
+This speaks to JavaScript's fundamental nature: It's a language that *wants* to compose functionality out of small, singe-responsibility pieces, whether those pieces are functions or objects built out of functions.
 
-And there are many ways to compose those smaller pieces in JavaScript, including functional iterators for functions, object iterators for objects, and iterable objects. We'll leanr about classes and prototypes later, but it is important to userstand that there are many ways to factor an object-oriented program, and "inheritance" is just one of the tools in the JavaScript toolbox.
+And there are many ways to compose those smaller pieces in JavaScript, including functional iterators for functions, object iterators for objects, and iterable objects. We'll learn about classes and prototypes later, but it is important to understand that there are many ways to factor an object-oriented program, and "inheritance" is just one of the tools in the JavaScript toolbox.
