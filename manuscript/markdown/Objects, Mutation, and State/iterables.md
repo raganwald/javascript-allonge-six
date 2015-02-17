@@ -1,5 +1,7 @@
 ## Iterables {#iterables}
 
+![Coffee Labels and the Saltspring Coffee Processing Facility](images/saltspring/coffee-labels.jpg)
+
 Objects in JavaScript can model all sorts of things. At a very abstract level, models usually represent either heterogeneous or homogeneous collections of things. Or what we might call "things" and "collections of things."
 
 When discussing functions, we looked at the benefits of writing [Functional Iterators](#functional-iterators). We can do the same thing for objects. Here's a stack that has its own functional iterator method:
