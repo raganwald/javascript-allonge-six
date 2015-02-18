@@ -13,6 +13,8 @@ frontmatter:
   markdown/Prefaces/legend.md
 
   markdown/Prefaces/spessore.md
+  
+  # markdown/Sample/about.md
 
   markdown/prelude.md
 

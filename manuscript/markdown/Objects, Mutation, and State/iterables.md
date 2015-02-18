@@ -1,4 +1,4 @@
-## Iterables {#iterables}
+## Collections, Iteration, and Laziness {#iterables}
 
 ![Coffee Labels at the Saltspring Coffee Processing Facility](images/saltspring/coffee-labels.jpg)
 
