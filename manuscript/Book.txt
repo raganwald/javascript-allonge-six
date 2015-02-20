@@ -100,6 +100,8 @@ mainmatter:
 
      markdown/Objects, Mutation, and State/iterables.md
 
+     markdown/Objects, Mutation, and State/generators.md
+
 #      markdown/Objects, Mutation, and State/method-decorators.md
 
 #      markdown/Objects, Mutation, and State/summary.md

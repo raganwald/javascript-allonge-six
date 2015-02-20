@@ -419,7 +419,7 @@ const mapIterableWith = (fn, iterable) =>
   });
 ~~~~~~~~
 
-This illustrates the general pattern of working with iterables: An iterable is an object, representing a collection, with a `[Symbol.next]` method that returns an iteration over the elements of a collection.
+This illustrates the general pattern of working with iterables: An *iterable* is an object, representing a collection, with a `[Symbol.iterator]` method, that returns an iteration over the elements of a collection. The iteration over elements is an *iterator*. An iterator is also an object, but with a `.next()` method taht is invoked repeatedly to obtain the elements in order.
 
 Many operations on iterables return iterables. Our `mapIterableWith` returns an iterable. But the iterable it returns is not the same kind of collection as the iterable it consumes. If we give it a `Stack3`, we don't get a stack back. We just get an iterable. (If we want a specific kind of collection, we have to gather the iterable into a collection. We'll see how to do that below.)
 
