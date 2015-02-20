@@ -104,6 +104,8 @@ mainmatter:
 
      markdown/Objects, Mutation, and State/generators.md
 
+     markdown/Objects, Mutation, and State/drunken.md
+
 #      markdown/Objects, Mutation, and State/method-decorators.md
 
 #      markdown/Objects, Mutation, and State/summary.md
@@ -163,8 +165,6 @@ mainmatter:
 #      markdown/Ideas/functional-mixins.md
 
 #      markdown/Ideas/class-decorators.md
-
-#      markdown/Ideas/drunken.md
 
 #      markdown/Ideas/trampolining.md
 

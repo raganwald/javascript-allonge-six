@@ -810,7 +810,7 @@ Pair.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 //=> 220
 ~~~~~~~~
 
-### lazy iterables
+### lazy iterables {#lazy-iterables}
 
 "Laziness" is a very pejorative word when applied to people. But it can be an excellent strategy for efficiency in algorithms. Let's be precise: *Laziness* is the characteristic of not doing any work until you know you need the result of the work.
 
