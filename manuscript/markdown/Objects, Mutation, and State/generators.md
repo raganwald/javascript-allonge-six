@@ -132,9 +132,9 @@ while (n = i()) {
   5
 ~~~~~~~~
 
-If you peel off `isIterable` and ignore the way that the iteration version uses `[Symbol.iterator]` and `.next`, we're left with the fact that the generator version calls itself recursively, and the iteration version maintains an explicit stack. In essence, both have stacks, but the generator version's stack is *implicit*, while the iterator version's stack is *explicit*.
+If you peel off `isIterable` and ignore the way that the iteration version uses `[Symbol.iterator]` and `.next`, we're left with the fact that the generating version calls itself recursively, and the iteration version maintains an explicit stack. In essence, both the generation and iteration implementations have stacks, but the generation version's stack is *implicit*, while the iteration version's stack is *explicit*.
 
-A less kind way to put it is that the iterator version is greenspunning something built into our programming language: We're reinventing the use of a stack to manage recursion, because writing our code to respond to a function call makes us turn a simple recursive algorithm inside-out.
+A less kind way to put it is that the iteration version is greenspunning something built into our programming language: We're reinventing the use of a stack to manage recursion, because writing our code to respond to a function call makes us turn a simple recursive algorithm inside-out.
 
 ### state machines
 
@@ -232,9 +232,13 @@ while ((n = i()) < 200) {
 
 Again, this is not particularly horrendous, but like the recursive example, we're explicitly greenspunning the natural linear state. In a generator, we write "do this, then  this, then this." In an iterator, we have to wrap that up and explicitly keep track of what step we're on.
 
+So we see the same thing: The generation version has state, but it's implicit in JavaScript's linear control flow. Whereas the iteration version must make that state explicit.
+
 ### generators
 
-It would be very nice if we could sometimes write iterators as a `.next()` method that gets called, and sometimes write out a generator. And of course, we both know that this is exactly how JavaScript works. To write a *generator*, we write a function, but we make two changes:
+It would be very nice if we could sometimes write iterators as a `.next()` method that gets called, and sometimes write out a generator. Given the title of this chapter, wit will not come as a suprise to discover that JavaScript actually makes this possible.
+
+We can write an iterator, but use a generation style of programming. An iterator written in a generation style is called a *generator*. To write a generator, we write a function, but we make two changes:
 
 1. We declare the function using the `function*` keyword. Not a fat arrow. Not a plain `function`.
 2. We don't `return` values or output them to `console.log`. We "yield" values using the `yield` keyword.
@@ -270,7 +274,7 @@ for (let i of Numbers) {
   ...
 ~~~~~~~~
 
-That's it, really. No `.next()` method, just a `function*` that yields values. Let's do it again and show how a generator makes our linear state work:
+That's it, really. We don't write our own `.next()` method, we write a `function*` that yields values, and behind the scenes JavaScript writes a `.next()` method for us. Let's do it again and show how a generator makes our linear state work:
 
 {:lang="js"}
 ~~~~~~~~
@@ -312,7 +316,7 @@ for (let i of Fibonacci) {
 
 We're writing an iterator, but we're using a generator to do it. *Generators* are iterators, just with a different syntax. And this new syntax allows us to use JavaScript's natural management of state instead of constantly rolling our own.
 
-A generator for iterating over trees is ridiculously simple:
+Here's a generator for iterating over trees:
 
 {:lang="js"}
 ~~~~~~~~
@@ -352,7 +356,7 @@ JavaScript handles the recursion for us using its own execution stack. This is c
 
 ### generators *are* iterators
 
-Recall that an *iterable* is an object with a `[Symbol.iterator]` method. When you call that, you get an *iterator*, an object with a `.next()` method. But now we're making iterators that return a generator. What gives?
+Recall that an *iterable* is an object with a `[Symbol.iterator]` method. When you call that, you get an *iterator*, an object with a `.next()` method. But now we're making iterables with generators instead of with objects that have a `.next()` method. What gives?
 
 Well, generators *are* iterators. Let's prove it. Here is our `Number` iterable and a few of lazy iterable operations. We'll generate an infinite iterable of strings that represent the squares of numbers, and we'll find the palindrome that has at least four digits:
 
@@ -415,7 +419,7 @@ firstIterable(WithAtLeastFourDigits)
 
 As you can see, our operations all work on objects that have a `.next()` method, therefore we know that writing an iterator using `function*` and `yield` produces an object with a `.next()` method.
 
-But JavaScript handles all of the state we need to save to write our code as a generator, even if other code will call it just like a normal object iterator. JavaScript also allows us to return values and not worry abut wrapping them in an object with `.done` and `.value` properties.
+But unlike writing our own iterator with an explicit `.next()` method, JavaScript handles all of the state we need to save to write our code as a generator, even if other code will call it just like a normal object iterator. JavaScript also allows us to return values and not worry abut wrapping them in an object with `.done` and `.value` properties.
 
 ### Summary
 

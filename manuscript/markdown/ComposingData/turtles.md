@@ -10,50 +10,66 @@ I went home and pondered the problem. I wanted to solve it. Eventually, I came u
 
 {:lang="js"}
 ~~~~~~~~
-var LinkedList, list, tortoiseAndHareLoopDetector;
+const EMPTY = null;
 
-LinkedList = (function() {
+const isEmpty = (node) => node === EMPTY;
 
-  function LinkedList(content, next) {
-    this.content = content;
-    this.next = next != null ? next : void 0;
+const pair = (first, rest = EMPTY) => ({first, rest});
+
+const list = (...elements) => {
+  const [first, ...rest] = elements;
+  
+  return elements.length === 0
+    ? EMPTY
+    : pair(first, list(...rest))
+}
+
+const forceAppend = (list1, list2) => {
+  if (isEmpty(list1)) {
+    return "FAIL!"
   }
+  if (isEmpty(list1.rest)) {
+    list1.rest = list2;
+  }
+  else {
+    forceAppend(list1.rest, list2);
+  }
+}
 
-  LinkedList.prototype.appendTo = function(content) {
-    return new LinkedList(content, this);
-  };
-
-  LinkedList.prototype.tailNode = function() {
-    var nextThis;
-    return ((nextThis = this.next) != null ? nextThis.tailNode() : void 0) || this;
-  };
-
-  return LinkedList;
-
-})();
-
-tortoiseAndHareLoopDetector = function(list) {
-  var hare, tortoise, nextHare;
-  tortoise = list;
-  hare = list.next;
-  while ((tortoise != null) && (hare != null)) {
-    if (tortoise === hare) {
+const tortoiseAndHare = (aPair) => {
+  let tortoisePair = aPair,
+      harePair = aPair.rest;
+  
+  while (true) {
+    if (isEmpty(tortoisePair) || isEmpty(harePair)) {
+      return false;
+    }
+    if (tortoisePair.first === harePair.first) {
       return true;
     }
-    tortoise = tortoise.next;
-    hare = (nextHare = hare.next) != null ? nextHare.next : void 0;
+    
+    harePair = harePair.rest;
+    
+    if (isEmpty(harePair)) {
+      return false;
+    }
+    if (tortoisePair.first === harePair.first) {
+      return true;
+    }
+    
+    tortoisePair = tortoisePair.rest;
+    harePair = harePair.rest;
   }
-  return false;
 };
 
-list = new LinkedList(5).appendTo(4).appendTo(3).appendTo(2).appendTo(1);
+const aList = list(1, 2, 3, 4, 5);
 
-tortoiseAndHareLoopDetector(list);
+tortoiseAndHare(aList)
   //=> false
 
-list.tailNode().next = list.next;
+forceAppend(aList, aList.rest.rest);
 
-tortoiseAndHareLoopDetector(list);
+tortoiseAndHare(aList);
   //=> true
 ~~~~~~~~
   
@@ -63,15 +79,14 @@ At the time, I couldn't think of any way to use hashing to solve the problem, so
 
 {:lang="js"}
 ~~~~~~~~
-var list, teleportingTurtleLoopDetector;
-
-teleportingTurtleLoopDetector = function(list) {
-  var i, rabbit, speed, turtle;
-  speed = 1;
-  turtle = rabbit = list;
+const teleportingTurtle = (list) => {
+  let speed = 1,
+      rabbit = list,
+      turtle = rabbit;
+  
   while (true) {
-    for (i = 0; i <= speed; i += 1) {
-      rabbit = rabbit.next;
+    for (let i = 0; i <= speed; i += 1) {
+      rabbit = rabbit.rest;
       if (rabbit == null) {
         return false;
       }
@@ -85,14 +100,14 @@ teleportingTurtleLoopDetector = function(list) {
   return false;
 };
 
-list = new LinkedList(5).appendTo(4).appendTo(3).appendTo(2).appendTo(1);
+const aList = list(1, 2, 3, 4, 5);
 
-teleportingTurtleLoopDetector(list);
+teleportingTurtle(aList)
   //=> false
 
-list.tailNode().next = list.next;
+forceAppend(aList, aList.rest.rest);
 
-teleportingTurtleLoopDetector(list);
+teleportingTurtle(aList);
   //=> true
 ~~~~~~~~
   
