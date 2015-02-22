@@ -102,9 +102,11 @@ mainmatter:
 
      markdown/Objects, Mutation, and State/iterables.md
 
-     markdown/Objects, Mutation, and State/generators.md
+     markdown/Objects, Mutation, and State/generating-iterables.md
 
      markdown/Objects, Mutation, and State/drunken.md
+     
+#     markdown/Objects, Mutation, and State/generator-expressions.md
 
 #      markdown/Objects, Mutation, and State/method-decorators.md
 

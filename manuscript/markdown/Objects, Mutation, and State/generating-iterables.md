@@ -1,4 +1,4 @@
-## Making Iterables with Generators {#generators}
+## Generating Iterables {#generating-iterables}
 
 ![Banco do Café](images/banco.jpg)
 
@@ -180,7 +180,7 @@ fibonacci()
   ...
 ~~~~~~~~
 
-The thing to note here is that our `fibonacci` generator has three states: generating `0`, generating `1`, and generating everything after that. This isn't a good fit for an iterator, because iterators have one functional entry point and therefore, we'd have to represent our three states explicitly, perhaps using a [state pattern].
+The thing to note here is that our `fibonacci` generator has three states: generating `0`, generating `1`, and generating everything after that. This isn't a good fit for an iterator, because iterators have one functional entry point and therefore, we'd have to represent our three states explicitly, perhaps using a [state pattern]:
 
 [state pattern]: https://en.wikipedia.org/wiki/State_pattern
 
@@ -189,29 +189,24 @@ We'll keep it simple:
 {:lang="js"}
 ~~~~~~~~
 // Iteration
-const Numbers = () {
-  let a, b, state = 0;
-  
-  return () => {
-    switch (state) {
-      case 0:
-        state = 1;
-        return a = 0;
-      case 1:
-        state = 2;
-        return b = 1;
-      case 2:
-        [a, b] = [b, a + b];
-        return b
-    }
+let a, b, state = 0;
+
+const fibonacci = () => {
+  switch (state) {
+    case 0:
+      state = 1;
+      return a = 0;
+    case 1:
+      state = 2;
+      return b = 1;
+    case 2:
+      [a, b] = [b, a + b];
+      return b
   }
-}
+};
 
-const i = fibonacci();
-let n;
-
-while ((n = i()) < 200) {
-  console.log(n);
+while (true) {
+  console.log(fibonacci());
 }
 //=>
   0
@@ -254,7 +249,7 @@ const Numbers = {
       yield i++;
     }
   }
-}
+};
 
 for (let i of Numbers) {
   console.log(i);
@@ -274,7 +269,53 @@ for (let i of Numbers) {
   ...
 ~~~~~~~~
 
-That's it, really. We don't write our own `.next()` method, we write a `function*` that yields values, and behind the scenes JavaScript writes a `.next()` method for us. Let's do it again and show how a generator makes our linear state work:
+That's it, really. We don't write our own `.next()` method, we write a `function*` that yields values, and behind the scenes JavaScript writes a `.next()` method for us. Let's do it again and show how a generator makes our linear state work. First, here's `Fibonacci` again, this time written as an iterable:
+
+{:lang="js"}
+~~~~~~~~
+const Fibonacci = {
+  [Symbol.iterator]: () => {
+    let a = 0, b = 1, state = 0;
+    
+    return {
+      next: () => {
+        switch (state) {
+          case 0:
+            state = 1;
+            return {value: a};
+          case 1:
+            state = 2;
+            return {value: b};
+          case 2:
+            [a, b] = [b, a + b];
+            return {value: b};
+        }
+      }
+    }
+  }
+};
+
+for (let n of Fibonacci) {
+  console.log(n)
+}
+//=>
+  0
+  1
+  1
+  2
+  3
+  5
+  8
+  13
+  21
+  34
+  55
+  89
+  144
+  ...
+~~~~~~~~
+
+And here is the `Fibonacci` iterable, written with a generator function:
 
 {:lang="js"}
 ~~~~~~~~
@@ -295,7 +336,6 @@ const Fibonacci = {
 
 for (let i of Fibonacci) {
   console.log(i);
-  if (i > 200) break;
 }
 //=>
   0
