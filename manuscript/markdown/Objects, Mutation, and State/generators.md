@@ -1,4 +1,4 @@
-## An Introduction to Generators {#generators}
+## Making Iterables with Generators {#generators}
 
 ![Banco do Café](images/banco.jpg)
 
@@ -424,3 +424,5 @@ But unlike writing our own iterator with an explicit `.next()` method, JavaScrip
 ### Summary
 
 A generator is a function that is defined with `function*` and uses `yield` to generate values. Using a generator instead of writing an object that has a `.next()` method allows us to write code that can be much simpler for cases like recursive iterations or state patterns. And we don't need to worry about wrapping our values in an object with `.done` and `.value` properties.
+
+This is especially useful for making iterables.

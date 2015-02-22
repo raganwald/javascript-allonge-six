@@ -1,134 +1,240 @@
-## Refactoring to Generator
+## Interlude: The Carpenter Interviews for a Job
 
-In [Tortoises, Hares, and Teleporting Turtles](#tortoises), we looked at the "Tortoise and Hare" algorithm for detecting a linked list. Like many such algorithms, it "tangles" two different concerns:
+"The Carpenter" was a JavaScript programmer, well-known for a meticulous attention to detail and love for hand-crafted, exquisitely joined code. The Carpenter normally worked through personal referrals, but from time to time a recruiter would slip through his screen. One such recruiter was Bob Plissken. Bob was well-known in the Python community, but his clients often needed experience with other languages.
 
-1. The mechanism for iterating over a list.
-2. The algorithm for detecting a loop in a list.
+Plissken lined up a technical interview with a well-funded startup in San Francisco. The Carpenter arrived early for his meeting with "Thing Software," and was shown to conference room 13. A few minutes later, he was joined by one of the company's developers, Christine.
+
+### the problem
+
+After some small talk, Christine explained that they liked to ask candidates to whiteboard some code. Despite his experience and industry longevity, the Carpenter did not mind being asked to demonstrate that he was, in fact, the person described on the resumé.
+
+Many companies use white-boarding code as an excuse to have a technical conversation with a candidate, and The Carpenter felt that being asked to whiteboard code was an excuse to have a technical conversation with a future colleague. "Win, win" he thought to himself.
+
+[![Chessboard](images/chessboard.jpg)](https://www.flickr.com/photos/stigrudeholm/6710684795)
+
+Christine intoned the question, as if by rote:
+
+> Consider a finite checkerboard of unknown size. On each square, we randomly place an arrow pointing to one of its four sides. A chequer is placed randomly on the checkerboard. Each move consists of moving the chequer one square in the direction of the arrow in the square it occupies. If the arrow should cause the chequer to move off the edge of the board, the game halts.
+
+> The problem is this: The game board is hidden from us. A player moves the chequer, following the rules. As the player moves the chequer, they calls out the direction of movement, e.g. "↑, →, ↑, ↓, ↑, →..." Write an algorithm that will determine whether the game halts, strictly from the called out directions, in finite time and space.
+
+"So," The Carpenter asked, "I am to write an algorithm that takes a possibly infinite stream of..."
+
+Christine interrupted. "To save time, we have written a template of the solution for you in ECMASCript 2015 notation. Fill in the blanks. Your code should not presume anything about the gameboard's size or contents, only that it is given an arrow every time though the while loop. You may use [babeljs.io](http://babeljs.io), or [ES6Fiddle](http://www.es6fiddle.net) to check your work. "
+
+Christine quickly scribbled on the whiteboard:
 
 {:lang="js"}
 ~~~~~~~~
-const EMPTY = null;
-
-const isEmpty = (node) => node === EMPTY;
-
-const pair = (first, rest = EMPTY) => ({first, rest});
-
-const list = (...elements) => {
-  const [first, ...rest] = elements;
+const Game = (size = 8) => {
   
-  return elements.length === 0
-    ? EMPTY
-    : pair(first, list(...rest))
-}
-
-const forceAppend = (list1, list2) => {
-  if (isEmpty(list1)) {
-    return "FAIL!"
+  // initialize the board
+  const board = [];
+  for (let i = 0; i < size; ++i) {
+    board[i] = [];
+    for (let j = 0; j < size; ++j) {
+      board[i][j] = '←→↓↑'[Math.floor(Math.random() * 4)];
+    }
   }
-  if (isEmpty(list1.rest)) {
-    list1.rest = list2;
-  }
-  else {
-    forceAppend(list1.rest, list2);
-  }
-}
-
-const tortoiseAndHare = (aPair) => {
-  let tortoisePair = aPair,
-      harePair = aPair.rest;
   
-  while (true) {
-    if (isEmpty(tortoisePair) || isEmpty(harePair)) {
-      return false;
-    }
-    if (tortoisePair.first === harePair.first) {
-      return true;
-    }
+  // initialize the position
+  let initialPosition = [
+    2 + Math.floor(Math.random() * (size - 4)), 
+    2 + Math.floor(Math.random() * (size - 4))
+  ];
+  
+  // ???
+  let [x, y] = initialPosition;
+  
+  const MOVE = {
+    "←": ([x, y]) => [x - 1, y],
+    "→": ([x, y]) => [x + 1, y],
+    "↓": ([x, y]) => [x, y - 1],
+    "↑": ([x, y]) => [x, y + 1] 
+  };
+  while (x >= 0 && y >=0 && x < size && y < size) {
+    const arrow = board[x][y];
     
-    harePair = harePair.rest;
+    // ???
     
-    if (isEmpty(harePair)) {
-      return false;
-    }
-    if (tortoisePair.first === harePair.first) {
-      return true;
-    }
-    
-    tortoisePair = tortoisePair.rest;
-    harePair = harePair.rest;
+    [x, y] = MOVE[arrow]([x, y]);
   }
+  // ???
 };
-
-const aList = list(1, 2, 3, 4, 5);
-
-tortoiseAndHare(aList)
-  //=> false
-
-forceAppend(aList, aList.rest.rest);
-
-tortoiseAndHare(aList);
-  //=> true
 ~~~~~~~~
 
-We then went on to discuss how to use [functional iterators](#functional-iterators), [iterables](#iterables), and [generators](#generators) to untangle concerns like this. No matter how we implement them, iterators are stateful functions that iterate over a data structure. Every time we call them, they return the next element from the data structure. If and when they completes their traversal, they return `{done: true}`.
+"What," Christine asked, "Do you write in place of the three `// ???` placeholders to determine whether the game halts?"
 
-Iterators allow us to write (or refactor) functions to operate on iterators instead of data structures. That increases reuse. We can also write higher-order functions that operate directly on iterators such as mapping and selecting. That allows us to write [lazy algorithms](#lazy-iterables).
+### the carpenter's solution
 
-### refactoring the tortoise and hare
+The Carpenter was not surprised at the problem. Bob Plissken was a crafty, almost reptilian recruiter that traded in information and secrets. Whenever Bob sent a candidate to a job interview, he debriefed them afterwards and got them to disclose what questions were asked in the interview. He then coached subsequent candidates to give polished answers to the company's pet technical questions.
 
-Now we'll refactor the Tortoise and Hare to use iterators instead of directly operating on linked lists. First, here's a `Pair` implementation that is also an iterable:
+And just as companies often pick a problem that gives them broad latitude for discussing alternate approaches and determining that depth of a candidate's experience, The Carpenter liked to sketch out solutions that provided an opportunity to judge the interviewer's experience and provide an easy excuse to discuss the company's approach to software design.
 
-{:lang="javascript"}
+Bob had, in fact, warned The Carpenter that "Thing" liked to ask either or both of two questions: Determine how to detect a loop in a linked list, and determine whether the chequerboard game would halt. To save time, The Carpenter had prepared the same answer for both questions.
+
+The Carpenter coughed softly, then began. "To begin with, I'll transform a game into an iterable that generates arrows, using the 'Starman' notation for generators."
+
+"I will add just five lines of code the `Game` function, and two of those are closing braces:"
+
+{:lang="js"}
 ~~~~~~~~
-const EMPTY = {
-  isEmpty: () => true
-};
+  return ({
+    [Symbol.iterator]: function* () {
+~~~~~~~~
 
-const isEmpty = (node) => node === EMPTY;
+And:
 
-const Pair = (car, cdr = EMPTY) =>
-  ({
-    car,
-    cdr,
-    isEmpty: () => false,
-    [Symbol.iterator]: function () {
-      let currentPair = this;
+{:lang="js"}
+~~~~~~~~
+        yield arrow;
+~~~~~~~~
+
+And:
+
+{:lang="js"}
+~~~~~~~~
+    }
+  });
+~~~~~~~~
+
+"The finished function reads:"
+
+{:lang="js"}
+~~~~~~~~
+const Game = (size = 8) => {
+  
+  // initialize the board
+  const board = [];
+  for (let i = 0; i < size; ++i) {
+    board[i] = [];
+    for (let j = 0; j < size; ++j) {
+      board[i][j] = '←→↓↑'[Math.floor(Math.random() * 4)];
+    }
+  }
+  
+  // initialize the position
+  let initialPosition = [
+    2 + Math.floor(Math.random() * (size - 4)), 
+    2 + Math.floor(Math.random() * (size - 4))
+  ];
+  
+  return ({
+    [Symbol.iterator]: function* () {
+      let [x, y] = initialPosition;
+  
+      const MOVE = {
+        "←": ([x, y]) => [x - 1, y],
+        "→": ([x, y]) => [x + 1, y],
+        "↓": ([x, y]) => [x, y - 1],
+        "↑": ([x, y]) => [x, y + 1] 
+      };
       
-      return {
-        next: () => {
-          if (currentPair.isEmpty()) {
-            return {done: true}
-          }
-          else {
-            const value = currentPair.car;
-            
-            currentPair = currentPair.cdr;
-            return {done: false, value}
-          }
-        }
+      while (x >= 0 && y >=0 && x < size && y < size) {
+        const arrow = board[x][y];
+        
+        yield arrow;
+        [x, y] = MOVE[arrow]([x, y]);
+      }
+    }
+  });
+};
+~~~~~~~~
+
+"Now that we have an iterable, we can transform the iterable of arrows into an iterable of positions." The Carpenter sketched quickly. "We'll need some common utilities. You'll find equivalents in a number of JavaScript libraries, but I'll quote those given in [JavaScript Allongé](https://leanpub.com/javascriptallongesix):"
+
+"For starters, `takeIterable` transforms an iterable into one that yields at most a fixed number of elements. It's handy for debugging. We'll use it to check that our `Game` is working as an iterable:"
+
+{:lang="js"}
+~~~~~~~~
+const takeIterable = (numberToTake, iterable) =>
+  ({
+    [Symbol.iterator]: function* () {
+      let remainingElements = numberToTake;
+      
+      for (let element of iterable) {
+        if (remainingElements-- <= 0) break;
+        yield element;
       }
     }
   });
 
-const forceAppend = (list1, list2) => {
-  if (isEmpty(list1)) {
-    return "FAIL!"
-  }
-  if (isEmpty(list1.cdr)) {
-    list1.cdr = list2;
-  }
-  else {
-    forceAppend(list1.cdr, list2);
-  }
-}
+Array.from(takeIterable(10, Game()))
+  //=>
+    ["↑","←","→","←","→","←","→","←","→","←"]
+~~~~~~~~
 
-Pair.from = (iterable) =>
-  (function interationToList (iteration) {
-    const {done, value} = iteration.next();
-    
-    return done ? EMPTY : Pair(value, interationToList(iteration));
-  })(iterable[Symbol.iterator]());
+"This doesn't actually end up in our solution, it's just to check our work as we go along. And you can find it in libraries, it's not something we need to reinvent whenever we work with iterables."
 
+"But now to the business. We want to take the arrows and convert them to positions. For that, we'll map the Game iterable to positions. A `statefulMap` is a lazy map that preserves state from iteration to iteration. That's what we need, because we need to know the current position to map each move to the next position."
+
+"Again, this is a standard idiom we can obtain from libraries, we don't reinvent the wheel. I'll show it here for clarity:"
+
+{:lang="js"}
+~~~~~~~~
+const statefulMapIterableWith = (fn, seed, iterable) =>
+  ({
+    [Symbol.iterator]: function* () {
+      let value,
+          state = seed;
+      
+      for (let element of iterable) {
+        [state, value] = fn(state, element);
+        yield value;
+      }
+    }
+  });
+  
+const indexed = statefulMapIterableWith(
+  (index, value) => {
+    return [index + 1, [index, value]]
+  },
+  0,
+  ["prince", "of", "darkness"])
+
+Array.from(indexed)
+  //=>
+    [[0,"prince"],[1,"of"],[2,"darkness"]]
+~~~~~~~~
+
+"Armed with this, it's straightforward to map an iterable of directions to an iterable of strings representing positions:"
+
+{:lang="js"}
+~~~~~~~~
+const positionsOf = (game) =>
+  statefulMapIterableWith(
+    (position, direction) => {
+      const MOVE = {
+        "←": ([x, y]) => [x - 1, y],
+        "→": ([x, y]) => [x + 1, y],
+        "↓": ([x, y]) => [x, y - 1],
+        "↑": ([x, y]) => [x, y + 1] 
+      };
+      const [x, y] =  MOVE[direction](position);
+      
+      return [position, `x: ${x}, y: ${y}`];
+    },
+    [0, 0],
+    game);
+
+Array.from(takeIterable(10, positionsOf(Game())))
+  //=>
+    ["x: -1, y: 0","x: 0, y: 1","x: -1, y: 0",
+     "x: 0, y: -1","x: 0, y: 1","x: 0, y: -1",
+     "x: 0, y: 1","x: 0, y: -1","x: 0, y: 1",
+     "x: 0, y: -1"]
+~~~~~~~~
+
+The Carpenter reflected. "Having turned our game loop into an iterable, we can now see that our problem of whether the game terminates is isomorphic to the problem of detecting whether the positions given ever repeat themselves: If the chequer ever returns to a position it has previously visited, it will cycle endlessly."
+
+"We could draw positions as nodes in a graph, connected by arcs representing the arrows. Detecting whether the game terminates is equivalent to detecting whether the graph contains a cycle."
+
+![The Tortoise and the Hare](images/tortoise-hare.png)
+
+"There's an old joke that a mathematician is someone who will take a five-minute problem, then spend an hour proving it is equivalent to another problem they have already solved. I approached this question in that spirit. Now that we have created an iterable of values that can be compared with `===`, I can show you this function:"
+
+{:lang="js"}
+~~~~~~~~
 const tortoiseAndHare = (iterable) => {
   const hare = iterable[Symbol.iterator]();
   let hareResult = (hare.next(), hare.next());
@@ -155,277 +261,36 @@ const tortoiseAndHare = (iterable) => {
   }
   return false;
 };
-
-tortoiseAndHare([1, 2, 3, 4, 5]);
-  //=> false
-  
-const oneToFive = Pair.from([1, 2, 3, 4, 5]);
-forceAppend(oneToFive, oneToFive.cdr.cdr);
-
-tortoiseAndHare(oneToFive);
-  //=> true
 ~~~~~~~~
 
-We have now refactored it into a function that operates on any iterable, not just one linked lists. It's classic "Duck Typed" Object-Orientation. So, how shall we put it to work?
+"A long time ago," The Carpenter explained, "Someone asked me a question in an interview. I have never forgotten the question, or the general form of the solution. The question was, *Given a linked list, detect whether it contains a cycle. Use constant space.*"
 
-## A Drunken Walk Across A Chequerboard
+"This is, of course, the most common solution, it is [Floyd's cycle-finding algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Tortoise_and_hare), although there is some academic dispute as to whether Robert Floyd actually discovered it or was misattributed by Knuth."
 
-Here's another job interview puzzle.[^yecch]
+"Thus, the solution to the game problem is:"
 
-[^yecch]: This book does not blindly endorse asking programmers to solve this or any abstract problem in a job interview.
-
-*Consider a finite checkerboard. On each square we randomly place an arrow pointing to one of its four sides. For convenience, we shall uniformly label the directions: N, S, E, and W. A chequer is placed randomly on the checkerboard. Each move consists of moving the red chequer one square in the direction of the arrow in the square it occupies. If the arrow should cause the chequer to move off the edge of the board, the game halts.*
-
-*The problem is this: The game board is hidden from us. A player moves the chequer, following the rules. As a player moves the chequer, he calls out the direction of movement, e.g. "N, E, N, S, N, E..." Write an algorithm that will determine whether the game halts, strictly from the called out directions, in finite time and space.*
-
-### the insight
-
-Our solution will rest on the observation that as the chequer follows a path, if it ever visits a square for a second time, it will cycle indefinitely without falling off the board. Otherwise, on a finite board, it must eventually fall off the board after at most visiting every square once.
-
-Therefore, if we think of this as detecting whether the chequer revisits a square in constant space, we can see this is isomorphic to detecting whether a linked list has a loop by checking to see whether it revisits the same node.
-
-Our algorithm will be to convert the called-out directions into positions. If the player halts the game, obviously we report that the game halts. If the chequer revists a square, we report that the game does not halt. And if we haven't detected that the chequer revisits a square, we continue to listen for more moves.
-
-### the game
-
-We'll start with the presumption that the game is an iterable. As we iterate over it, we are given letters. Let's write the game out:
-
-{:lang="javascript"}
+{:lang="js"}
 ~~~~~~~~
-const Game = (size =  Math.floor(Math.random() * 8) + 8) => {
-  const board = [];
-  
-  for (let i = 0; i < size; ++i) {
-    board[i] = [];
-    for (let j = 0; j < size; ++j) {
-      board[i][j] = '←→↓↑'[Math.floor(Math.random() * 4)];
-    }
-  }
-  const ARROW_TO_DIRECTION = {
-    "←": "W",
-    "→": "E",
-    "↓": "S",
-    "↑": "N"
-  };
-  const MOVE = {
-    "←": ([x, y]) => [x - 1, y],
-    "→": ([x, y]) => [x + 1, y],
-    "↓": ([x, y]) => [x, y - 1],
-    "↑": ([x, y]) => [x, y + 1] 
-  };
-  
-  let initialPosition = [
-    2 + Math.floor(Math.random() * (size - 4)), 
-    2 + Math.floor(Math.random() * (size - 4))
-  ];
-
-  return ({
-    [Symbol.iterator]: function* () {
-      let [x, y] = initialPosition;
-      
-      while (x >= 0 && y >=0 && x < size && y < size) {
-        const arrow = board[x][y];
-        
-        yield ARROW_TO_DIRECTION[arrow];
-        [x, y] = MOVE[arrow]([x, y]);
-      }
-    }
-  });
-};
-
-const takeIterable = (numberToTake, iterable) =>
-  ({
-    [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
-      let remainingElements = numberToTake;
-    
-      return {
-        next: () => {
-          let {done, value} = iterator.next();
-        
-          done = done || remainingElements-- <= 0;
-  
-          return ({done, value: done ? undefined : value});
-        }
-      }
-    }
-  });
-
-Array.from(takeIterable(10, game(8)))
-  //=> ["N","E","N","W","S","E","N","W","S","E"]
+  const terminates = (game) =>
+    tortoiseAndHare(positionsOf(game))
 ~~~~~~~~
 
-### stateful mapping
+"This solution makes use of iterables and a single utility function, `statefulMapIterableWith`. It also cleanly separates the mechanics of the game from the algorithm for detecting cycles in a graph."
 
-Our goal is to transform the iteration of directions into an iteration that the Tortoise and Hare can use to detect revisiting the same square. Our approach is to convert the directions into offsets representing the position of the chequer relative to its starting position.
+### the aftermath
 
-We'll use a `statefulMap`:
+The Carpenter sat down and waited. This type of solution provided an excellent opportunity to explore lazy versus eager evaluation, the performance of iterators versus native iteration, single responsibility design, and many other rich topics.
 
-{:lang="javascript"}
-~~~~~~~~
-const statefulMapIterableWith = (fn, seed, iterable) =>
-  ({
-    [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
-      let state = seed;
-      
-      return {
-        next: () => {
-          const {done, value} = iterator.next();
-    
-          return ({done, value: done ? undefined : state = fn(state, value)});
-        }
-      }
-    }
-  });
-  
-const rollingSum = statefulMapIterableWith((x, y) => x + y, 0, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+The Carpenter was confident that although nobody would write this exact code in production, prospective employers would also recognize that nobody would try to detect whether a chequer game terminates in production, either. It's all just a pretext for kicking off an interesting conversation, right?
 
-Array.from(rollingSum)
-  //=> [1,3,6,10,15,21,28,36,45,55]
-~~~~~~~~
+[![Time](images/time.jpg)](https://www.flickr.com/photos/jlhopgood/6795353385)
 
-Like a map, a `statefulMap` takes an iterable and maps it to a new iterable. And like a reduce, a `statefulMap` carries an intermediate state from element to element.
+Christine looked at the solution on the board, frowned, and glanced at the clock on the wall. "*Well, where has the time gone?*"
 
-Here's how we use `statefulMap` to convert an iterable of directions into an iterable of positions:
+"We at the Thing Software company are very grateful you made some time to visit with us, but alas, that is all the time we have today. If we wish to talk to you further, we'll be in touch."
 
-{:lang="javascript"}
-~~~~~~~~
-const callLeft = (fn, ...args) =>
-    (...remainingArgs) =>
-      fn(...args, ...remainingArgs);
-      
-const positions = callLeft(statefulMapIterableWith, [0, 0], (position, direction) => {
-  const MOVE = {
-    "W": ([x, y]) => [x - 1, y],
-    "E": ([x, y]) => [x + 1, y],
-    "S": ([x, y]) => [x, y - 1],
-    "N": ([x, y]) => [x, y + 1] 
-  };
-  
-  return MOVE[direction](position);
-});
+The Carpenter never did hear back from them, but the next day there was an email containing a generous contract from Friends of Ghosts ("FOG"), a codename for a stealth startup doing interesting work, and the Thing interview was forgotten.
 
-Array.from(takeIterable(10, positionsOf(Game(8))))
-  //=> [[-1,0],[-2,0],[-3,0],[-3,-1],[-3,-2],[-3,-1],[-3,-2],[-3,-1],[-3,-2],[-3,-1]]
-~~~~~~~~
+Some time later, The Carpenter ran into Bob Plissken at a local technology meet-up. "John! What happened at Thing?" Bob wanted to know, "I asked them what they thought of you, and all they would say was, *Writes unreadable code*. I thought it was a lock! I thought you'd finally make your escape from New York."
 
-### the solution
-
-So. We can take a `Game` instance and produce an iterable that iterates over arrays representing relative positions. If it terminates on its own, the game obviously terminates. And if it repeats itself, the game does not terminate.
-
-Our `tortoiseAndHare`  function takes an iterable and detects this for us, but it insists on comparing elements with `===`. That doesn't work for arrays, so let's improve our algorithm slightly and apply it to our positions:
-
-{:lang="javascript"}
-~~~~~~~~
-const tortoiseAndHare = (iterable, isSame = ((x, y) => x === y)) => {
-  const hare = iterable[Symbol.iterator]();
-  let hareResult = (hare.next(), hare.next());
-  
-  for (let tortoiseValue of iterable) {
-    
-    hareResult = hare.next();
-    
-    if (hareResult.done) {
-      return false;
-    }
-    if (isSame(tortoiseValue, hareResult.value)) {
-      return true;
-    }
-    
-    hareResult = hare.next();
-    
-    if (hareResult.done) {
-      return false;
-    }
-    if (isSame(tortoiseValue, hareResult.value)) {
-      return true;
-    }
-  }
-  return false;
-};
-  
-const terminates = (game) =>
-  tortoiseAndHare(positionsOf(game), (t, h) => t[0] === h[0] && t[1] === h[1])
-  
-terminates(Game(100))
-~~~~~~~~
-
-### preliminary conclusion
-
-Untangling the mechanism of following a linked list from the algorithm of searching for a loop allows us to repurpose the Tortoise and Hare algorithm to solve a question about a path looping.
-
-### no-charge extra conclusion
-
-Can we also refactor the "Teleporting Turtle" algorithm to take an iterable? If so, we should be able to swap algorithms for our game termination detection without rewriting everything in sight. Let's try it:
-
-We start with:
-
-{:lang="javascript"}
-~~~~~~~~
-const teleportingTurtle = (list) => {
-  let speed = 1,
-      rabbit = list,
-      turtle = rabbit;
-  
-  while (true) {
-    for (let i = 0; i <= speed; i += 1) {
-      rabbit = rabbit.rest;
-      if (rabbit == null) {
-        return false;
-      }
-      if (rabbit === turtle) {
-        return true;
-      }
-    }
-    turtle = rabbit;
-    speed *= 2;
-  }
-  return false;
-};
-~~~~~~~~
-
-And refactor it to become:
-
-{:lang="javascript"}
-~~~~~~~~
-const teleportingTurtle = (iterable, isSame = ((x, y) => x === y)) => {
-  const hare = iterable[Symbol.iterator]();
-  let hareResult = hare.next(),
-      speed = 1;
-  
-  for (let tortoiseResult of iterable) {
-    for (let i = 0; i <= speed; i += 1) {
-      hareResult = hare.next();
-      if (hareResult.done) {
-        return false;
-      }
-      if (isSame(tortoiseResult, hareResult.value)) {
-        return true;
-      }
-    }
-    turtle = rabbit;
-    speed *= 2;
-  }
-  return false;
-};
-~~~~~~~~
-
-Now we can plug it into our termination detector:
-
-{:lang="javascript"}
-~~~~~~~~
-const terminates = (game) =>
-  teleportingTurtle(positionsOf(game), (t, h) => t[0] === h[0] && t[1] === h[1])
-  
-terminates(Game(4))
-  //=> true
-terminates(Game(4))
-  //=> false
-terminates(Game(4))
-  //=> false
-terminates(Game(4))
-  //=> true
-~~~~~~~~
-
-Refactoring an algorithm to work with iterables allows us to use the same algorithm to solve different problems, and to swap algorithms for the same problem. This is natural, we have created an abstraction that allows us to plug different items into either side of its interface.
+The Carpenter smiled. "I forgot about them, it's been a while. So, do They Live?"
