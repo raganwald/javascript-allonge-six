@@ -143,11 +143,11 @@ const Game = (size = 8) => {
 
 "Now that we have an iterable, we can transform the iterable of arrows into an iterable of positions." The Carpenter sketched quickly. "We'll need some common utilities. You'll find equivalents in a number of JavaScript libraries, but I'll quote those given in [JavaScript Allongé](https://leanpub.com/javascriptallongesix):"
 
-"For starters, `takeIterable` transforms an iterable into one that yields at most a fixed number of elements. It's handy for debugging. We'll use it to check that our `Game` is working as an iterable:"
+"For starters, `takeFromCollection` transforms an iterable into one that yields at most a fixed number of elements. It's handy for debugging. We'll use it to check that our `Game` is working as an iterable:"
 
 {:lang="js"}
 ~~~~~~~~
-const takeIterable = (numberToTake, iterable) =>
+const takeFromCollection = (numberToTake, iterable) =>
   ({
     [Symbol.iterator]: function* () {
       let remainingElements = numberToTake;
@@ -159,7 +159,7 @@ const takeIterable = (numberToTake, iterable) =>
     }
   });
 
-Array.from(takeIterable(10, Game()))
+Array.from(takeFromCollection(10, Game()))
   //=>
     ["↑","←","→","←","→","←","→","←","→","←"]
 ~~~~~~~~
@@ -217,7 +217,7 @@ const positionsOf = (game) =>
     [0, 0],
     game);
 
-Array.from(takeIterable(10, positionsOf(Game())))
+Array.from(takeFromCollection(10, positionsOf(Game())))
   //=>
     ["x: -1, y: 0","x: 0, y: 1","x: -1, y: 0",
      "x: 0, y: -1","x: 0, y: 1","x: 0, y: -1",

@@ -405,7 +405,7 @@ Well, generators *are* iterators. Let's prove it. Here is our `Number` iterable 
 const firstIterable = (iterable) =>
   iterable[Symbol.iterator]().next().value;
   
-const filterIterableWith = (fn, iterable) =>
+const filterCollectionWith = (fn, iterable) =>
   ({
     [Symbol.iterator]: () => {
       const iterator = iterable[Symbol.iterator]();
@@ -421,7 +421,7 @@ const filterIterableWith = (fn, iterable) =>
     }
   });
 
-const mapIterableWith = (fn, iterable) =>
+const mapCollectionWith = (fn, iterable) =>
   ({
     [Symbol.iterator]: () => {
       const iterator = iterable[Symbol.iterator]();
@@ -445,13 +445,13 @@ const Numbers = {
   }
 }
 
-const Squares = mapIterableWith((n) => n * n, Numbers);
+const Squares = mapCollectionWith((n) => n * n, Numbers);
 
-const SquaresStrings = mapIterableWith((n) => `${n}`, Squares);
+const SquaresStrings = mapCollectionWith((n) => `${n}`, Squares);
 
-const Palindromes = filterIterableWith((s) => s === reverse(s), SquaresStrings)
+const Palindromes = filterCollectionWith((s) => s === reverse(s), SquaresStrings)
 
-const WithAtLeastFourDigits = filterIterableWith((s) => s.length > 3, Palindromes)
+const WithAtLeastFourDigits = filterCollectionWith((s) => s.length > 3, Palindromes)
 
 firstIterable(WithAtLeastFourDigits)
   //=> 10201

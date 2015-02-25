@@ -386,7 +386,7 @@ const Numbers = {
 }
 ~~~~~~~~
 
-There are useful things we can do with iterables representing an infinite number of elements. Before we point out something we can do with them, let's point out what we can't do with them:
+There are useful things we can do with iterables representing an infinitely large collection. But let's point out what we can't do with them:
 
 {:lang="js"}
 ~~~~~~~~
@@ -399,14 +399,79 @@ firstAndSecondElement(...Numbers)
 
 Attempting to spread an infinite iterable into an array is always going to fail.
 
-We can look at useful things to do with both infinite and finite iterables. But first, let's define some operations on iterables. Here's `mapIterableWith`, it takes any iterable and returns an iterable representing a mapping over the original iterable:
+### ordered collections
+
+The iterables we're discussing represent *ordered collections*. One of the semantic properties of an ordered collection is that every time you iterate over it, you get its elements in order, from the beginning. For example:
 
 {:lang="js"}
 ~~~~~~~~
-const mapIterableWith = (fn, iterable) =>
+const abc = ["a", "b", "c"];
+
+for (let i of abc) {
+  console.log(i)
+}
+  //=>
+    a
+    b
+    c
+
+for (let i of abc) {
+  console.log(i)
+}
+  //=>
+    a
+    b
+    c
+~~~~~~~~
+
+This is accomplished with our own collections by returning a brand new iterator every time we call `[Symbol.iterator]`, and ensuring that our iterators start at the beginning and work forward.
+
+Iterables needn't represent ordered collections. We could make an infinite iterable representing random numbers:
+
+{:lang="js"}
+~~~~~~~~
+const RandomNumbers = {
+  [Symbol.iterator]: () =>
+    ({
+      next () {
+        return {value: Math.random()};
+      }
+    })
+}
+
+for (let i of RandomNumbers) {
+  console.log(i)
+}
+  //=>
+    0.494052127469331
+    0.835459444206208
+    0.1408337657339871
+    ...
+
+for (let i of RandomNumbers) {
+  console.log(i)
+}
+  //=>
+    0.7845381607767195
+    0.4956772483419627
+    0.20259276474826038
+    ...
+~~~~~~~~
+
+Whether you work with the same iterator over and over, or get a fresh iterable every time, you are always going to get fresh random numbers. Therefore, `RandomNumbers` is not an ordered collection.
+
+Right now, we're just looking at ordered collections. To reiterate (hah), an ordered collection represents a (possibly infinite) collection of elements that are in some order. Every time we get an iterator from an ordered collection, we start iterating from the beginning.
+
+### operations on ordered collections
+
+Let's define some operations on ordered collections. Here's `mapIterableWith`, it takes an ordered collection, and returns another ordered collection representing a mapping over the original:
+
+{:lang="js"}
+~~~~~~~~
+const mapIterableWith = (fn, collection) =>
   ({
     [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
+      const iterator = collection[Symbol.iterator]();
       
       return {
         next: () => {
@@ -419,11 +484,84 @@ const mapIterableWith = (fn, iterable) =>
   });
 ~~~~~~~~
 
-This illustrates the general pattern of working with iterables: An *iterable* is an object, representing a collection, with a `[Symbol.iterator]` method, that returns an iteration over the elements of a collection. The iteration over elements is an *iterator*. An iterator is also an object, but with a `.next()` method taht is invoked repeatedly to obtain the elements in order.
+This illustrates the general pattern of working with ordered collections: We make them *iterables*, meaning that they have a `[Symbol.iterator]` method, that returns an *iterator*. An iterator is also an object, but with a `.next()` method that is invoked repeatedly to obtain the elements in order.
 
-Many operations on iterables return iterables. Our `mapIterableWith` returns an iterable. But the iterable it returns is not the same kind of collection as the iterable it consumes. If we give it a `Stack3`, we don't get a stack back. We just get an iterable. (If we want a specific kind of collection, we have to gather the iterable into a collection. We'll see how to do that below.)
+Many operations on ordered collections return another ordered collection. They do so by taking care to iterate over a result freshly every time we get an iterator for them. Consider this example for `mapIterableWith`:
 
-Here are two more operations on iterables, `filterIterableWith` and `untilIterable`:
+{:lang="js"}
+~~~~~~~~
+const Evens = mapIterableWith((x) => 2 * x, Numbers);
+
+for (let i of Evens) {
+  console.log(i)
+}
+  //=>
+    0
+    2
+    4
+    ...
+
+for (let i of Evens) {
+  console.log(i)
+}
+  //=>
+    0
+    2
+    4
+    ...
+~~~~~~~~
+
+`Numbers` is an ordered collection. We invoke `mapIterableWith((x) => 2 * x, Numbers)` and get `Evens`. `Evens` works just as if we'd written this:
+
+{:lang="js"}
+~~~~~~~~
+const Evens =  {
+  [Symbol.iterator]: () => {
+    const iterator = Numbers[Symbol.iterator]();
+    
+    return {
+      next: () => {
+        const {done, value} = iterator.next();
+  
+        return ({done, value: done ? undefined : 2 *value});
+      }
+    }
+  }
+};
+~~~~~~~~
+
+Every time we write `for (let i of Evens)`, JavaScript calls `Evens[Symbol.iterator]()`. That in turns means it executes `const iterator = Numbers[Symbol.iterator]();` every time we write `for (let i of Evens)`, and that means that `iterator` starts at the beginning of `Numbers`.
+
+So, `Evens` is also an ordered collection, because it starts at the beginnng each time we get a fresh iterator over it. Thus, `mapIterableWith` has the property of preserving the collection semantics of the iterable we give it. So we call it a *collection operation*.
+
+Mind you, we can also map non-collection iterables, like `RandomNumbers`:
+
+{:lang="js"}
+~~~~~~~~  
+const ZeroesToNines = mapIterableWith((n) => Math.floor(10 * limit), RandomNumbers);
+
+for (let i of ZeroesToNines) {
+  console.log(i)
+}
+  //=>
+    5
+    1
+    9
+    ...
+
+for (let i of ZeroesToNines) {
+  console.log(i)
+}
+  //=>
+    3
+    6
+    1
+    ...
+~~~~~~~~
+
+`mapIterableWith` can get a new iterator from `RandomNumbers` each time we iterate over `ZeroesToNines`, but if `RandomNumbers` doesn't behave like an ordered collection, that's not `mapIterableWith`'s fault. `RandomNumbers` is a *stream*, not an ordered collection, and thus `mapIterableWith` returns another iterable behaving like a stream.
+
+Here are two more operations on ordered collections, `filterIterableWith` and `untilIterableWith`:
 
 {:lang="js"}
 ~~~~~~~~
@@ -443,7 +581,7 @@ const filterIterableWith = (fn, iterable) =>
     }
   });
   
-const untilIterable (fn, iterable) =>
+const untilIterableWith = (fn, iterable) =>
   ({
     [Symbol.iterator]: () => {
       const iterator = iterable[Symbol.iterator]();
@@ -461,43 +599,35 @@ const untilIterable (fn, iterable) =>
   });
 ~~~~~~~~
 
-And here's a computation performed using operations on iterables: We'll print the odd squares that are less than or equal to one hundred:
+Like `mapIterableWith`, they preserve the ordered collection semantics of whatever you give them.
+
+And here's a computation performed using operations on ordered collections: We'll create an ordered collection of square numbers that end in one and are less than 1,000:
 
 {:lang="js"}
 ~~~~~~~~
-const compose = (fn, ...rest) =>
-  (...args) =>
-    (rest.length === 0)
-      ? fn(...args)
-      : fn(compose(...rest)(...args))
+const Squares = mapIterableWith((x) => x * x, Numbers);
+const EndWithOne = filterIterableWith((x) => x % 10 === 1, Squares);
+const UpTo1000 = untilIterableWith((x) => (x > 1000), EndWithOne);
 
-const callLeft = (fn, ...args) =>
-    (...remainingArgs) =>
-      fn(...args, ...remainingArgs);
-
-const squaresOf = callLeft(mapIterableWith, (x) => x * x);
-const oddsOf = callLeft(mapIterableWith, (x) => x % 2 === 1);
-const untilTooBig = callLeft(until, (x) => x > 100);
-
-for (let s of compose(untilTooBig, oddsOf, squaresOf)(Numbers)) {
-  console.log(s)
-}
+[...UpTo1000]
   //=>
-    1
-    9
-    25
-    49
-    81
+    [1,81,121,361,441,841,961]
+    
+[...UpTo1000]
+  //=>
+    [1,81,121,361,441,841,961]
 ~~~~~~~~
 
-For completeness, here are two more handy iterable functions. `firstIterable` returns the first element of an iterable (if it has one), and `restIterable` returns an iterable that iterates over all but the first element of an iterable. They are equivalent to destructuring arrays with `[first, ...rest]`:
+As we expect from an ordered collection, each time we iterate over `UpTo1000`, we begin at the beginning.
+
+For completeness, here are two more handy iterable functions. `firstOfIterable` returns the first element of an iterable (if it has one), and `restOfIterable` returns an iterable that iterates over all but the first element of an iterable. They are equivalent to destructuring arrays with `[first, ...rest]`:
 
 {:lang="js"}
 ~~~~~~~~
-const firstIterable = (iterable) =>
+const firstOfIterable = (iterable) =>
   iterable[Symbol.iterator]().next().value;
 
-const restIterable = (iterable) => 
+const restOfIterable = (iterable) => 
   ({
     [Symbol.iterator]: () => {
       const iterator = iterable[Symbol.iterator]();
@@ -508,6 +638,8 @@ const restIterable = (iterable) =>
   });
 ~~~~~~~~
 
+like our other operations, `restOfIterable` preserves the ordered collection semantics of its argument.
+
 ### from
 
 Having iterated over a collection, are we limited to `for..do` and/or gathering the elements in an array literal and/or gathering the elements into the parameters of a function? No, of course not, we can do anything we like with them.
@@ -516,8 +648,8 @@ One useful thing is to write a `.from` function that gathers an iterable into a 
 
 {:lang="js"}
 ~~~~~~~~
-Array.from(compose(untilTooBig, oddsOf, squaresOf)(Numbers))
-  //=> [1, 9, 25, 49, 81]
+Array.from(UpTo1000)
+  //=> [1,81,121,361,441,841,961]
 ~~~~~~~~
 
 We can do the same with our own collections. As you recall, functions are mutable objects. And we can assign properties to functions with a `.` or even `[` and `]`. And if we assign a function to a property, we've created a method.
@@ -547,9 +679,9 @@ Now we can go "end to end," If we want to map a linked list of numbers to a link
 
 {:lang="js"}
 ~~~~~~~~
-const numberList = Pair1.from(untilIterable((x) => x > 10, Numbers));
+const numberList = Pair1.from(untilIterableWith((x) => x > 10, Numbers));
 
-Pair1.from(squaresOf(numberList))
+Pair1.from(Squares)
   //=> {"first":0,
         "rest":{"first":1,
                 "rest":{"first":4,
@@ -601,9 +733,9 @@ const mapIterableWith = (fn, iterable) =>
         }
       }
     }
-  }, LazyIterable);
+  }, LazyCollectionCommon);
   
-const reduceIterableWith = (fn, seed, iterable) => {
+const reduceCollectionWith = (fn, seed, iterable) => {
   const iterator = iterable[Symbol.iterator]();
   let iterationResult,
       accumulator = seed;
@@ -628,9 +760,9 @@ const filterIterableWith = (fn, iterable) =>
         }
       }
     }
-  }, LazyIterable);
+  }, LazyCollectionCommon);
 
-const untilIterable = (fn, iterable) =>
+const untilIterableWith = (fn, iterable) =>
   extend({
     [Symbol.iterator]: () => {
       const iterator = iterable[Symbol.iterator]();
@@ -645,12 +777,12 @@ const untilIterable = (fn, iterable) =>
         }
       }
     }
-  }, LazyIterable);
+  }, LazyCollectionCommon);
   
-const firstIterable = (iterable) =>
+const firstOfIterable = (iterable) =>
   iterable[Symbol.iterator]().next().value;
 
-const restIterable = (iterable) => 
+const restOfIterable = (iterable) => 
   extend({
     [Symbol.iterator]: () => {
       const iterator = iterable[Symbol.iterator]();
@@ -658,9 +790,9 @@ const restIterable = (iterable) =>
       iterator.next();
       return iterator;
     }
-  }, LazyIterable);
+  }, LazyCollectionCommon);
   
-const takeIterable = (numberToTake, iterable) =>
+const takeFromCollection = (numberToTake, iterable) =>
   extend({
     [Symbol.iterator]: () => {
       const iterator = iterable[Symbol.iterator]();
@@ -676,14 +808,14 @@ const takeIterable = (numberToTake, iterable) =>
         }
       }
     }
-  }, LazyIterable);
+  }, LazyCollectionCommon);
     
-const LazyIterable = {
+const LazyCollectionCommon = {
    map: function (fn) {
      return mapIterableWith(fn, this);
    },
    reduce: function (fn, seed) {
-     return reduceIterableWith(fn, seed, this);
+     return reduceCollectionWith(fn, seed, this);
    },
    filter: function (fn) {
      return filterIterableWith(fn, this);
@@ -692,16 +824,16 @@ const LazyIterable = {
      return filterIterableWith(fn, this).first();
    },
    first: function () {
-     return firstIterable(this);
+     return firstOfIterable(this);
    },
    rest: function () {
-     return restIterable(this);
+     return restOfIterable(this);
    },
    until: function (numberToTake) {
-     return untilIterable(numberToTake, this);
+     return untilIterableWith(numberToTake, this);
    },
    take: function (numberToTake) {
-     return takeIterable(numberToTake, this);
+     return takeFromCollection(numberToTake, this);
    }
 }
 
@@ -735,7 +867,7 @@ const Pair = (car, cdr = EMPTY) =>
         }
       }
     }
-  }, LazyIterable);
+  }, LazyCollectionCommon);
 
 Pair.from = (iterable) =>
   (function interationToList (iteration) {
@@ -782,7 +914,7 @@ const Stack = () =>
         }
       }
     }
-  }, LazyIterable);
+  }, LazyCollectionCommon);
   
 Stack.from = function (iterable) {
   const stack = this();
@@ -810,7 +942,7 @@ Pair.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 //=> 220
 ~~~~~~~~
 
-### lazy iterables {#lazy-iterables}
+### lazy collection operations {#lazy-iterables}
 
 "Laziness" is a very pejorative word when applied to people. But it can be an excellent strategy for efficiency in algorithms. Let's be precise: *Laziness* is the characteristic of not doing any work until you know you need the result of the work.
 
@@ -936,11 +1068,11 @@ const firstCubeOver1234 =
 //=> 1331
 ~~~~~~~~
 
-Balanced against their flexibility, our "lazy iterables" use structure sharing. If we mutate a collection after taking an iterable, we might get an unexpected result. This is why "pure" functional languages like Haskell combine lazy semantics with immutable collections, and why even "impure" languages like Clojure emphasize the use of immutable collections.
+Balanced against their flexibility, our "lazy collections" use structure sharing. If we mutate a collection after taking an iterable, we might get an unexpected result. This is why "pure" functional languages like Haskell combine lazy semantics with immutable collections, and why even "impure" languages like Clojure emphasize the use of immutable collections.
 
-### eager iterables
+### eager collections
 
-Arrays have *eager* semantics for `.map`, `.filter`, `.rest` and `.take`. They return another array, not a lazy iterable. Whereas, the `Stack` and `Pair` collections we wrote have *lazy* semantics: They return a lazy iterable and when we want a true collection, we have to gather the elements into an array or another collection using `.from`:
+Arrays have *eager* semantics for `.map`, `.filter`, `.rest` and `.take`. They return another array, not a lazy collection. Whereas, the `Stack` and `Pair` collections we wrote have *lazy* semantics: They return a lazy collection. When we want a true collection, we have to gather the elements into an array or another collection using `.from`:
 
 {:lang="js"}
 ~~~~~~~~
@@ -964,7 +1096,7 @@ const EagerIterable = (gatherable) =>
        return gatherable.from(mapIterableWith(fn, this));
      },
      reduce: function (fn, seed) {
-       return reduceIterableWith(fn, seed, this);
+       return reduceCollectionWith(fn, seed, this);
      },
      filter: function (fn) {
        return gatherable.from(filterIterableWith(fn, this));
@@ -973,13 +1105,13 @@ const EagerIterable = (gatherable) =>
        return filterIterableWith(fn, this).first();
      },
      first: function () {
-       return firstIterable(this);
+       return firstOfIterable(this);
      },
      rest: function () {
-       return gatherable.from(restIterable(this));
+       return gatherable.from(restOfIterable(this));
      },
      take: function (numberToTake) {
-       return gatherable.from(takeIterable(numberToTake, this));
+       return gatherable.from(takeFromCollection(numberToTake, this));
      }
   })
   
@@ -1037,10 +1169,10 @@ EagerStack
 //=> {"array":[10,8,6,4,2],"index":4}
 ~~~~~~~~
 
-And we can go back and forth between them. For example, if we want a lazy map of an array, we can use the `mapIterableWith` function to return a lazy iterable. And as we just noted, we can use `.from` to eagerly gather any iterable into a collection.
+And we can go back and forth between them. For example, if we want a lazy map of an array, we can use the `mapIterableWith` function to return a lazy collection. And as we just noted, we can use `.from` to eagerly gather any iterable into a collection.
 
 ### summary
 
-Iterators are a JavaScript feature that allow us to separate the concerns of how to iterate over a collection from what we want to do with the elements of a collection. *Iterable* collections can be iterated over or gathered into another collection, either lazily or eagerly.
+Iterators are a JavaScript feature that allow us to separate the concerns of how to iterate over a collection from what we want to do with the elements of a collection. *Iterable* ordered collections can be iterated over or gathered into another collection, either lazily or eagerly.
 
 Separating concerns with iterators speaks to JavaScript's fundamental nature: It's a language that *wants* to compose functionality out of small, singe-responsibility pieces, whether those pieces are functions or objects built out of functions.
