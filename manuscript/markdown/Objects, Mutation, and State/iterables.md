@@ -688,7 +688,7 @@ Pair1.from(Squares)
                         "rest":{ ...
 ~~~~~~~~
 
-### why operations on iterables?
+### collection methods
 
 The operations on iterables are interesting, but let's reiterate why we care: In JavaScript, we build single-responsibility objects, and single-responsibility functions, and we compose these together to build more full-featured objects and algorithms.
 
@@ -702,9 +702,13 @@ But we end up recreating the same bits of code in each `.map` method we create, 
 
 This "fat object" style springs from a misunderstanding: When we say a collection should know how to perform a map over itself, we don't need for the collection to handle every single detail. That would be like saying that when we ask a bank teller for some cash, they personally print every bank note.
 
+### implementing methods with iteration
+
 Object-oriented collections should definitely have methods for mapping, reducing, filtering, and finding. And they should know how to accomplish the desired result, but they should do so by delegating as much of the work as possible to operations like `mapIterableWith`.
 
-Composing an iterable with a `mapIterable` method cleaves the responsibility for knowing how to map from the fiddly bits of how a linked list differs from a stack. And if we want to create convenience methods, we can reuse common pieces:
+Composing an iterable with a `mapIterable` method cleaves the responsibility for knowing how to map from the fiddly bits of how a linked list differs from a stack. And if we want to create convenience methods, we can reuse common pieces.
+
+Here is `LazyCollection`, a mixin we can use with any ordered collection that is also an iterable:
 
 {:lang="js"}
 ~~~~~~~~
@@ -719,123 +723,160 @@ const extend = function (consumer, ...providers) {
   }
   return consumer
 };
-  
-const mapIterableWith = (fn, iterable) =>
-  extend({
-    [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
-      
-      return {
-        next: () => {
-          const {done, value} = iterator.next();
-    
-          return ({done, value: done ? undefined : fn(value)});
+
+const LazyCollection = {
+  map(fn) {
+    return extend({
+      [Symbol.iterator]: () => {
+        const iterator = this[Symbol.iterator]();
+
+        return {
+          next: () => {
+            const {
+              done, value
+            } = iterator.next();
+
+            return ({
+              done, value: done ? undefined : fn(value)
+            });
+          }
         }
       }
+    }, LazyCollection)
+    return mapIterableWith(fn);
+  },
+
+  reduce(fn, seed) {
+    const iterator = this[Symbol.iterator]();
+    let iterationResult,
+    accumulator = seed;
+
+    while ((iterationResult = iterator.next(), !iterationResult.done)) {
+      accumulator = fn(accumulator, iterationResult.value);
     }
-  }, LazyCollectionCommon);
-  
-const reduceCollectionWith = (fn, seed, iterable) => {
-  const iterator = iterable[Symbol.iterator]();
-  let iterationResult,
-      accumulator = seed;
-  
-  while ((iterationResult = iterator.next(), !iterationResult.done)) {
-    accumulator = fn(accumulator, iterationResult.value);
+    return accumulator;
+  },
+
+  filter(fn) {
+    return extend({
+      [Symbol.iterator]: () => {
+        const iterator = this[Symbol.iterator]();
+
+        return {
+          next: () => {
+            do {
+              const {
+                done, value
+              } = iterator.next();
+            } while (!done && !fn(value));
+            return {
+              done, value
+            };
+          }
+        }
+      }
+    }, LazyCollection)
+  },
+
+  find(fn) {
+    return extend({
+      [Symbol.iterator]: () => {
+        const iterator = this[Symbol.iterator]();
+
+        return {
+          next: () => {
+            let {
+              done, value
+            } = iterator.next();
+
+            done = done || fn(value);
+
+            return ({
+              done, value: done ? undefined : value
+            });
+          }
+        }
+      }
+    }, LazyCollection)
+  },
+
+  until(fn) {
+    return extend({
+      [Symbol.iterator]: () => {
+        const iterator = this[Symbol.iterator]();
+
+        return {
+          next: () => {
+            let {
+              done, value
+            } = iterator.next();
+
+            done = done || fn(value);
+
+            return ({
+              done, value: done ? undefined : value
+            });
+          }
+        }
+      }
+    }, LazyCollection)
+  },
+
+  first() {
+    return this[Symbol.iterator]().next().value;
+  },
+
+  rest() {
+    return extend({
+      [Symbol.iterator]: () => {
+        const iterator = this[Symbol.iterator]();
+
+        iterator.next();
+        return iterator;
+      }
+    }, LazyCollection);
+  },
+
+  take(numberToTake) {
+    return extend({
+      [Symbol.iterator]: () => {
+        const iterator = this[Symbol.iterator]();
+        let remainingElements = numberToTake;
+
+        return {
+          next: () => {
+            let {
+              done, value
+            } = iterator.next();
+
+            done = done || remainingElements-- <= 0;
+
+            return ({
+              done, value: done ? undefined : value
+            });
+          }
+        }
+      }
+    }, LazyCollection);
   }
-  return accumulator;
-};
-  
-const filterIterableWith = (fn, iterable) =>
-  extend({
-    [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
-      
-      return {
-        next: () => {
-          do {
-            const {done, value} = iterator.next();
-          } while (!done && !fn(value));
-          return {done, value};
-        }
-      }
-    }
-  }, LazyCollectionCommon);
-
-const untilIterableWith = (fn, iterable) =>
-  extend({
-    [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
-    
-      return {
-        next: () => {
-          let {done, value} = iterator.next();
-        
-          done = done || fn(value);
-  
-          return ({done, value: done ? undefined : value});
-        }
-      }
-    }
-  }, LazyCollectionCommon);
-  
-const firstOfIterable = (iterable) =>
-  iterable[Symbol.iterator]().next().value;
-
-const restOfIterable = (iterable) => 
-  extend({
-    [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
-      
-      iterator.next();
-      return iterator;
-    }
-  }, LazyCollectionCommon);
-  
-const takeFromCollection = (numberToTake, iterable) =>
-  extend({
-    [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
-      let remainingElements = numberToTake;
-    
-      return {
-        next: () => {
-          let {done, value} = iterator.next();
-        
-          done = done || remainingElements-- <= 0;
-  
-          return ({done, value: done ? undefined : value});
-        }
-      }
-    }
-  }, LazyCollectionCommon);
-    
-const LazyCollectionCommon = {
-   map: function (fn) {
-     return mapIterableWith(fn, this);
-   },
-   reduce: function (fn, seed) {
-     return reduceCollectionWith(fn, seed, this);
-   },
-   filter: function (fn) {
-     return filterIterableWith(fn, this);
-   },
-   find: function (fn) {
-     return filterIterableWith(fn, this).first();
-   },
-   first: function () {
-     return firstOfIterable(this);
-   },
-   rest: function () {
-     return restOfIterable(this);
-   },
-   until: function (numberToTake) {
-     return untilIterableWith(numberToTake, this);
-   },
-   take: function (numberToTake) {
-     return takeFromCollection(numberToTake, this);
-   }
 }
+~~~~~~~~
+
+For eample:
+
+{:lang="js"}
+~~~~~~~~
+const Numbers = extend({
+  [Symbol.iterator]: () => {
+    let n = 0;
+    
+    return {
+      next: () =>
+        ({done: false, value: n++})
+    }
+  }
+}, LazyCollection);
+
 
 // Pair, a/k/a linked lists
 
@@ -867,7 +908,7 @@ const Pair = (car, cdr = EMPTY) =>
         }
       }
     }
-  }, LazyCollectionCommon);
+  }, LazyCollection);
 
 Pair.from = (iterable) =>
   (function interationToList (iteration) {
@@ -914,7 +955,7 @@ const Stack = () =>
         }
       }
     }
-  }, LazyCollectionCommon);
+  }, LazyCollection);
   
 Stack.from = function (iterable) {
   const stack = this();
@@ -1070,109 +1111,8 @@ const firstCubeOver1234 =
 
 Balanced against their flexibility, our "lazy collections" use structure sharing. If we mutate a collection after taking an iterable, we might get an unexpected result. This is why "pure" functional languages like Haskell combine lazy semantics with immutable collections, and why even "impure" languages like Clojure emphasize the use of immutable collections.
 
-### eager collections
-
-Arrays have *eager* semantics for `.map`, `.filter`, `.rest` and `.take`. They return another array, not a lazy collection. Whereas, the `Stack` and `Pair` collections we wrote have *lazy* semantics: They return a lazy collection. When we want a true collection, we have to gather the elements into an array or another collection using `.from`:
-
-{:lang="js"}
-~~~~~~~~
-const evenSquares = Pair.from(
-  Pair.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    .map((x) => x * x)
-    .filter((x) => x % 2 == 0)
-  );
-
-[...evenSquares]
-  //=> [4,16,36,64,100]
-~~~~~~~~
-
-Or if we want to design a collection with eager semantics for `.map`, `.filter`, `.rest` and `.take`, we can do that:
-
-{:lang="js"}
-~~~~~~~~
-const EagerIterable = (gatherable) =>
-  ({
-     map: function (fn) {
-       return gatherable.from(mapIterableWith(fn, this));
-     },
-     reduce: function (fn, seed) {
-       return reduceCollectionWith(fn, seed, this);
-     },
-     filter: function (fn) {
-       return gatherable.from(filterIterableWith(fn, this));
-     },
-     find: function (fn) {
-       return filterIterableWith(fn, this).first();
-     },
-     first: function () {
-       return firstOfIterable(this);
-     },
-     rest: function () {
-       return gatherable.from(restOfIterable(this));
-     },
-     take: function (numberToTake) {
-       return gatherable.from(takeFromCollection(numberToTake, this));
-     }
-  })
-  
-const EagerStack = () =>
-  extend({
-    array: [],
-    index: -1,
-    push: function (value) {
-      return this.array[this.index += 1] = value;
-    },
-    pop: function () {
-      const value = this.array[this.index];
-    
-      this.array[this.index] = undefined;
-      if (this.index >= 0) { 
-        this.index -= 1 
-      }
-      return value
-    },
-    isEmpty: function () {
-      return this.index < 0
-    },
-    [Symbol.iterator]: function () {
-      let iterationIndex = this.index;
-      
-      return {
-        next: () => {
-          if (iterationIndex > this.index) {
-            iterationIndex = this.index;
-          }
-          if (iterationIndex < 0) {
-            return {done: true};
-          }
-          else {
-            return {done: false, value: this.array[iterationIndex--]}
-          }
-        }
-      }
-    }
-  }, EagerIterable(EagerStack));
-  
-EagerStack.from = function (iterable) {
-  const stack = this();
-  
-  for (let element of iterable) {
-    stack.push(element);
-  }
-  return stack;
-}
-
-EagerStack
-  .from([1, 2, 3, 4, 5])
-  .map((x) => x * 2)
-  
-//=> {"array":[10,8,6,4,2],"index":4}
-~~~~~~~~
-
-And we can go back and forth between them. For example, if we want a lazy map of an array, we can use the `mapIterableWith` function to return a lazy collection. And as we just noted, we can use `.from` to eagerly gather any iterable into a collection.
-
 ### summary
 
-Iterators are a JavaScript feature that allow us to separate the concerns of how to iterate over a collection from what we want to do with the elements of a collection. *Iterable* ordered collections can be iterated over or gathered into another collection, either lazily or eagerly.
+Iterators are a JavaScript feature that allow us to separate the concerns of how to iterate over a collection from what we want to do with the elements of a collection. *Iterable* ordered collections can be iterated over or gathered into another collection.
 
 Separating concerns with iterators speaks to JavaScript's fundamental nature: It's a language that *wants* to compose functionality out of small, singe-responsibility pieces, whether those pieces are functions or objects built out of functions.

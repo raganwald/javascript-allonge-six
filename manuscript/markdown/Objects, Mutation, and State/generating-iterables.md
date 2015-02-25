@@ -4,9 +4,9 @@
 
 [Iterables](#iterables) look cool, but then again, everything looks amazing when you’re given cherry-picked examples. What is there they don't do well?
 
-Let's consider how they work. Whether it's a simple functional iterator, or an Iterable exposing a `[Symbol.iterator]` method that in turn exposes an object iterator with a `.next()` method, an iterator is something we call repeatedly until it tells us that it's done.
+Let's consider how they work. Whether it's a simple functional iterator, or an iterable object with a `.next()` method, an iterator is something we call repeatedly until it tells us that it's done.
 
-Iterators are stateful, so the iterator has to arrange its own state such that when you call it, it can compute and return the next item. This seems blindingly obvious and simple. If, for example, you want numbers, you write:
+Iterators have to arrange its own state such that when you call them, they compute and return the next item. This seems blindingly obvious and simple. If, for example, you want numbers, you write:
 
 {:lang="js"}
 ~~~~~~~~
