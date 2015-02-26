@@ -462,7 +462,7 @@ Whether you work with the same iterator over and over, or get a fresh iterable e
 
 Right now, we're just looking at ordered collections. To reiterate (hah), an ordered collection represents a (possibly infinite) collection of elements that are in some order. Every time we get an iterator from an ordered collection, we start iterating from the beginning.
 
-### operations on ordered collections
+### operations on ordered collections {#operations}
 
 Let's define some operations on ordered collections. Here's `mapIterableWith`, it takes an ordered collection, and returns another ordered collection representing a mapping over the original:
 

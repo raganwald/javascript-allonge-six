@@ -2,7 +2,7 @@
 
 ![Banco do Café](images/banco.jpg)
 
-[Iterables](#iterables) look cool, but then again, everything looks amazing when you’re given cherry-picked examples. What is there they don't do well?
+[Lazy Collections](#iterables) look cool, but then again, everything looks amazing when you’re given cherry-picked examples. What is there they don't do well?
 
 Let's consider how they work. Whether it's a simple functional iterator, or an iterable object with a `.next()` method, an iterator is something we call repeatedly until it tells us that it's done.
 
@@ -460,6 +460,101 @@ firstIterable(WithAtLeastFourDigits)
 As you can see, our operations all work on objects that have a `.next()` method, therefore we know that writing an iterator using `function*` and `yield` produces an object with a `.next()` method.
 
 But unlike writing our own iterator with an explicit `.next()` method, JavaScript handles all of the state we need to save to write our code as a generator, even if other code will call it just like a normal object iterator. JavaScript also allows us to return values and not worry abut wrapping them in an object with `.done` and `.value` properties.
+
+### rewriting iterable operations
+
+Now that we know about iterables, we can rewrite our iterable operations to use generators. Instead of:
+
+{:lang="js"}
+~~~~~~~~
+const mapIterableWith = (fn, iterable) =>
+  ({
+    [Symbol.iterator]: () => {
+      const iterator = iterable[Symbol.iterator]();
+      
+      return {
+        next: () => {
+          const {done, value} = iterator.next();
+    
+          return ({done, value: done ? undefined : fn(value)});
+        }
+      }
+    }
+  });
+~~~~~~~~
+
+We can write:
+
+{:lang="js"}
+~~~~~~~~
+const mapIterableWith = (fn, iterable) =>
+  ({
+    [Symbol.iterator]: function* () {
+      for (let element of iterable) {
+        yield fn(element);
+      }
+    }
+  });
+~~~~~~~~
+
+We still return an object that has a `[Symbol.iterator]` method, only now that method is a generator. No need to return an object with a `.next()` method. No need to fool around with `{done}` or `{value}`, just `yield` values until we're done.
+
+And as we recall from [operations on ordered collections](#operations), to preserve `collection`'s ordered collection semantics, the object we return has a `[Symbol.iterator]` method, and when we invoke that, it must in turn invoke `collection`'s own `[Symbol.iterator]` method.
+
+We don't do that explicitly, but `for (let element of collection)` invokes `collection`'s `[Symbol.iterator]` method, and thus `mapIterableWith` returns an iterable that invokes `collection`'s `[Symbol.iterator]`, just as we wish. And it is simpler and easier to read.
+
+We can do the same thing with our other operations. Here's the complete set of operations rewritten as generators:
+
+{:lang="js"}
+~~~~~~~~
+const mapIterableWith = (fn, iterable) =>
+  ({
+    [Symbol.iterator]: function* () {
+      for (let element of iterable) {
+        yield fn(element);
+      }
+    }
+  });
+  
+const filterIterableWith = (fn, iterable) =>
+  ({
+    [Symbol.iterator]: function* () {
+      for (let element of iterable) {
+        if (!!fn(element)) yield fn(element);
+      }
+    }
+  });
+  
+const untilIterableWith = (fn, iterable) =>
+  ({
+    [Symbol.iterator]: () => {
+      const iterator = iterable[Symbol.iterator]();
+      
+      return {
+        next: () => {
+          let {done, value} = iterator.next();
+          
+          done = done || fn(value);
+    
+          return ({done, value: done ? undefined : value});
+        }
+      }
+    }
+  });
+
+const firstOfIterable = (iterable) =>
+  iterable[Symbol.iterator]().next().value;
+
+const restOfIterable = (iterable) => 
+  ({
+    [Symbol.iterator]: () => {
+      const iterator = iterable[Symbol.iterator]();
+      
+      iterator.next();
+      return iterator;
+    }
+  });
+~~~~~~~~
 
 ### Summary
 
