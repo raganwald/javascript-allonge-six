@@ -231,20 +231,243 @@ So we see the same thing: The generation version has state, but it's implicit in
 
 ### generators
 
-It would be very nice if we could sometimes write iterators as a `.next()` method that gets called, and sometimes write out a generator. Given the title of this chapter, wit will not come as a suprise to discover that JavaScript actually makes this possible.
+It would be very nice if we could sometimes write iterators as a `.next()` method that gets called, and sometimes write out a generator. Given the title of this chapter, it is not a suprise that JavaScript  makes this possible.
 
 We can write an iterator, but use a generation style of programming. An iterator written in a generation style is called a *generator*. To write a generator, we write a function, but we make two changes:
 
 1. We declare the function using the `function*` keyword. Not a fat arrow. Not a plain `function`.
 2. We don't `return` values or output them to `console.log`. We "yield" values using the `yield` keyword.
 
-Let's start with the simplest example:
+When we invoke the function, we get an iterator object back. Let's start with the degenerate example, the `empty iterator`:
+
+{:lang="js"}
+~~~~~~~~
+const empty = function * () {};
+  
+empty().next()
+  //=>
+    {"done":true}
+~~~~~~~~
+
+When we invoke `empty`, we get an iterator with no elements. This makes sense, because `empty` never yields anything. We call its `.next()` method, but it's done immediately.
+
+Generator functions can take an argument. Let's use that to illustrate `yield`:
+
+{:lang="js"}
+~~~~~~~~
+const only = function * (something) {
+  yield something;
+};
+  
+only("you").next()
+  //=>
+    {"done":false, value: "you"}
+~~~~~~~~
+
+Invoking `only("you")` returns an iterator that we can call with `.next()`, and it yields `"you"`. Invoking `only` more than once gives us fresh iterators each time:
+
+{:lang="js"}
+~~~~~~~~
+only("you").next()
+  //=>
+    {"done":false, value: "you"}
+    
+only("the lonely").next()
+  //=>
+    {"done":false, value: "the lonely"}
+~~~~~~~~
+
+We can invoke the same iterator twice:
+
+{:lang="js"}
+~~~~~~~~
+const sixteen = only("sixteen");
+
+sixteen.next()
+  //=>
+    {"done":false, value: "sixteen"}
+    
+sixteen.next()
+  //=>
+    {"done":true}
+~~~~~~~~
+
+It yields the value of `something`, and then it's done.
+
+### generators are coroutines
+
+Here's a generator that yields three numbers:
+
+{:lang="js"}
+~~~~~~~~
+const oneTwoThree = function * () {
+  yield 1;
+  yield 2;
+  yield 3
+};
+  
+oneTwoThree().next()
+  //=>
+    {"done":false, value: 1}
+  
+oneTwoThree().next()
+  //=>
+    {"done":false, value: 1}
+  
+oneTwoThree().next()
+  //=>
+    {"done":false, value: 1}
+    
+const iterator = oneTwoThree();
+  
+iterator.next()
+  //=>
+    {"done":false, value: 1}
+  
+iterator.next()
+  //=>
+    {"done":false, value: 2}
+  
+iterator.next()
+  //=>
+    {"done":false, value: 3}
+  
+iterator.next()
+  //=>
+    {"done":true}
+~~~~~~~~
+
+This is where generators behave very, very differently from ordinary functions. What happens *semantically*?
+
+0. We call `oneTwoThree()` and get an iterator.
+0. The iterator is in a nascent or "newborn" state.
+0. When we call `interator.next()`, the body of our generator begins to be evaluated.
+0. The generator's body runs until it encounters a `yield` statement.
+0. The first line is `yield 1;`.
+0. The iterator *suspends its execution*.
+0. The iterator wraps `1` in `{done: false, value: 1}` and returns that from the call to `.next()`.
+0. The rest of the program continues along its way until it makes another call to `iterator.next()`.
+0. The iterator *resumes execution* from the point where it yielded the last value.
+0. It runs until it returns, ends, or encounters the next `yield` statement, which is `yield 2;`.
+0. The iterator *suspends its execution*.
+0. The iterator wraps `2` in `{done: false, value: 2}` and returns that from the call to `.next()`.
+0. The rest of the program continues along its way until it makes another call to `iterator.next()`.
+0. The iterator *resumes execution* from the point where it yielded the last value.
+0. It runs until it returns, ends, or encounters the next `yield` statement, which is `yield 3;`.
+0. The iterator *suspends its execution*.
+0. The iterator wraps `3` in `{done: false, value: 3}` and returns that from the call to `.next()`.
+0. The rest of the program continues along its way until it makes another call to `iterator.next()`.
+0. The iterator *resumes execution* from the point where it yielded the last value.
+0. It runs until it returns, ends, or encounters the next `yield` statement. There are no more lines of code, so it ends.
+0. The iterator returns `{done: true}` from the call to `.next()`, and every call to this iterator's `.next()` method will return `{done: true}` from now on.
+
+This behaviour is not unique to JavaScript, generators are called [coroutines](https://en.wikipedia.org/wiki/Coroutine) in other languages:
+
+> Coroutines are computer program components that generalize subroutines for nonpreemptive multitasking, by allowing multiple entry points for suspending and resuming execution at certain locations. Coroutines are well-suited for implementing more familiar program components such as cooperative tasks, exceptions, event loop, iterators, infinite lists and pipes.
+
+Instead of thinking of there being on execution context, we can imagine that there are two execution contexts. WIth an iterator, we can call them the *producer* and the *consumer*. The iterator is the producer, and the code that iterates over it is the consumer. When the consumer calls `.next()`, it "suspends" and the producer starts running. When the producer `yields` a value, the producer suspends and the consumer starts running, taking the value from the result of calling `.next()`.
+
+Of course, generators need not be implemented exactly as coroutines. For example, a "transpiler" might implement `oneTwoThree` as a state machine, a littel like this (there is more to generators, but we'll see that later):
+
+{:lang="js"}
+~~~~~~~~
+const oneTwoThree = function () {
+  let state = 'newborn';
+  
+  return {
+    next () {
+      switch (state) {
+        case 'newborn':
+          state = 1;
+          return {value: 1};
+        case 1:
+          state = 2;
+          return {value: 2}
+        case 2:
+          state = 3;
+          return {value: 3}
+        case 3:
+          return {done: true};
+      }
+    }
+  }
+};
+~~~~~~~~
+
+But no matter how JavaScript implements it, our mental model is that a generator function returns an iterator, and that when we call `.next()`, it runs until it returns, ends, or yields. If it yields, it sunspends its own execution and the consuming code resumes execution, until `.next()` is called again, at which point the iterator resumes its own execution from the point where it yielded.
+
+### generators and iterables
+
+Our generator function `oneTwoThree` is not an iterator. It's a function that returns an iterator when we invoke it. We write the function to `yield` values instead of `return` a single value, and JavaScript takes care of turning this into an object with a `.next()` function we can call.
+
+If we call our generator function more than once, we get new iterators. As we saw above, we called `oneTwoThree` three times, and each time we got an iterator that begins at `1` and counts to `3`. Recalling the way we wrote ordered collections, we could make a collection that uses a generator function:
+
+ {:lang="js"}
+ ~~~~~~~~
+ const ThreeNumbers = {
+   [Symbol.iterator]: function * () {
+     yield 1;
+     yield 2;
+     yield 3
+   }
+ }
+
+ for (let i of ThreeNumbers) {
+   console.log(i);
+ }
+   //=>
+     1
+     2
+     3
+
+ [...ThreeNumbers]
+   //=>
+     [1,2,3]
+    
+ const iterator = ThreeNumbers[Symbol.iterator]();
+  
+ iterator.next()
+   //=>
+     {"done":false, value: 1}
+  
+ iterator.next()
+   //=>
+     {"done":false, value: 2}
+  
+ iterator.next()
+   //=>
+     {"done":false, value: 3}
+  
+ iterator.next()
+   //=>
+     {"done":true}
+ ~~~~~~~~
+ 
+ Now we can use it in a `for...of` loop, spread it into an array literal, or spread it into a function invocation, because we have written an iterable that uses a generator to return an iterator from its `[Symbol.iterator]` method.
+ 
+ This pattern is encouraged, so much so that JavaScript provides a concise syntax for writing generator methods for objects:
+ 
+ {:lang="js"}
+ ~~~~~~~~
+ const ThreeNumbers = {
+   *[Symbol.iterator] () {
+     yield 1;
+     yield 2;
+     yield 3
+   }
+ }
+ ~~~~~~~~
+
+### more generators
+
+Generators can produce infinite streams of values:
 
 {:lang="js"}
 ~~~~~~~~
 const Numbers = {
-  [Symbol.iterator]: function* () {
+  *[Symbol.iterator] () {
     let i = 0;
+    
     while (true) {
       yield i++;
     }
@@ -269,7 +492,7 @@ for (let i of Numbers) {
   ...
 ~~~~~~~~
 
-That's it, really. We don't write our own `.next()` method, we write a `function*` that yields values, and behind the scenes JavaScript writes a `.next()` method for us. Let's do it again and show how a generator makes our linear state work. First, here's `Fibonacci` again, this time written as an iterable:
+Our `OneTwoThree` example used implicit state to output the numbers in sequence. Recall that we wrote `Fibonacci` using explicit state:
 
 {:lang="js"}
 ~~~~~~~~
@@ -315,12 +538,12 @@ for (let n of Fibonacci) {
   ...
 ~~~~~~~~
 
-And here is the `Fibonacci` iterable, written with a generator function:
+And here is the `Fibonacci` ordered collection, implemented with a generator method:
 
 {:lang="js"}
 ~~~~~~~~
 const Fibonacci = {
-  [Symbol.iterator]: function* () {
+  *[Symbol.iterator] () {
     let a, b;
     
     yield a = 0;
@@ -354,7 +577,7 @@ for (let i of Fibonacci) {
   ...
 ~~~~~~~~
 
-We're writing an iterator, but we're using a generator to do it. *Generators* are iterators, just with a different syntax. And this new syntax allows us to use JavaScript's natural management of state instead of constantly rolling our own.
+We've writing a function that returns an iterator, but we used a generator to do it. And the generator's syntax allows us to use JavaScript's natural management of state instead of constantly rolling our own.
 
 Here's a generator for iterating over trees:
 
@@ -393,73 +616,6 @@ for (let i of TreeIterator([1, [2, [3, 4], 5]])) {
 We've gone with the full iterable here, a `TreeIterable(iterable)` returns an iterable that treats `iterable` as a tree. We take advantage of the `for...of` loop in a plain and direct way: For each element `e`, if it is iterable, treat it as a tree and iterate over it, yielding each of its elements. If `e` is not an iterable, yield `e`.
 
 JavaScript handles the recursion for us using its own execution stack. This is clearly simpler than trying to maintain our own stack and remembering whether we are shifting and unshifting, or pushing and popping. And while this version has the extra scaffolding to make it a first-class iterable, it matches our simple generation code from above more-or-less directly.
-
-### generators *are* iterators
-
-Recall that an *iterable* is an object with a `[Symbol.iterator]` method. When you call that, you get an *iterator*, an object with a `.next()` method. But now we're making iterables with generators instead of with objects that have a `.next()` method. What gives?
-
-Well, generators *are* iterators. Let's prove it. Here is our `Number` iterable and a few of lazy iterable operations. We'll generate an infinite iterable of strings that represent the squares of numbers, and we'll find the palindrome that has at least four digits:
-
-{:lang="js"}
-~~~~~~~~
-const firstIterable = (iterable) =>
-  iterable[Symbol.iterator]().next().value;
-  
-const filterCollectionWith = (fn, iterable) =>
-  ({
-    [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
-      
-      return {
-        next: () => {
-          do {
-            const {done, value} = iterator.next();
-          } while (!done && !fn(value));
-          return {done, value};
-        }
-      }
-    }
-  });
-
-const mapCollectionWith = (fn, iterable) =>
-  ({
-    [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
-      
-      return {
-        next: () => {
-          const {done, value} = iterator.next();
-    
-          return ({done, value: done ? undefined : fn(value)});
-        }
-      }
-    }
-  });
-  
-const Numbers = {
-  [Symbol.iterator]: function* () {
-    let i = 0;
-    while (true) {
-      yield i++;
-    }
-  }
-}
-
-const Squares = mapCollectionWith((n) => n * n, Numbers);
-
-const SquaresStrings = mapCollectionWith((n) => `${n}`, Squares);
-
-const Palindromes = filterCollectionWith((s) => s === reverse(s), SquaresStrings)
-
-const WithAtLeastFourDigits = filterCollectionWith((s) => s.length > 3, Palindromes)
-
-firstIterable(WithAtLeastFourDigits)
-  //=> 10201
-~~~~~~~~
-
-As you can see, our operations all work on objects that have a `.next()` method, therefore we know that writing an iterator using `function*` and `yield` produces an object with a `.next()` method.
-
-But unlike writing our own iterator with an explicit `.next()` method, JavaScript handles all of the state we need to save to write our code as a generator, even if other code will call it just like a normal object iterator. JavaScript also allows us to return values and not worry abut wrapping them in an object with `.done` and `.value` properties.
 
 ### rewriting iterable operations
 
@@ -503,7 +659,7 @@ And as we recall from [operations on ordered collections](#operations), to prese
 
 We don't do that explicitly, but `for (let element of collection)` invokes `collection`'s `[Symbol.iterator]` method, and thus `mapIterableWith` returns an iterable that invokes `collection`'s `[Symbol.iterator]`, just as we wish. And it is simpler and easier to read.
 
-We can do the same thing with our other operations. Here's the complete set of operations rewritten as generators:
+We can do the same thing with our other operations. Here're `filterIterableWith` and `untilIterableWith`, rewritten as generators:
 
 {:lang="js"}
 ~~~~~~~~
@@ -527,21 +683,19 @@ const filterIterableWith = (fn, iterable) =>
   
 const untilIterableWith = (fn, iterable) =>
   ({
-    [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
-      
-      return {
-        next: () => {
-          let {done, value} = iterator.next();
-          
-          done = done || fn(value);
-    
-          return ({done, value: done ? undefined : value});
-        }
+    [Symbol.iterator]: function* () {
+      for (let element of iterable) {
+        if (fn(element)) break;
+        yield fn(element);
       }
     }
   });
+~~~~~~~~
 
+`firstOfIterable` and `restOfIterable` both work directly with iterators and remain unchanged:
+
+{:lang="js"}
+~~~~~~~~
 const firstOfIterable = (iterable) =>
   iterable[Symbol.iterator]().next().value;
 
@@ -558,6 +712,6 @@ const restOfIterable = (iterable) =>
 
 ### Summary
 
-A generator is a function that is defined with `function*` and uses `yield` to generate values. Using a generator instead of writing an object that has a `.next()` method allows us to write code that can be much simpler for cases like recursive iterations or state patterns. And we don't need to worry about wrapping our values in an object with `.done` and `.value` properties.
+A generator is a function that is defined with `function*` and uses `yield` to generate values. Using a generator instead of writing an iterator object that has a `.next()` method allows us to write code that can be much simpler for cases like recursive iterations or state patterns. And we don't need to worry about wrapping our values in an object with `.done` and `.value` properties.
 
 This is especially useful for making iterables.
