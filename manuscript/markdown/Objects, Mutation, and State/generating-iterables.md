@@ -342,24 +342,23 @@ This is where generators behave very, very differently from ordinary functions. 
 0. We call `oneTwoThree()` and get an iterator.
 0. The iterator is in a nascent or "newborn" state.
 0. When we call `interator.next()`, the body of our generator begins to be evaluated.
-0. The generator's body runs until it encounters a `yield` statement.
-0. The first line is `yield 1;`.
-0. The iterator *suspends its execution*.
-0. The iterator wraps `1` in `{done: false, value: 1}` and returns that from the call to `.next()`.
-0. The rest of the program continues along its way until it makes another call to `iterator.next()`.
-0. The iterator *resumes execution* from the point where it yielded the last value.
-0. It runs until it returns, ends, or encounters the next `yield` statement, which is `yield 2;`.
-0. The iterator *suspends its execution*.
-0. The iterator wraps `2` in `{done: false, value: 2}` and returns that from the call to `.next()`.
-0. The rest of the program continues along its way until it makes another call to `iterator.next()`.
-0. The iterator *resumes execution* from the point where it yielded the last value.
-0. It runs until it returns, ends, or encounters the next `yield` statement, which is `yield 3;`.
-0. The iterator *suspends its execution*.
-0. The iterator wraps `3` in `{done: false, value: 3}` and returns that from the call to `.next()`.
-0. The rest of the program continues along its way until it makes another call to `iterator.next()`.
-0. The iterator *resumes execution* from the point where it yielded the last value.
-0. It runs until it returns, ends, or encounters the next `yield` statement. There are no more lines of code, so it ends.
-0. The iterator returns `{done: true}` from the call to `.next()`, and every call to this iterator's `.next()` method will return `{done: true}` from now on.
+0. The body of our generator runs until it returns, ends, or encounters a `yield` statement, which is `yield 1;`.
+  - The iterator *suspends its execution*.
+  - The iterator wraps `1` in `{done: false, value: 1}` and returns that from the call to `.next()`.
+  - The rest of the program continues along its way until it makes another call to `iterator.next()`.
+  - The iterator *resumes execution* from the point where it yielded the last value.
+0. The body of our generator runs until it returns, ends, or encounters the next `yield` statement, which is `yield 2;`.
+  - The iterator *suspends its execution*.
+  - The iterator wraps `2` in `{done: false, value: 2}` and returns that from the call to `.next()`.
+  - The rest of the program continues along its way until it makes another call to `iterator.next()`.
+  - The iterator *resumes execution* from the point where it yielded the last value.
+0. The body of our generator runs until it returns, ends, or encounters the next `yield` statement, which is `yield 3;`.
+  - The iterator *suspends its execution*.
+  - The iterator wraps `3` in `{done: false, value: 3}` and returns that from the call to `.next()`.
+  - The rest of the program continues along its way until it makes another call to `iterator.next()`.
+  - The iterator *resumes execution* from the point where it yielded the last value.
+0. The body of our generator runs until it returns, ends, or encounters the next `yield` statement. There are no more lines of code, so it ends.
+  - The iterator returns `{done: true}` from the call to `.next()`, and every call to this iterator's `.next()` method will return `{done: true}` from now on.
 
 This behaviour is not unique to JavaScript, generators are called [coroutines](https://en.wikipedia.org/wiki/Coroutine) in other languages:
 
