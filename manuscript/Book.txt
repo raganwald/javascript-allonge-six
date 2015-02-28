@@ -116,13 +116,14 @@ mainmatter:
 
    markdown/Collections/title.md
 
-     markdown/Objects, Mutation, and State/1.iterables.md
+     markdown/Collections/1.iterables.md
 
-     markdown/Objects, Mutation, and State/2.generating-iterables.md
+     markdown/Collections/2.generating-iterables.md
 
-#     markdown/Objects, Mutation, and State/3.drunken.md
+#     markdown/Collections/3.drunken.md
      
-#     markdown/Objects, Mutation, and State/4.self-iterables.md
+#     markdown/Collections/4.self-iterables.md
+
 
 #    markdown/Instances and Classes/title.md
 
