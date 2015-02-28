@@ -44,6 +44,7 @@
 * [CERN Coffee](https://www.flickr.com/photos/lorentey/22193876) (c) 2005 [Karoly Lorentey](https://www.flickr.com/photos/lorentey/) [Some rights reserved][by].
 * [Coffee Labels](https://www.flickr.com/photos/kk/5484876862) (c) 2011 Kris Krüg [Some rights reserved][by-sa].
 * [banco do café](https://www.flickr.com/photos/f_mafra/2956649121) (c) 2008 Fernando Mafra [Some rights reserved][by-sa].
+* [coffee pots](https://www.flickr.com/photos/jforth/3360599750/) (c) 2009 Jonas Forth [Some rights reserved][by-nd].
 
 [by-sa]: http://creativecommons.org/licenses/by-sa/2.0/deed.en
 [by-nd]: http://creativecommons.org/licenses/by-nd/2.0/deed.en

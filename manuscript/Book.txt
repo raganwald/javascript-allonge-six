@@ -100,14 +100,6 @@ mainmatter:
 
      markdown/Objects, Mutation, and State/context.md
 
-     markdown/Objects, Mutation, and State/iterables.md
-
-     markdown/Objects, Mutation, and State/generating-iterables.md
-
-#     markdown/Objects, Mutation, and State/drunken.md
-     
-#     markdown/Objects, Mutation, and State/self-iterables.md
-
 #      markdown/Objects, Mutation, and State/method-decorators.md
 
 #      markdown/Objects, Mutation, and State/summary.md
@@ -121,6 +113,16 @@ mainmatter:
 #        markdown/Objects, Mutation, and State/recipes/pluck.md
 
 #        markdown/Objects, Mutation, and State/recipes/deep-map-with.md
+
+   markdown/Collections/title.md
+
+     markdown/Objects, Mutation, and State/1.iterables.md
+
+     markdown/Objects, Mutation, and State/2.generating-iterables.md
+
+#     markdown/Objects, Mutation, and State/3.drunken.md
+     
+#     markdown/Objects, Mutation, and State/4.self-iterables.md
 
 #    markdown/Instances and Classes/title.md
 
