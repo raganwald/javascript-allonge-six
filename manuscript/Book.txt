@@ -106,9 +106,9 @@ mainmatter:
 
      markdown/Objects, Mutation, and State/summary.md
 
-#      markdown/Objects, Mutation, and State/recipes/title.md
+     markdown/Objects, Mutation, and State/recipes/title.md
 
-#        markdown/Objects, Mutation, and State/recipes/memoize.md
+       markdown/Objects, Mutation, and State/recipes/memoize.md
 
 #        markdown/Objects, Mutation, and State/recipes/get-with.md
 
