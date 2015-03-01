@@ -1,6 +1,6 @@
 ## pluckWith {#pluck}
 
-This pattern of combining [mapWith](#mapWith) and [getWith](#getWith) is very frequent in JavaScript code. So much so, that we can take it up another level:
+This pattern of combining [mapWith](#mapping) and [getWith](#getWith) is very frequent in JavaScript code. So much so, that we can take it up another level:
 
     function pluckWith (attr) {
       return mapWith(getWith(attr))

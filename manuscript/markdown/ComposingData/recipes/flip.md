@@ -1,30 +1,23 @@
 ## Flip {#flip}
 
-When we wrote [mapWith](#mapWith), we wrote it like this:
+When we first wrote [mapWith](#mapping), we wrote it like this:
 
-    function mapWith (fn) {
-      return function (list) {
-        return Array.prototype.map.call(list, function (something) {
-          return fn.call(this, something);
-        });
-      };
-    };
+{:lang="js"}
+~~~~~~~~
+const mapWith = (fn, [first, ...rest]) =>
+  first === undefined
+    ? []
+    : [fn(first), ...mapWith(fn, rest)];
+~~~~~~~~
 
 Let's consider the case whether we have a `map` function of our own, perhaps from the [allong.es](http://allong.es) library, perhaps from [Underscore](http://underscorejs.org). We could write our function something like this:
 
-    function mapWith (fn) {
-      return function (list) {
-        return map.call(list, fn);
-      };
-    };
+{:lang="js"}
+~~~~~~~~
+const mapWith = (fn, list) => map(list, fn);
+~~~~~~~~
 
-Looking at this, we see we're conflating two separate transformations. First, we're reversing the order of arguments. You can see that if we simplify it:
-
-    function mapWith (fn, list) {
-      return map.call(list, fn);
-    };
-
-Second, we're "currying" the function so that instead of defining a function that takes two arguments, it returns a function that takes the first argument and returns a function that takes the second argument and applies them both, like this:
+We're flip:
 
     function mapCurried (list) {
       return function (fn) {
@@ -80,7 +73,7 @@ What we have now is a function that takes a function and "flips" the order of ar
       };
     };
 
-This is gold. Consider how we define [mapWith](#mapWith) now:
+This is gold. Consider how we define `mapWith` now:
 
     var mapWith = flip(map);
 

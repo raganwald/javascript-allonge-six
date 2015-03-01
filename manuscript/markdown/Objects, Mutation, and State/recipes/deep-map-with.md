@@ -1,6 +1,6 @@
 ## Deep Mapping {#deepMapWith}
 
-[mapWith](#mapWith) is an excellent tool, but from time to time you will find yourself working with arrays that represent trees rather than lists. For example, here is a partial list of sales extracted from a report of some kind. It's grouped in some mysterious way, and we need to operate on each item in the report.
+[mapWith](#mapping) is an excellent tool, but from time to time you will find yourself working with arrays that represent trees rather than lists. For example, here is a partial list of sales extracted from a report of some kind. It's grouped in some mysterious way, and we need to operate on each item in the report.
 
     var report = 
       [ [ { price: 1.99, id: 1 },

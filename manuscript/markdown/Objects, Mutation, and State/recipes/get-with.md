@@ -17,7 +17,7 @@ You can use it like this:
     getWith('oranges')(inventory)
       //=> 144
 
-This isn't much of a recipe yet. But let's combine it with [mapWith](#mapWith):
+This isn't much of a recipe yet. But let's combine it with [mapWith](#mapping):
 
     var inventories = [
       { apples: 0, oranges: 144, eggs: 36 },

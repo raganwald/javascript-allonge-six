@@ -159,7 +159,7 @@ So our first cut at a `flatten` function will look like this:
       
 Once again, the solution directly displays the important elements: Dividing a problem into subproblems, detecting terminal cases, solving the terminal cases, and composing a solution from the solved portions.
 
-### mapping
+### mapping {#mapping}
 
 Another common problem is applying a function to every element of an array. JavaScript has a built-in function for this, but let's write our own using linear recursion.
 

@@ -54,7 +54,7 @@ The resulting function--`squareAll`--is still the map function, it's just that w
     squareAll([1, 2, 3])
       //=> [1, 4, 9]
 
-We'll discuss mapWith again in [the recipes](#mapWith). The important thing to see is that partial application is orthogonal to composition, and that they both work together nicely:
+We'll discuss `mapWith` again. The important thing to see is that partial application is orthogonal to composition, and that they both work together nicely:
 
     const safeSquareAll = mapWith(maybe((n) => n * n));
     
