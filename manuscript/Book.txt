@@ -82,10 +82,10 @@ mainmatter:
 
      markdown/ComposingData/recipes/title.md
 
-       # markdown/ComposingData/recipes/map-with.md
-       #
-       # markdown/ComposingData/recipes/flip.md
-       #
+       markdown/ComposingData/recipes/map-with.md
+
+       markdown/ComposingData/recipes/flip.md
+
        # markdown/ComposingData/recipes/extend.md
        #
        # markdown/ComposingData/recipes/y.md

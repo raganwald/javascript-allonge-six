@@ -1,88 +1,88 @@
 ## Flip {#flip}
 
-When we first wrote [mapWith](#mapping), we wrote it like this:
+We wrote [mapWith](#mapWith) like this:
 
 {:lang="js"}
 ~~~~~~~~
-const mapWith = (fn, [first, ...rest]) =>
-  first === undefined
-    ? []
-    : [fn(first), ...mapWith(fn, rest)];
+const mapWith = (fn) => (list) => list.map(fn);
 ~~~~~~~~
 
 Let's consider the case whether we have a `map` function of our own, perhaps from the [allong.es](http://allong.es) library, perhaps from [Underscore](http://underscorejs.org). We could write our function something like this:
 
-{:lang="js"}
-~~~~~~~~
-const mapWith = (fn, list) => map(list, fn);
-~~~~~~~~
+    const mapWith = (fn) => (list) => map(list, fn);
 
-We're flip:
+Looking at this, we see we're conflating two separate transformations. First, we're reversing the order of arguments. You can see that if we simplify it:
 
-    function mapCurried (list) {
-      return function (fn) {
-        return map(list, fn);
-      };
-    };
+    const mapWith = (fn, list) => map(list, fn);
 
-Let's return to the implementation that does both:
+Second, we're "currying" the function so that instead of defining a function that takes two arguments, it returns a function that takes the first argument and returns a function that takes the second argument and applies them both, like this:
 
-    function mapWith (fn) {
-      return function (list) {
-        return map.call(list, fn);
-      };
-    };
+    const mapper = (list) => (fn) => map(list, fn);
 
-Now let's put a wrapper around it:
+Let's return to the implementation of `mapWith` that relies on a `map` function rather than a method:
 
-    function wrapper () {
-      return function (fn) {
-        return function (list) {
-          return map.call(list, fn);
-        };
-      };
-    };
+    const mapWith = (fn) => (list) => map(list, fn);
+    
+We're going to extract these two operations by refactoring our function to paramaterize `map`. The first step is to give our parameters generic names:
 
-Abstract the parameter names:
+    const mapWith = (first) => (second) => map(second, first);
 
-    function wrapper () {
-      return function (first) {
-        return function (second) {
-          return map.call(second, first);
-        };
-      };
-    };
+Then we wrap the entire thing in a function and extract `map`
 
-And finally, extract the function as a parameter:
+    const wrapper = (fn) =>
+      (first) => (second) => fn(second, first);
 
-    function wrapper (fn) {
-      return function (first) {
-        return function (second) {
-          return fn.call(second, first);
-        };
-      };
-    };
+What we have now is a function that takes a function and "flips" the order of arguments around, then curries it. So let's call it `flipAndCurry`:
 
-What we have now is a function that takes a function and "flips" the order of arguments around, then curries it:
+    const flipAndCurry = (fn) =>
+      (first) => (second) => fn(second, first);
+      
+Sometimes you want to flip, but not curry:
 
-    function flip (fn) {
-      return function (first) {
-        return function (second) {
-          return fn.call(this, second, first);
-        };
-      };
-    };
+    const flip = (fn) =>
+      (first, second) => fn(second, first);
 
-This is gold. Consider how we define `mapWith` now:
+This is gold. Consider how we define [mapWith](#mapWith) now:
 
-    var mapWith = flip(map);
+    var mapWith = flipAndCurry(map);
 
 Much nicer!
 
-There's one final decoration. Sometimes we'll want to flip a function but retain the flexibility to call it with both parameters at once. No problem:
+### self-currying flip
 
-    function flip (fn) {
-      return function (first, second) {
+Sometimes we'll want to flip a function, but retain the flexibility to call it in its curried form (pass one parameter) or non-curried form (pass both). We *could* make that into `flip`:
+
+    const flip = (fn) =>
+      function (first, second) {
+        if (arguments.length === 2) {
+          return fn(second, first);
+        }
+        else {
+          return function (second) {
+            return fn(second, first);
+          };
+        };
+      };
+
+Now if we write `mapWith = flip(map)`, we can call `mapWith(fn, list)` or `mapWith(fn)(list)`, our choice.
+
+### flipping methods
+
+When we learn about context and methods, we'll see that `flip` throws the current context away, so it can't be used to flip methods. A small alteration gets the job done:
+
+    const flipAndCurry = (fn) =>
+      (first) =>
+        function (second) {
+          return fn.call(this, second, first);
+        }
+
+    const flip = (fn) =>
+      function (first, second) {
+        return fn.call(this, second, first);
+      }
+
+    const flip = (fn) =>
+      function (first, second) {
         if (arguments.length === 2) {
           return fn.call(this, second, first);
         }
@@ -92,6 +92,3 @@ There's one final decoration. Sometimes we'll want to flip a function but retain
           };
         };
       };
-    };
-
-Now you can call `mapWith(fn, list)` or `mapWith(fn)(list)`, your choice.
