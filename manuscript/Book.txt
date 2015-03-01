@@ -80,13 +80,13 @@ mainmatter:
 
       markdown/ComposingData/data-out-of-functions.md
 
-#      markdown/ComposingData/recipes/title.md
+     markdown/ComposingData/recipes/title.md
 
-#        markdown/ComposingData/recipes/flip.md
+       markdown/ComposingData/recipes/flip.md
 
-#        markdown/ComposingData/recipes/extend.md
+       markdown/ComposingData/recipes/extend.md
 
-#        markdown/ComposingData/recipes/y.md
+       markdown/ComposingData/recipes/y.md
 
    markdown/ValuesAndExpressions/strings.md
 
