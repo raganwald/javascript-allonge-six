@@ -45,6 +45,7 @@
 * [Coffee Labels](https://www.flickr.com/photos/kk/5484876862) (c) 2011 Kris Krüg [Some rights reserved][by-sa].
 * [banco do café](https://www.flickr.com/photos/f_mafra/2956649121) (c) 2008 Fernando Mafra [Some rights reserved][by-sa].
 * [coffee pots](https://www.flickr.com/photos/jforth/3360599750/) (c) 2009 Jonas Forth [Some rights reserved][by-nd].
+* [5 Barrel Roaster](https://www.flickr.com/photos/dlytle/8720139854) (c) 2013 David Lytle [Some rights reserved][by].
 
 [by-sa]: http://creativecommons.org/licenses/by-sa/2.0/deed.en
 [by-nd]: http://creativecommons.org/licenses/by-nd/2.0/deed.en

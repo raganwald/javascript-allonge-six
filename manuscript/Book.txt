@@ -124,6 +124,10 @@ mainmatter:
      
 #     markdown/Collections/4.self-iterables.md
 
+     markdown/Collections/recipes/title.md
+
+       markdown/Collections/recipes/lazy-collections.md
+
 
 #    markdown/Instances and Classes/title.md
 

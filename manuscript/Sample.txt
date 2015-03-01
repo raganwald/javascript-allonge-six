@@ -122,6 +122,10 @@ mainmatter:
      
 #     markdown/Objects, Mutation, and State/4.self-iterables.md
 
+     markdown/Collections/recipes/title.md
+
+       markdown/Collections/recipes/lazy-collections.md
+
 #    markdown/Instances and Classes/title.md
 
 #      markdown/Instances and Classes/simple.md
