@@ -2,13 +2,11 @@
 
 `getWith` is a very simple function. It takes the name of an attribute and returns a function that extracts the value of that attribute from an object:
 
-    function getWith (attr) {
-      return function (object) { return object[attr]; }
-    }
+    const getWith = (attr) => (object) => object[attr]
 
 You can use it like this:
 
-    var inventory = {
+    const inventory = {
       apples: 0,
       oranges: 144,
       eggs: 36
@@ -19,7 +17,7 @@ You can use it like this:
 
 This isn't much of a recipe yet. But let's combine it with [mapWith](#mapping):
 
-    var inventories = [
+    const inventories = [
       { apples: 0, oranges: 144, eggs: 36 },
       { apples: 240, oranges: 54, eggs: 12 },
       { apples: 24, oranges: 12, eggs: 42 }
@@ -30,7 +28,7 @@ This isn't much of a recipe yet. But let's combine it with [mapWith](#mapping):
 
 That's nicer than writing things out "longhand:"
 
-    mapWith(function (inventory) { return inventory.oranges })(inventories)
+    mapWith((inventory) => inventory.oranges)(inventories)
       //=> [ 144, 54, 12 ]
 
 `getWith` plays nicely with [maybe](#maybe) as well. Consider a sparse array. You can use:
@@ -43,9 +41,7 @@ To get the orange count from all the non-null inventories in a list.
 
 Why is this called `getWith`? Consider this function that is common in languages that have functions and dictionaries but not methods:
 
-    function get (object, attr) {
-      return object[attr];
-    };
+    const get = (object, attr) => object[attr];
 
 You might ask, "Why use a function instead of just using `[]`?" The answer is, we can manipulate functions in ways that we can't manipulate syntax. For example, do you remember from [flip](#flip) that we can define `mapWith` from `map`?
 
