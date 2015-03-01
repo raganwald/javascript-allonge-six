@@ -4,36 +4,75 @@ In [function decorators](#decorators), we learned that a decorator takes a funct
 
 Decorators can be used to decorate methods provided that they carefully preserve the function's context. For example, here is a naïve version of `maybe` for one argument:
 
-    function maybe (fn) {
-      return function (argument) {
-        if (argument != null) {
-          return fn(argument)
-        }
-      }
-    }
+    const maybe = (fn) =>
+      x => x != null ? fn(x) : x;
+      
+We use it like this:
 
-This version doesn't preserve the context, so it can't be used as a method decorator. Instead, we have to write:
+    const plus1 = x => x + 1;
 
-    function maybe (fn) {
-      return function (argument) {
-        if (argument != null) {
-          return fn.call(this, argument)
+    plus1(1)
+      //=> 2
+    plus1(0)
+      //=> 1
+    plus1(null)
+      //=> 1
+    plus1(undefined)
+      //=> null
+      
+    const maybePlus1 = maybe(plus1);
+    
+    maybePlus1(1)
+      //=> 2
+    maybePlus1(0)
+      //=> 1
+    maybePlus1(null)
+      //=> null
+    maybePlus1(undefined)
+      //=> undefined
+
+This version doesn't preserve the context, so it can't be used as a method decorator. Instead, we have to convert the decoration from a fat arrow to a `function` function:
+
+    const maybe = (fn) =>
+      function (x) {
+        return x != null ? fn(x) : x;
+      };
+
+And then use `.call` to preserve `this`:
+
+    const maybe = (fn) =>
+      function (x) {
+        return x != null ? fn.call(this, x) : x;
+      };
+      
+Now that we have a "proper function," we can also handle variadic functions and methods. This variation only invokes the decorated function if none of the argumenst are `null` or `undefined`:
+
+    const maybe = (fn) =>
+      function (...args) {
+        for (let i in args) {
+          if (args[i] == null) return args[i];
         }
-      }
-    }
+        return fn.apply(this, args);
+      };
+
+But back to basics. As long as we are correctly preserving `this` by one, using a `function`, and two, invoking the decorated function with `.call(this, ...)` or `.apply(this, ...)`, we can decorate methods as well as functions.
 
 Now we can write things like:
 
-    someObject = {
+    const someObject = {
       setSize: maybe(function (size) {
         this.size = size;
-        return this
       })
     }
 
 And `this` is correctly set:
 
-    someObject.setSize(5)
+    someObject.setSize(5);
+    someObject
+      //=> { setSize: [Function], size: 5 }
+
+    someObject.setSize(null);
+    someObject
       //=> { setSize: [Function], size: 5 }
 
 Using `.call` or `.apply` and `arguments` is substantially slower than writing function decorators that don't set the context, so it might be right to sometimes write function decorators that aren't usable as method decorators. However, in practice you're far more likely to introduce a defect by failing to pass the context through a decorator than by introducing a performance pessimization, so the default choice should be to write all function decorators in such a way that they are "context agnostic."

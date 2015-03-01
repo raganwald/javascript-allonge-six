@@ -102,9 +102,9 @@ mainmatter:
 
      markdown/Objects, Mutation, and State/context.md
 
-#      markdown/Objects, Mutation, and State/method-decorators.md
+     markdown/Objects, Mutation, and State/method-decorators.md
 
-#      markdown/Objects, Mutation, and State/summary.md
+     markdown/Objects, Mutation, and State/summary.md
 
 #      markdown/Objects, Mutation, and State/recipes/title.md
 
