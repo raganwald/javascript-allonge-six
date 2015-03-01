@@ -118,7 +118,7 @@ mainmatter:
 
      markdown/Objects, Mutation, and State/2.generating-iterables.md
 
-#     markdown/Objects, Mutation, and State/3.drunken.md
+     markdown/Objects, Mutation, and State/3.drunken.md
      
 #     markdown/Objects, Mutation, and State/4.self-iterables.md
 
