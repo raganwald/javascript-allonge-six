@@ -1,8 +1,8 @@
 ## Deep Mapping {#deepMapWith}
 
-[mapWith](#mapping) is an excellent tool, but from time to time you will find yourself working with arrays that represent trees rather than lists. For example, here is a partial list of sales extracted from a report of some kind. It's grouped in some mysterious way, and we need to operate on each item in the report.
+[mapWith](#mapWith) is an excellent tool, but from time to time you will find yourself working with arrays that represent trees rather than lists. For example, here is a partial list of sales extracted from a report of some kind. It's grouped in some mysterious way, and we need to operate on each item in the report.
 
-    var report = 
+    const report = 
       [ [ { price: 1.99, id: 1 },
         { price: 4.99, id: 2 },
         { price: 7.99, id: 3 },
@@ -24,19 +24,17 @@
         { price: 9.99, id: 225 },
         { price: 9.99, id: 226 } ] ];
 
-We could nest some mapWiths, but we humans are tool users. If we can use a stick to extract tasty ants from a hole to eat, we can automate working with arrays:
+We could nest some `mapWith`s, but we humans are tool users. If we can use a stick to extract tasty ants from a hole to eat, we can automate working with arrays:
 
-    function deepMapWith (fn) {
-      return function innerdeepMapWith (tree) {
-        return Array.prototype.map.call(tree, function (element) {
-          if (Array.isArray(element)) {
-            return innerdeepMapWith(element);
-          }
-          else return fn(element);
-        });
+    const deepMapWith = (fn) =>
+      function innerdeepMapWith (tree) {
+        return Array.prototype.map.call(tree, (element) =>
+          Array.isArray(element)
+            ? innerdeepMapWith(element)
+            : fn(element)
+        );
       };
-    };
-
+      
 And now we can use `deepMapWith` on a tree the way we use `mapWith` on a flat array:
 
     deepMapWith(getWith('price'))(report)
@@ -60,3 +58,5 @@ And now we can use `deepMapWith` on a tree the way we use `mapWith` on a flat ar
                 10.99,
                 9.99,
                 9.99 ] ]
+
+We'll have another look at trees of data when we look at TreeIterators for [Collections](#collections).

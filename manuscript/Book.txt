@@ -112,9 +112,9 @@ mainmatter:
 
        markdown/Objects, Mutation, and State/recipes/get-with.md
 
-#        markdown/Objects, Mutation, and State/recipes/pluck.md
+       markdown/Objects, Mutation, and State/recipes/pluck.md
 
-#        markdown/Objects, Mutation, and State/recipes/deep-map-with.md
+       markdown/Objects, Mutation, and State/recipes/deep-map-with.md
 
    markdown/Collections/title.md
 
