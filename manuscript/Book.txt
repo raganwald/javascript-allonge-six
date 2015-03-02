@@ -130,6 +130,8 @@ mainmatter:
 
        markdown/Collections/recipes/lazy-collections.md
 
+       markdown/Collections/recipes/eager-collections.md
+
 
 #    markdown/Instances and Classes/title.md
 

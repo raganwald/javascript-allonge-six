@@ -1,4 +1,4 @@
-## Lazy Collection Mixin
+## A Lazy Collection Mixin
 
 {:lang="js"}
 ~~~~~~~~
