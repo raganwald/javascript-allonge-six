@@ -120,11 +120,11 @@ mainmatter:
 
      markdown/Collections/1.iterables.md
 
-     markdown/Collections/2.generating-iterables.md
+     markdown/Collections/2.collections.md
 
-     markdown/Collections/3.drunken.md
+     markdown/Collections/3.generating-iterables.md
 
-     markdown/Collections/4.collections.md
+     markdown/Collections/4.drunken.md
      
 #     markdown/Collections/4.self-iterables.md
 
