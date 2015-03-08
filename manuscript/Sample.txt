@@ -118,15 +118,11 @@ mainmatter:
 
      markdown/Collections/2.generating-iterables.md
 
-     markdown/Collections/3.drunken.md
+     markdown/Collections/3.collections.md
+
+     markdown/Collections/4.drunken.md
      
-#     markdown/Collections/4.self-iterables.md
-
-     markdown/Collections/recipes/title.md
-
-       markdown/Collections/recipes/lazy-collections.md
-
-       markdown/Collections/recipes/eager-collections.md
+     markdown/Collections/5.interactive-generators.md
 
 #    markdown/Instances and Classes/title.md
 

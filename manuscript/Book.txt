@@ -120,11 +120,13 @@ mainmatter:
 
      markdown/Collections/1.iterables.md
 
-     markdown/Collections/2.collections.md
+     markdown/Collections/2.generating-iterables.md
 
-     markdown/Collections/3.generating-iterables.md
+     markdown/Collections/3.collections.md
 
      markdown/Collections/4.drunken.md
+     
+     markdown/Collections/5.interactive-generators.md
      
 #     markdown/Collections/4.self-iterables.md
 
@@ -170,6 +172,8 @@ mainmatter:
 #      markdown/Sequence/compose-and-pipeline.md
 
 #    markdown/Ideas/title.md
+
+#      markdown/Ideas/1.coroutines.md
 
 #      markdown/Ideas/prototype.md
 
