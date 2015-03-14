@@ -1,4 +1,4 @@
-# Interlude: Symmetry Colour, and Charm
+# Interlude: Symmetry, Colour, and Charm
 
 ![Pantone Coffee Mugs](images/pantone.jpg)
 
@@ -28,7 +28,7 @@ compose(x => x + 1, y => y * y)(10)
   //=> 101
 ~~~~~~~~
 
-The power arising from functions-as-first-class-entities is that we have a very flexible way to make functions out of functions, using functions. We are not "multiplying our entities uncessarily." On the surface, decorators and combinators are made possible by the fact that we can pass functions to functions, and return functions that invoke our original functions.
+The power arising from functions-as-first-class-entities is that we have a very flexible way to make functions out of functions, using functions. We are not "multiplying our entities unnecessarily." On the surface, decorators and combinators are made possible by the fact that we can pass functions to functions, and return functions that invoke our original functions.
 
 But there's something else: The fact that all functions are called in the exact same way. We write `foo(bar)` and know that we will evaluate `bar`, and pass the resulting value to the function we get by evaluating `foo`. This allows us to write decorators and combinators that work with any function.
 
@@ -53,8 +53,8 @@ Coloured functions would be an example of how not to do it, because you'd be mak
 Functions don't have colours in JavaScript. But there are things that have this kind of asymmetry that make things just as awkward. For example, methods in JavaScript are functions. But, when you invoke them, you have to get `this` set up correctly. You have to either:
 
 1. Invoke a method as a property of an object. e.g. `foo.bar(baz)` or `foo['bar'](baz)`.
-2. Bind an object to a method befor einvoking it, e.g. `bar.bind(foo)`.
-3. Invike the method with with `.call` or `.apply`, e.g `bar.call(foo, baz)`.
+2. Bind an object to a method before invoking it, e.g. `bar.bind(foo)`.
+3. Invoke the method with with `.call` or `.apply`, e.g `bar.call(foo, baz)`.
 
 Thus, we can imagine that calling a function directly (e.g. `bar(baz)`) is blue, invoking a function and setting `this` (e.g. `bar.call(foo, baz)`) is yellow.
 
@@ -216,7 +216,7 @@ const compose = (a, b) =>
 
 What makes JavaScript tolerable is that green handling works for both  functional ("blue") and method invocation ("yellow") code. But when writing large code bases, we have to remain aware that some functions are blue and some are yellow, because if we write a mostly blue program, we could be lured into complacency with with blue decorators and combinators for years. But everything would break if a "yellow" method was introduced that didn't play nicely with our blue combinators
 
-The safe thing to do is to write all our higher-order functions in "green" style, so that they work for functions or methods. And that's why we might talk about the simpler, "blue" form when introducing an idea, but we writeout the more complete, "green" form when implementing it as a recipe.
+The safe thing to do is to write all our higher-order functions in "green" style, so that they work for functions or methods. And that's why we might talk about the simpler, "blue" form when introducing an idea, but we write out the more complete, "green" form when implementing it as a recipe.
 
 ### red functions vs. object factories
 
@@ -287,7 +287,7 @@ CircleFactory(2).scaleBy(3).diameter()
   //=> 37.69911184307752
 ~~~~~~~~
 
-Now we have a "blue" `CircleFactory` function, and we have teh benefits of objects and methods, along with the benefits of decorating and composing factories like any other function. For example:
+Now we have a "blue" `CircleFactory` function, and we have the benefits of objects and methods, along with the benefits of decorating and composing factories like any other function. For example:
 
 {:lang="js"}
 ~~~~~~~~
@@ -310,7 +310,7 @@ FiniteCircleFactory(null).scaleBy(3).diameter()
 
 All that being said, programming with factory functions instead of with classes and `new` is not a cure-all. Besides losing some of the convenience and familiarity for other developers, we'd also have to use extreme discipline for fear that accidentally introducing some "red" classes would break our carefully crafted "blue in green" application.
 
-In the end, there's no avoiding the need to know which functions are functions, and which are actually classes. Tooling can help: Some liniting applications can enforce a naming convention where classes start withan upper-case letter and functions start with a lower-case letter.
+In the end, there's no avoiding the need to know which functions are functions, and which are actually classes. Tooling can help: Some linting applications can enforce a naming convention where classes start with an upper-case letter and functions start with a lower-case letter.
 
 ### charmed functions
 
@@ -449,7 +449,7 @@ circleFactory(5).diameter()
   //=> 31.4159265
 ~~~~~~~~
 
-`FactoryFactory` turns sny "red" class into a "blue" function. So we can use it any where we like:
+`FactoryFactory` turns any "red" class into a "blue" function. So we can use it any where we like:
 
 {:lang="js"}
 ~~~~~~~~
@@ -534,7 +534,7 @@ for (let [name, drink] of Object.entries(personToDrink)) {
     
 It would be an enormous hack to make `Object.entries(IterableDictionary(personToDrink))` work. While we're at it, how would we make `.length` work? Functions implement `.length` as the number of arguments they accept. Arrays implement it as the number of entries they hold. If we wrap an array in a dictionary, what is its `.length`?
 
-Proxying collections, meaning "creating an objetc that behaves like the collection," works for specific and limited contexts, but it is enormously fragile to attempt to make a universal proxy that also acts as a function.
+Proxying collections, meaning "creating an object that behaves like the collection," works for specific and limited contexts, but it is enormously fragile to attempt to make a universal proxy that also acts as a function.
 
 ### summary
 
