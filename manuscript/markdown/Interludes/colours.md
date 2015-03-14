@@ -4,7 +4,7 @@
 
 We've seen that functions are *first-class entities*. meaning, we can store them in data structures, pass them to other functions, and return them from functions. An amazing number of very strong programming techniques arise as a consequence of functions-as-first-class-entities.
 
-We've seen that we can use functions-as-first-class-entities to write decorators like [maybe](#maybe):
+We've also seen that we can use functions-as-first-class-entities to write decorators like [maybe](#maybe):
 
 {:lang="js"}
 ~~~~~~~~
