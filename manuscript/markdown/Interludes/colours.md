@@ -32,11 +32,11 @@ But there's something else: The fact that all functions are called in the exact 
 
 Or does it?
 
-Imagine, if you will, that functions came in two colours: <span style="color: red;">red</span> and <span style="color: blue;">blue</span>. Now imagine that when we invoke a function in a variable, we type the name of the function in the proper colour. So if we write <code>const <span style="color: red;">square</span> = (x) => x * x</code>, we later have to write <code>[1, 2, 3, 4, 5].map(<span style="color: red;">square</span>)</code>. If we write <code>[1, 2, 3, 4, 5].map(<span style="color: blue;">square</span>)</code>, it won't work because `square` is a <span style="color: red;">red</span> function.
+Imagine, if you will, that functions came in two colours: <span style="color: blue;">blue</span> and <span style="color: yellow;">yellow</span>. Now imagine that when we invoke a function in a variable, we type the name of the function in the proper colour. So if we write <code>const <span style="color: blue;">square</span> = (x) => x * x</code>, we later have to write <code>[1, 2, 3, 4, 5].map(<span style="color: blue;">square</span>)</code>. If we write <code>[1, 2, 3, 4, 5].map(<span style="color: yellow;">square</span>)</code>, it won't work because `square` is a <span style="color: blue;">blue</span> function.
 
-### working with coloured functions
+### blue, yellow, and green functions
 
-If functions worked like that, decorators would be very messy. We'd have to make colour-coded decorators, like <code><span style="color: red;">maybe</span></code> and <code><span style="color: blue;">maybe</span></code>. We'd have to carefully track which functions have which colours, much as in gendered languages like French, you need to know the gender of all inanimate objects so that you can use the correct gendered grammar when talking about them.
+If functions worked like that, decorators would be very messy. We'd have to make colour-coded decorators, like <code><span style="color: blue;">maybe</span></code> and <code><span style="color: yellow;">maybe</span></code>. We'd have to carefully track which functions have which colours, much as in gendeblue languages like French, you need to know the gender of all inanimate objects so that you can use the correct gendeblue grammar when talking about them.
 
 This sounds bad, and it is.[^french] The general principle is: *Have fewer kinds of similar things, but allow the things you do have to combine in flexible ways*. You can't just remove things, you have to also make it very easy to combine things. Functions as first-class-entities are a good example of this, because they allow you to combine functions in flexible ways.
 
@@ -45,8 +45,6 @@ Coloured functions would be an example of how not to do it, because you'd be mak
 [^colours]: Bob Nystrom introduced this excellent metaphor in [What colour is your function?](http://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/)
 
 [^french]: Bad for programming languages, of course. French is a lovely human language.
-
-### does javascript have coloured functions?
 
 Functions don't have colours in JavaScript. But there are things that have this kind of asymmetry that make things just as awkward. For example, methods in JavaScript are functions. But, when you invoke them, you have to get `this` set up correctly. You have to either:
 
@@ -80,9 +78,43 @@ const maybe = (method) =>
   }
 ~~~~~~~~
 
-In JavaScript, ordinary function invocation with `(` and `)` is <span style="color: red;">red</span>, but method invocation is <span style="color: purple;">purple</span>. Browser event handling is also purple, but what makes this somewhat tolerable is that <span style="color: purple;">purple</span> handling also works for <span style="color: red;">red</span> functions. But you have to be aware that some functions are <span style="color: purple;">purple</span>, because if you write a <span style="color: red;">red</span> program, you could be happy with <span style="color: red;">red</span> decorators for years and then suddenly something breaks when a <span style="color: purple;">purple</span> function or method is introduced.
+In JavaScript, ordinary function invocation with `(` and `)` is <span style="color: blue;">blue</span>, but method invocation is <span style="color: green;">green</span>. Browser event handling is also green, but what makes this somewhat tolerable is that <span style="color: green;">green</span> handling also works for <span style="color: blue;">blue</span> functions. But you have to be aware that some functions are <span style="color: green;">green</span>, because if you write a <span style="color: blue;">blue</span> program, you could be happy with <span style="color: blue;">blue</span> decorators for years and then suddenly something breaks when a <span style="color: green;">green</span> function or method is introduced.
 
-### yellow functions
+The safe thing to do is to write all your higher-order functions in <span style="color: green;">green</span> style, so that they work for functions or methods. And that's what we do in this book.
+
+For example, although `compose` could be written in <span style="color: blue;">blue</span> style as:
+
+{:lang="js"}
+~~~~~~~~
+const compose = (a, b) =>
+  (x) => a(b(x));
+~~~~~~~~
+
+We prefer to write it in <span style="color: green;">green</span> style as:
+
+{:lang="js"}
+~~~~~~~~
+const compose = (a, b) =>
+  function (x) {
+    return a.call(this, b.call(this, x));
+  }
+~~~~~~~~
+
+This is much less elegant, but it works for either of these pieces of code:
+
+{:lang="js"}
+~~~~~~~~
+const times100plus1 = compose(x => x + 1, y => y * y);
+
+const CirclePrototype = {
+  scaleBy: compose(maybe, function (scalar) {
+    return Ob
+  });
+}
+~~~~~~~~
+
+
+### red functions
 
 EcmaScript-6 classes (and the equivalent EcmaScript-5 patterns) rely on creating objects with the `new` keyword:
 
@@ -103,7 +135,7 @@ round.diameter()
   //=> 6.2831853
 ~~~~~~~~
 
-That `new` keyword introduces another colour, constructors are <span style="color: yellow;">yellow</span> functions. We can't make circles using <span style="color: red;">red</span> function calls:
+That `new` keyword introduces another colour, constructors are <span style="color: red;">red</span> functions. We can't make circles using <span style="color: blue;">blue</span> function calls:
 
 {:lang="js"}
 ~~~~~~~~
@@ -114,7 +146,7 @@ const round2 = Circle(2);
   //=> Cannot call a class as a function
 ~~~~~~~~
 
-And we certainly can't use a red or purple decorator on them:
+And we certainly can't use a blue or green decorator on them:
 
 {:lang="js"}
 ~~~~~~~~
@@ -124,7 +156,7 @@ const round3 = new MaybeCircle(3);
   //=> Cannot call a class as a function
 ~~~~~~~~
 
-We can eliminate <span style="color: yellow;">yellow</span> functions by using `Object.create`. And this is why so many experienced developers dislike `new`. But once again, we'd have to use extreme discipline for fear that accidentally introducing some <span style="color: yellow;">yellow</span> would break our carefully crafted <span style="color: purple;">purple</span> application.
+We can eliminate <span style="color: red;">red</span> functions by using `Object.create`. And this is why so many experienced developers dislike `new`. But once again, we'd have to use extreme discipline for fear that accidentally introducing some <span style="color: red;">red</span> would break our carefully crafted <span style="color: green;">green</span> application.
 
 ### charmed functions
 
@@ -168,7 +200,7 @@ likesSomethingStartingWithC('Ted')
   //=> false
 ~~~~~~~~
 
-So far, thats good, clean <span style="color: red;">red</span> function work. But there's yet another kind of "function call." If you are a mathematician, this is a mapping too:
+So far, thats good, clean <span style="color: blue;">blue</span> function work. But there's yet another kind of "function call." If you are a mathematician, this is a mapping too:
 
 {:lang="js"}
 ~~~~~~~~
@@ -202,13 +234,13 @@ And you need a different piece of code to go with them. We'd need to write thing
 
 {:lang="js"}
 ~~~~~~~~
-const composeRedWithCharm = (redfunction, charmedfunction) =>
+const composeblueWithCharm = (bluefunction, charmedfunction) =>
   (arg) =>
-    redfunction(charmedfunction[arg]);
+    bluefunction(charmedfunction[arg]);
     
-const composeCharmWithRed = (charmedfunction, redfunction) =>
+const composeCharmWithblue = (charmedfunction, bluefunction) =>
   (arg) =>
-    charmedfunction[redfunction(arg)]
+    charmedfunction[bluefunction(arg)]
     
 // ...
 ~~~~~~~~
@@ -217,13 +249,13 @@ That would get really old, really fast.
 
 ### adaptation
 
-We can work our way around some of these cross-colour and charm issues by writing adaptors, wrappers that turn yellow and charmed functions into red functions. For example, a "factory function" is a function that makes new objects. So:
+We can work our way around some of these cross-colour and charm issues by writing adaptors, wrappers that turn red and charmed functions into blue functions. For example, a "factory function" is a function that makes new objects. So:
 
 {:lang="js"}
 ~~~~~~~~
-const Factory = (yellow) =>
+const Factory = (red) =>
   (...args) =>
-    new yellow(...args);
+    new red(...args);
     
 const circleFactory = Factory(Circle);
 
@@ -231,7 +263,7 @@ circleFactory(5).diameter()
   //=> 31.4159265
 ~~~~~~~~
 
-`Factory` turns a <span style="color: yellow;">yellow</span> class into a <span style="color: red;">red</span> function. So we can use it any where we like:
+`Factory` turns a <span style="color: red;">red</span> class into a <span style="color: blue;">blue</span> function. So we can use it any where we like:
 
 {:lang="js"}
 ~~~~~~~~
@@ -303,13 +335,13 @@ For a less trivial example, many games have rules that can be most easily repres
 
 JavaScript's elegance comes from having a simple thing, functions, that can be combined in many flexible ways. Exceptions to the ways functions combine, like the `new` keyword, handling `this`, and `[/]`, make combining awkward, but we can work around that by writing adaptors to convert these exceptions to regular function calls.
 
-p.s. For bonus credit, write adaptors for EcmaScript's `Map` and `Set` collections.
+p.s. For bonus cblueit, write adaptors for EcmaScript's `Map` and `Set` collections.
 
 p.p.s Some of this material was originally published in [Reusable Abstractions in CoffeeScript](https://github.com/raganwald-deprecated/homoiconic/blob/master/2012/01/reuseable-abstractions.md) (2012). If you're interested in Ruby, Paul Mucur wrote a great post about [Data Structures as Functions](http://mudge.name/2014/11/26/data-structures-as-functions.html).
 
 ---
 
-| [reddit](http://www.reddit.com/r/javascript/comments/2ytcu1/symmetry_and_decorators_in_es6/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-03-12-symmetry.md) |
+| [bluedit](http://www.bluedit.com/r/javascript/comments/2ytcu1/symmetry_and_decorators_in_es6/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-03-12-symmetry.md) |
 
 ---
 
