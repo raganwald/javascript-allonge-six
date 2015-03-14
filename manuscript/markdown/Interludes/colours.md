@@ -48,7 +48,13 @@ Coloured functions would be an example of how not to do it, because you'd be mak
 
 ### does javascript have coloured functions?
 
-Functions don't have colours in JavaScript. But there are things that have this kind of asymmetry that make things just as awkward. For example, methods in JavaScript are functions. But, when you invoke them , you have to get `this` set up correctly with `.call` or `.apply`. So while `maybe` for functions looks like this:
+Functions don't have colours in JavaScript. But there are things that have this kind of asymmetry that make things just as awkward. For example, methods in JavaScript are functions. But, when you invoke them, you have to get `this` set up correctly. You have to either:
+
+1. Invoke a method as a property of an object. e.g. `foo.bar(baz)` or `foo['bar'](baz)`.
+2. Bind an object to a method befor einvoking it, e.g. `bar.bind(foo)`.
+3. Invike the method with with `.call` or `.apply`, e.g `bar.call(foo, baz)`.
+
+So while `maybe` for functions looks like this:
 
 {:lang="js"}
 ~~~~~~~~

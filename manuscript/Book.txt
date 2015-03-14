@@ -20,7 +20,7 @@ frontmatter:
 
 mainmatter:
 
-    markdown/ValuesAndExpressions/numbers.md
+    markdown/Interludes/numbers.md
 
     markdown/Functions/title.md
 
@@ -54,7 +54,7 @@ mainmatter:
 
       markdown/Functions/recipes/once.md
 
-    markdown/ValuesAndExpressions/choice.md
+    markdown/Interludes/choice.md
     
     markdown/ComposingData/title.md
     
@@ -90,7 +90,7 @@ mainmatter:
 
        markdown/ComposingData/recipes/y.md
 
-   markdown/ValuesAndExpressions/strings.md
+   markdown/Interludes/strings.md
 
    markdown/Objects, Mutation, and State/title.md
 
@@ -166,6 +166,8 @@ mainmatter:
 #        markdown/Instances and Classes/recipes/fluent.md
 
 #        markdown/Instances and Classes/recipes/named-once.md
+
+     markdown/Interludes/colours.md
 
 #    markdown/Sequence/title.md
 
