@@ -1,4 +1,4 @@
-# Interlude: Symmetry and Colourful Functions
+# Interlude: Symmetry Colour, and Charm
 
 We've seen that functions are *first-class entities*. meaning, we can store them in data structures, pass them to other functions, and return them from functions. An amazing number of very strong programming techniques arise as a consequence of functions-as-first-class-entities.
 
@@ -32,13 +32,15 @@ But there's something else: The fact that all functions are called in the exact 
 
 Or does it?
 
-Imagine, if you will, that functions came in two colours: <span style="color: blue;">blue</span> and <span style="color: yellow;">yellow</span>. Now imagine that when we invoke a function in a variable, we type the name of the function in the proper colour. So if we write <code>const <span style="color: blue;">square</span> = (x) => x * x</code>, we later have to write <code>[1, 2, 3, 4, 5].map(<span style="color: blue;">square</span>)</code>. If we write <code>[1, 2, 3, 4, 5].map(<span style="color: yellow;">square</span>)</code>, it won't work because `square` is a <span style="color: blue;">blue</span> function.
+Imagine, if you will, that functions came in two colours: "blue," and "yellow." Now imagine that when we invoke a function in a variable, we type the name of the function in the proper colour. So if we write `const square = (x) => x * x` in blue code, we also have to write `square(5)` in blue code, so that `square` is always blue.
 
-### blue, yellow, and green functions
+If we write `const square = (x) => x * x` in blue code, but elsewhere we write `square(5)` in yellow code, it won't work because `square` is a blue function and `square(5)` would be a yellow invocation.
 
-If functions worked like that, decorators would be very messy. We'd have to make colour-coded decorators, like <code><span style="color: blue;">maybe</span></code> and <code><span style="color: yellow;">maybe</span></code>. We'd have to carefully track which functions have which colours, much as in gendeblue languages like French, you need to know the gender of all inanimate objects so that you can use the correct gendeblue grammar when talking about them.
+### blue and yellow functions
 
-This sounds bad, and it is.[^french] The general principle is: *Have fewer kinds of similar things, but allow the things you do have to combine in flexible ways*. You can't just remove things, you have to also make it very easy to combine things. Functions as first-class-entities are a good example of this, because they allow you to combine functions in flexible ways.
+If functions worked like that, decorators would be very messy. We'd have to make colour-coded decorators, like a blue `maybe` and a yellow `maybe`. We'd have to carefully track which functions have which colours, much as in gendered languages like French, you need to know the gender of all inanimate objects so that you can use the correct gendered grammar when talking about them.
+
+This sounds bad, and for programming tools, it is.[^french] The general principle is: *Have fewer kinds of similar things, but allow the things you do have to combine in flexible ways*. You can't just remove things, you have to also make it very easy to combine things. Functions as first-class-entities are a good example of this, because they allow you to combine functions in flexible ways.
 
 Coloured functions would be an example of how not to do it, because you'd be making it harder to combine functions by balkanizing them.[^colours]
 
@@ -52,7 +54,121 @@ Functions don't have colours in JavaScript. But there are things that have this 
 2. Bind an object to a method befor einvoking it, e.g. `bar.bind(foo)`.
 3. Invike the method with with `.call` or `.apply`, e.g `bar.call(foo, baz)`.
 
-So while `maybe` for functions looks like this:
+Thus, we can imagine that calling a function directly (e.g. `bar(baz)`) is blue, invoking a function and setting `this` (e.g. `bar.call(foo, baz)`) is yellow.
+
+Or in other words, functions are blue, and methods are yellow.
+
+### the composability problem
+
+We often write decorators in blue, a/k/a pure functional style. Here's a decorator that makes a function throw an exception if its argument is not a finite number:
+
+{:lang="js"}
+~~~~~~~~
+const requiresFinite = (fn) =>
+  (n) => {
+    if (Number.isFinite(n)){
+      return fn(n);
+    }
+    else throw "Bad Wolf";
+  }
+  
+const plusOne = x => x + 1;
+
+plus1(1)
+  //=> 2
+  
+plus1([])
+  //=> 1 WTF!?
+  
+const safePlusOne = requiresFinite(plusOne);
+
+safePlusOne(1)
+  //=> 2
+  
+safePlusOne([])
+  //=> throws "Bad Wolf"
+~~~~~~~~
+
+But it won't work on methods. Here's a `Circle` class that has an unsafe `.scaleBy` method:
+
+{:lang="js"}
+~~~~~~~~
+class Circle {
+  constructor (radius) {
+    this.radius = radius;
+  }
+  diameter () {
+    return Math.PI * 2 * this.radius;
+  }
+  scaleBy (factor) {
+    return new Circle(factor * this.radius);
+  }
+}
+
+const two = new Circle(2);
+
+two.scaleBy(3).diameter()
+  //=> 37.69911184307752
+  
+two.scaleBy(null).diameter()
+  //=> 0 WTF!?
+~~~~~~~~
+
+Let's decorate the `scaleBy` method to check its argument:
+
+{:lang="js"}
+~~~~~~~~
+Circle.prototype.scaleBy = requiresFinite(Circle.prototype.scaleBy);
+  
+two.scaleBy(null).diameter()
+  //=> throws "Bad Wold"
+~~~~~~~~
+
+Looks good, let's put it into production:
+{:lang="js"}
+~~~~~~~~
+Circle.prototype.scaleBy = requiresFinite(Circle.prototype.scaleBy);
+  
+two.scaleBy(3).diameter()
+  //=> undefined is not an object (evaluating 'this.radius')
+~~~~~~~~
+
+Whoops, we forgot that method invocation is "yellow" code, so our "blue" `requiresFinite` decorator will not work on methods. This is the problem of "yellow" and "blue" code colliding.
+
+### composing functions with "green" code
+
+Fortunately, we can write higher-order functions like decorators and combinators in a style that works for both "pure" functions and for methods. We have to use the `function` keyword so that `this` is bound, and then invoke our decorated function using `.call` so that we can pass `this` along.
+
+Here's `requiresFinite` written in this style, which we will call "green." It works for decorating both methods *and* functions:
+
+{:lang="js"}
+~~~~~~~~
+const requiresFinite = (fn) =>
+  function (n) {
+    if (Number.isFinite(n)){
+      return fn.call(this, n);
+    }
+    else throw "Bad Wolf";
+  }
+
+Circle.prototype.scaleBy = requiresFinite(Circle.prototype.scaleBy);
+
+two.scaleBy(3).diameter()
+  //=> 37.69911184307752
+  
+two.scaleBy("three").diameter()
+  //=> throws "Bad Wolf"
+
+const safePlusOne = requiresFinite(x => x + 1);
+
+safePlusOne(1)
+  //=> 2
+  
+safePlusOne([])
+  //=> throws "Bad Wolf"
+~~~~~~~~
+
+We can write all of our decorators and combinators in "green" style. For example, instead of writing `maybe` in functional ("blue") style like this:
 
 {:lang="js"}
 ~~~~~~~~
@@ -65,7 +181,7 @@ const maybe = (fn) =>
   }
 ~~~~~~~~
 
-`maybe` for methods looks like this:
+We can write it in both functional and method style ("green") style like this:
 
 {:lang="js"}
 ~~~~~~~~
@@ -78,11 +194,7 @@ const maybe = (method) =>
   }
 ~~~~~~~~
 
-In JavaScript, ordinary function invocation with `(` and `)` is <span style="color: blue;">blue</span>, but method invocation is <span style="color: green;">green</span>. Browser event handling is also green, but what makes this somewhat tolerable is that <span style="color: green;">green</span> handling also works for <span style="color: blue;">blue</span> functions. But you have to be aware that some functions are <span style="color: green;">green</span>, because if you write a <span style="color: blue;">blue</span> program, you could be happy with <span style="color: blue;">blue</span> decorators for years and then suddenly something breaks when a <span style="color: green;">green</span> function or method is introduced.
-
-The safe thing to do is to write all your higher-order functions in <span style="color: green;">green</span> style, so that they work for functions or methods. And that's what we do in this book.
-
-For example, although `compose` could be written in <span style="color: blue;">blue</span> style as:
+And instead of writing our simple compose in functional ("blue") style like this:
 
 {:lang="js"}
 ~~~~~~~~
@@ -90,7 +202,7 @@ const compose = (a, b) =>
   (x) => a(b(x));
 ~~~~~~~~
 
-We prefer to write it in <span style="color: green;">green</span> style as:
+We can write it in both functional and method style ("green") style like this:
 
 {:lang="js"}
 ~~~~~~~~
@@ -100,23 +212,13 @@ const compose = (a, b) =>
   }
 ~~~~~~~~
 
-This is much less elegant, but it works for either of these pieces of code:
+What makes JavaScript tolerable is that green handling works for both  functional ("blue") and method invocation ("yellow") code. But when writing large code bases, we have to remain aware that some functions are blue and some are yellow, because if we write a mostly blue program, we could be lured into complacency with with blue decorators and combinators for years. But everything would break if a "yellow" method was introduced that didn't play nicely with our blue combinators
 
-{:lang="js"}
-~~~~~~~~
-const times100plus1 = compose(x => x + 1, y => y * y);
-
-const CirclePrototype = {
-  scaleBy: compose(maybe, function (scalar) {
-    return Ob
-  });
-}
-~~~~~~~~
-
+The safe thing to do is to write all our higher-order functions in "green" style, so that they work for functions or methods. And that's why we might talk about the simpler, "blue" form when introducing an idea, but we writeout the more complete, "green" form when implementing it as a recipe.
 
 ### red functions
 
-EcmaScript-6 classes (and the equivalent EcmaScript-5 patterns) rely on creating objects with the `new` keyword:
+JavaScript classes (and the equivalent prototype-based patterns) rely on creating objects with the `new` keyword. As we saw in the example above:
 
 {:lang="js"}
 ~~~~~~~~
@@ -125,7 +227,10 @@ class Circle {
     this.radius = radius;
   }
   diameter () {
-    return 3.14159265 * 2 * this.radius;
+    return Math.PI * 2 * this.radius;
+  }
+  scaleBy (factor) {
+    return new Circle(factor * this.radius);
   }
 }
 
@@ -135,7 +240,7 @@ round.diameter()
   //=> 6.2831853
 ~~~~~~~~
 
-That `new` keyword introduces another colour, constructors are <span style="color: red;">red</span> functions. We can't make circles using <span style="color: blue;">blue</span> function calls:
+That `new` keyword introduces yet *another* colour of function, constructors are "red" functions. We can't make circles using "blue" function calls:
 
 {:lang="js"}
 ~~~~~~~~
@@ -156,7 +261,9 @@ const round3 = new MaybeCircle(3);
   //=> Cannot call a class as a function
 ~~~~~~~~
 
-We can eliminate <span style="color: red;">red</span> functions by using `Object.create`. And this is why so many experienced developers dislike `new`. But once again, we'd have to use extreme discipline for fear that accidentally introducing some <span style="color: red;">red</span> would break our carefully crafted <span style="color: green;">green</span> application.
+We can eliminate red functions by using `Object.create`. And this is why so many experienced developers dislike `new`. But once again, we'd have to use extreme discipline for fear that accidentally introducing some red classes would break our carefully crafted green application.
+
+So, although we can guard against mixing 
 
 ### charmed functions
 
@@ -200,7 +307,7 @@ likesSomethingStartingWithC('Ted')
   //=> false
 ~~~~~~~~
 
-So far, thats good, clean <span style="color: blue;">blue</span> function work. But there's yet another kind of "function call." If you are a mathematician, this is a mapping too:
+So far, thats good, clean blue function work. But there's yet another kind of "function call." If you are a mathematician, this is a mapping too:
 
 {:lang="js"}
 ~~~~~~~~
@@ -263,7 +370,7 @@ circleFactory(5).diameter()
   //=> 31.4159265
 ~~~~~~~~
 
-`Factory` turns a <span style="color: red;">red</span> class into a <span style="color: blue;">blue</span> function. So we can use it any where we like:
+`Factory` turns a red class into a blue function. So we can use it any where we like:
 
 {:lang="js"}
 ~~~~~~~~
