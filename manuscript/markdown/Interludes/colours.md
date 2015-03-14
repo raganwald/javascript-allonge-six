@@ -1,6 +1,6 @@
 # Interlude: Symmetry Colour, and Charm
 
-![Pantone Coffee Mugs](images/pantone.jog)
+![Pantone Coffee Mugs](images/pantone.jpg)
 
 We've seen that functions are *first-class entities*. meaning, we can store them in data structures, pass them to other functions, and return them from functions. An amazing number of very strong programming techniques arise as a consequence of functions-as-first-class-entities.
 
