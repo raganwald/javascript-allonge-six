@@ -1,5 +1,7 @@
 # Interlude: Symmetry Colour, and Charm
 
+![Pantone Coffee Mugs](images/pantone.jog)
+
 We've seen that functions are *first-class entities*. meaning, we can store them in data structures, pass them to other functions, and return them from functions. An amazing number of very strong programming techniques arise as a consequence of functions-as-first-class-entities.
 
 We've seen that we can use functions-as-first-class-entities to write decorators like [maybe](#maybe):
@@ -216,7 +218,7 @@ What makes JavaScript tolerable is that green handling works for both  functiona
 
 The safe thing to do is to write all our higher-order functions in "green" style, so that they work for functions or methods. And that's why we might talk about the simpler, "blue" form when introducing an idea, but we writeout the more complete, "green" form when implementing it as a recipe.
 
-### red functions
+### red functions vs. object factories
 
 JavaScript classes (and the equivalent prototype-based patterns) rely on creating objects with the `new` keyword. As we saw in the example above:
 
@@ -251,19 +253,64 @@ const round2 = Circle(2);
   //=> Cannot call a class as a function
 ~~~~~~~~
 
-And we certainly can't use a blue or green decorator on them:
+And we certainly can't use a decorator on them:
 
 {:lang="js"}
 ~~~~~~~~
-const MaybeCircle = maybe(Circle);
+const CircleRequiringFiniteRadius = requiresFinite(Circle);
 
-const round3 = new MaybeCircle(3);
+const round3 = new CircleRequiringFiniteRadius(3);
   //=> Cannot call a class as a function
 ~~~~~~~~
 
-We can eliminate red functions by using `Object.create`. And this is why so many experienced developers dislike `new`. But once again, we'd have to use extreme discipline for fear that accidentally introducing some red classes would break our carefully crafted green application.
+Some experienced developers dislike `new` because of this problem: It introduces one more kind of function that doesn't compose neatly with other functions using our existing decorators and combinators.
 
-So, although we can guard against mixing 
+We could eliminate "red" functions by using prototypes and `Object.create` instead of using the `class` and `new` keywords. A "factory function" is a function that makes new objects. So instead of writing a `Circle` class, we would write a `CirclePrototype` and a `CircleFactory` function:
+
+{:lang="js"}
+~~~~~~~~
+const CirclePrototype = {
+  diameter () {
+    return Math.PI * 2 * this.radius;
+  },
+  scaleBy (factor) {
+    return CircleFactory(factor * this.radius);
+  }
+};
+
+const CircleFactory = (radius) =>
+  Object.create(CirclePrototype, {
+    radius: { value: radius, enumerable: true }
+  })
+  
+CircleFactory(2).scaleBy(3).diameter()
+  //=> 37.69911184307752
+~~~~~~~~
+
+Now we have a "blue" `CircleFactory` function, and we have teh benefits of objects and methods, along with the benefits of decorating and composing factories like any other function. For example:
+
+{:lang="js"}
+~~~~~~~~
+const requiresFinite = (fn) =>
+  function (n) {
+    if (Number.isFinite(n)){
+      return fn.call(this, n);
+    }
+    else throw "Bad Wolf";
+  }
+  
+const FiniteCircleFactory = requiresFinite(CircleFactory);
+
+FiniteCircleFactory(2).scaleBy(3).diameter()
+  //=> 37.69911184307752
+  
+FiniteCircleFactory(null).scaleBy(3).diameter()
+  //=> throws "Bad Wolf"
+~~~~~~~~
+
+All that being said, programming with factory functions instead of with classes and `new` is not a cure-all. Besides losing some of the convenience and familiarity for other developers, we'd also have to use extreme discipline for fear that accidentally introducing some "red" classes would break our carefully crafted "blue in green" application.
+
+In the end, there's no avoiding the need to know which functions are functions, and which are actually classes. Tooling can help: Some liniting applications can enforce a naming convention where classes start withan upper-case letter and functions start with a lower-case letter.
 
 ### charmed functions
 
@@ -271,185 +318,224 @@ Consider:
 
 {:lang="js"}
 ~~~~~~~~
-const likes = (whom) => {
+const likesToDrink = (whom) => {
   switch (whom) {
     case 'Bob':
-      return 'Banana';
+      return 'Ristretto';
     case 'Carol':
-      return 'Chocolate';
+      return 'Cappuccino';
     case 'Ted':
-      return 'Apple';
+      return 'Allongé';
     case 'Alice':
-      return 'Chocolate';
+      return 'Cappuccino';
   }
 }
 
-likes('Alice')
-  //=> 'Chocolate'
+likesToDrink('Alice')
+  //=> 'Cappuccino'
   
-likes('Peter')
+likesToDrink('Peter')
   //=> undefined;
 ~~~~~~~~
 
-That's a pretty straightforward function that implements a mapping from the names to the treats 'Banana', 'Chocolate', 'Apple', and 'Crackers'. The mapping is encoded implicitly in the code's `switch` statement.
+That's a pretty straightforward function that implements a mapping from `Bob`, `Carol`, `Ted`, and `Alice` to the drinks 'Allongé', 'Cappuccino', and 'Allongé'. The mapping is encoded implicitly in the code's `switch` statement.
 
 We can use it in combination with other functions. For example, we can find out if the first letter of what someone likes is "c:"
 
 {:lang="js"}
 ~~~~~~~~
-startsWithC(likes('Alice'))
+const startsWithC = (something) => !!something.match(/^c/i)
+
+startsWithC(likesToDrink('Alice'))
   //=> true
   
 const likesSomethingStartingWithC =
-  compose(startsWithC, likes);
+  compose(startsWithC, likesToDrink);
 
 likesSomethingStartingWithC('Ted')
   //=> false
 ~~~~~~~~
 
-So far, thats good, clean blue function work. But there's yet another kind of "function call." If you are a mathematician, this is a mapping too:
+So far, that's good, clean blue function work. But there's yet another kind of "function call." If you are a mathematician, this is a mapping too:
 
 {:lang="js"}
 ~~~~~~~~
-const personToTreat = {
-  Bob: 'Banana',
-  Carol: 'Chocolate',
-  Ted: 'Apple',
-  Alice: 'Chocolate'
+const personToDrink = {
+  Bob: 'Ristretto',
+  Carol: 'Cappuccino',
+  Ted: 'Allongé',
+  Alice: 'Cappuccino'
 }
 
-personToTreat['Alice']
-  //=> 'Chocolate'
+personToDrink['Alice']
+  //=> 'Cappuccino'
   
-personToTreat['Ted']
-  //=> 'Apple'
+personToDrink['Ted']
+  //=> 'Allongé'
 ~~~~~~~~
 
-`personToTreat` maps the names 'Bob', 'Carol', 'Ted', and 'Alice' to the treats 'Banana', 'Chocolate', and 'Apple', just like `likes`. But even though it does the same thing as a function, we can't use it as a function:
+`personToDrink` also maps the names 'Bob', 'Carol', 'Ted', and 'Alice' to the drinks 'Ristretto', 'Cappuccino', and 'Allongé', just like `likesToDrink`. But even though it does the same thing as a function, we can't use it as a function:
 
 {:lang="js"}
 ~~~~~~~~
 const personMapsToSomethingStartingWithC =
-  compose(startsWithC, personToTreat);
+  compose(startsWithC, personToDrink);
 
 personMapsToSomethingStartingWithC('Ted')
+  //=> undefined is not a function (evaluating 'b.call(this, x)')
 ~~~~~~~~
 
-As you can see, `[` and `]` are a little like `(` and `)`, because we can pass `Alice` to `personToTreat` and get back `Chocolate`. But they are just different enough, that we can't write `personToTreat(...)`. Objects (as well as ES-6 maps and sets) are "charmed functions."
+As you can see, `[` and `]` are a little like `(` and `)`, because we can pass `Alice` to `personToDrink` and get back `Cappuccino`. But they are just different enough, that we can't write `personToDrink(...)`. Objects (as well as ES-6 maps and sets) are "charmed functions."
 
 And you need a different piece of code to go with them. We'd need to write things like this:
 
 {:lang="js"}
 ~~~~~~~~
-const composeblueWithCharm = (bluefunction, charmedfunction) =>
-  (arg) =>
-    bluefunction(charmedfunction[arg]);
+const composeblueWithCharm =
+  (bluefunction, charmedfunction) =>
+    (arg) =>
+      bluefunction(charmedfunction[arg]);
     
-const composeCharmWithblue = (charmedfunction, bluefunction) =>
-  (arg) =>
-    charmedfunction[bluefunction(arg)]
+const composeCharmWithblue =
+  (charmedfunction, bluefunction) =>
+    (arg) =>
+      charmedfunction[bluefunction(arg)]
     
 // ...
 ~~~~~~~~
 
 That would get really old, really fast.
 
-### adaptation
+### adapting to handle red and charmed functions
 
-We can work our way around some of these cross-colour and charm issues by writing adaptors, wrappers that turn red and charmed functions into blue functions. For example, a "factory function" is a function that makes new objects. So:
+We can work our way around some of these cross-colour and charm issues by writing *adaptors*, wrappers that turn red and charmed functions into blue functions. As we saw above, a "factory function" is a function that is called in the normal way, and returns a freshly created object.
+
+If we wanted to create a `CircleFactory`, we could use `Object.create` as we saw above. We could also wrap `new Circle(...)` in a function:
 
 {:lang="js"}
 ~~~~~~~~
-const Factory = (red) =>
+class Circle {
+  constructor (radius) {
+    this.radius = radius;
+  }
+  diameter () {
+    return Math.PI * 2 * this.radius;
+  }
+  scaleBy (factor) {
+    return new Circle(factor * this.radius);
+  }
+}
+
+const CircleFactory = (radius) =>
+  new Circle(radius);
+  
+CircleFactory(2).scaleBy(3).diameter()
+  //=> 37.69911184307752
+~~~~~~~~
+
+With some argument jiggery-pokery, we could abstract `Circle` from `CircleFactory` and make a factory for making factories, a `FactoryFactory`:
+
+We would write a `CircleFactory` function:
+
+{:lang="js"}
+~~~~~~~~
+const FactoryFactory = (clazz) =>
   (...args) =>
-    new red(...args);
+    new clazz(...args);
     
-const circleFactory = Factory(Circle);
+const CircleFactory = FactoryFactory(Circle);
 
 circleFactory(5).diameter()
   //=> 31.4159265
 ~~~~~~~~
 
-`Factory` turns a red class into a blue function. So we can use it any where we like:
+`FactoryFactory` turns sny "red" class into a "blue" function. So we can use it any where we like:
 
 {:lang="js"}
 ~~~~~~~~
-[1, 2, 3, 4, 5].map(Factory(Circle))
+[1, 2, 3, 4, 5].map(FactoryFactory(Circle))
   //=>
     [{"radius":1},{"radius":2},{"radius":3},{"radius":4},{"radius":5}]
 ~~~~~~~~
 
-Sadly, we still have to remember that `Circle` is a class and be sure to wrap it in `Factory` when we need to use it as a function, but that does work.
+Sadly, we still have to remember that `Circle` is a class and be sure to wrap it in `FactoryFactory` when we need to use it as a function, but that does work.
 
-We can do a similar thing with our "charmed" maps (and arrays, for that matter). Here's `getWith`:
-
-{:lang="js"}
-~~~~~~~~
-const getWith = function (key, data) {
-  if (arguments.length === 1) {
-    return (data) => data[key];
-  }
-  else return data[key];
-}
-~~~~~~~~
-
-The "flipped" version of `getWith` is `get`:
-
-{:lang="js"}
-~~~~~~~~
-const get = function (data, key) {
-  if (arguments.length === 1) {
-    return (key) => data[key];
-  }
-  else return data[key];
-}
-
-get(personToTreat, 'Bob')
-  //=> 'Banana'
-~~~~~~~~
-
-`get` can also be used partially:
-
-{:lang="js"}
-~~~~~~~~
-get(personToTreat)('Bob')
-  //=> 'Banana'
-  
-const likesTreatsStartingWithC =
-  compose(startsWithC, get(personToTreat));
-
-likesTreatsStartingWithC('Carol')
-  //=> true
-~~~~~~~~
-
-`get` converts "charmed functions," i.e. arrays and objects, into regular functions. And that makes it easier for us to use all of the same tools for combining and manipulating functions on arrays and objects that we do with functions. If `get(personToTreat)` does not convey the adaptor's purpose, consider:
+We can do a similar thing with our "charmed" maps (and arrays, for that matter). Here's `Dictionary`, a function that turns objects and arrays (our "charmed" functions) into ordinary ("blue") functions:
 
 {:lang="js"}
 ~~~~~~~~
 const Dictionary = (data) => (key) => data[key];
 
-['Bob', 'Ted', 'Carol', 'Alice'].map(Dictionary(personToTreat))
-  //=> ["Banana","Apple","Chocolate","Chocolate"]
+const personToDrink = {
+  Bob: 'Ristretto',
+  Carol: 'Cappuccino',
+  Ted: 'Allongé',
+  Alice: 'Cappuccino'
+}
+
+['Bob', 'Ted', 'Carol', 'Alice'].map(Dictionary(personToDrink))
+  //=> ["Ristretto","Allongé","Cappuccino","Cappuccino"]
 ~~~~~~~~
 
-Same thing, better name for what we're doing. Now we can use dictionaries as functions wherever we want.
+`Dictionary` makes it easier for us to use all of the same tools for combining and manipulating functions on arrays and objects that we do with functions.
 
-For a less trivial example, many games have rules that can be most easily represented as lookup tables. But it's most convenient to use the tables as functions. So we adapt the tables with `Dictionary`.
+### dictionaries as proxies
 
-> Note: As [David Nolen](http://swannodette.github.io) has pointed out, languages like Clojure have maps that can be called as functions automatically. This is superior to wrapping a map in a function, because the underlying map is still available to be iterated over and otherwise treated as a map. Once we wrap a map in a function, it becomes entirely opaque.
+As [David Nolen](http://swannodette.github.io) has pointed out, languages like Clojure have maps that can be called as functions automatically. This is superior to wrapping a map in a plain function, because the underlying map is still available to be iterated over and otherwise treated as a map. Once we wrap a map in a function, it becomes opaque, useless for anything except calling as a function.
+
+If we wish, we can create a dictionary function that is a partial proxy for the underlying collection object. For example, here is an `IterableDictionary` that turns a collection into a function that is also iterable if its underlying data object is iterable:
+
+{:lang="js"}
+~~~~~~~~
+const IterableDictionary = (data) => {
+  const proxy = (key) => data[key];
+  proxy[Symbol.iterator] = function* (...args) {
+    yield* data[Symbol.iterator](...args);
+  }
+  return proxy;
+}
+
+const people = IterableDictionary(['Bob', 'Ted', 'Carol', 'Alice']);
+const drinks = IterableDictionary(personToDrink);
+  
+for (let name of people) {
+  console.log(`${name} prefers to drink ${drinks(name)}`)
+}
+  //=>
+    Bob prefers to drink Ristretto
+    Ted prefers to drink Allongé
+    Carol prefers to drink Cappuccino
+    Alice prefers to drink Cappuccino
+~~~~~~~~
+
+This technique has limitations. For example, objects in JavaScript are not iterable by default. So we can't write:
+
+{:lang="js"}
+~~~~~~~~
+for (let [name, drink] of personToDrink) {
+  console.log(`${name} prefers to drink ${drink}`)
+}
+  //=> undefined is not a function (evaluating 'personToDrink[Symbol.iterator]()')
+~~~~~~~~
+
+We could write:
+
+{:lang="js"}
+~~~~~~~~
+for (let [name, drink] of Object.entries(personToDrink)) {
+  console.log(`${name} prefers to drink ${drink}`)
+}
+  //=>
+    Bob prefers to drink Ristretto
+    Carol prefers to drink Cappuccino
+    Ted prefers to drink Allongé
+    Alice prefers to drink Cappuccino
+~~~~~~~~
+    
+It would be an enormous hack to make `Object.entries(IterableDictionary(personToDrink))` work. While we're at it, how would we make `.length` work? Functions implement `.length` as the number of arguments they accept. Arrays implement it as the number of entries they hold. If we wrap an array in a dictionary, what is its `.length`?
+
+Proxying collections, meaning "creating an objetc that behaves like the collection," works for specific and limited contexts, but it is enormously fragile to attempt to make a universal proxy that also acts as a function.
 
 ### summary
 
-JavaScript's elegance comes from having a simple thing, functions, that can be combined in many flexible ways. Exceptions to the ways functions combine, like the `new` keyword, handling `this`, and `[/]`, make combining awkward, but we can work around that by writing adaptors to convert these exceptions to regular function calls.
-
-p.s. For bonus cblueit, write adaptors for EcmaScript's `Map` and `Set` collections.
-
-p.p.s Some of this material was originally published in [Reusable Abstractions in CoffeeScript](https://github.com/raganwald-deprecated/homoiconic/blob/master/2012/01/reuseable-abstractions.md) (2012). If you're interested in Ruby, Paul Mucur wrote a great post about [Data Structures as Functions](http://mudge.name/2014/11/26/data-structures-as-functions.html).
-
----
-
-| [bluedit](http://www.bluedit.com/r/javascript/comments/2ytcu1/symmetry_and_decorators_in_es6/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-03-12-symmetry.md) |
-
----
-
-
+JavaScript's elegance comes from having a simple thing, functions, that can be combined in many flexible ways. Exceptions to the ways functions combine, like the `new` keyword, handling `this`, and `[...]`, make combining awkward, but we can work around that by writing adaptors to convert these exceptions to regular function calls.
