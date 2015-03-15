@@ -1,4 +1,6 @@
-## Foreword to the first edition by Michael Fogus
+## Forewards to the First Edition
+
+### michael fogus
 
 As a life-long bibliophile and long-time follower of Reg's online work, I was excited when he started writing books. However, I'm very conservative about books -- let's just say that if there was an aftershave scented to the essence of "Used Book Store" then I would be first in line to buy. So as you might imagine I was "skeptical" about the decision to release JavaScript Allongé as an ongoing ebook, with a pay-what-you-want model. However, Reg sent me a copy of his book and I was humbled. Not only was this a great book, but it was also a great way to write and distribute books. Having written books myself, I know the pain of soliciting and receiving feedback.
 
@@ -11,3 +13,13 @@ As a staunch advocate of functional programming, much of what Reg has written ri
 Enjoy.
 
 -- Fogus, [fogus.me](http://www.fogus.me)
+
+### matthew knox
+
+A different kind of language requires a different kind of book.
+
+JavaScript holds surprising depths--its scoping rules are neither strictly lexical nor strictly dynamic, and it supports procedural, object-oriented (in several flavors!), and functional programming.  Many books try to hide most of those capabilities away, giving you recipes for writing JavaScript in a way that approximates class-centric programming in other languages.  Not JavaScript Allongé.  It starts with the fundamentals of values, functions, and objects, and then guides you through JavaScript from the inside with exploratory bits of code that illustrate scoping, combinators, context, state, prototypes, and constructors.
+
+Like JavaScript itself, this book gives you a gentle start before showing you its full depth, and like a Cafe Allongé, it's over too soon.  Enjoy!
+
+--Matthew Knox, [mattknox.com](http://mattknox.com)
