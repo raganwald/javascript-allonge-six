@@ -200,19 +200,19 @@ mainmatter:
 # #        markdown/Ideas/recipes/class-decorator.md
 #
 # #        markdown/Ideas/recipes/iterator-recipes.md
-#
-# backmatter:
-#
-#   markdown/Appendices/title.md
-#
-#     markdown/Appendices/examples.md
-#
-#     markdown/Appendices/thanks.md
-#
-#     markdown/Appendices/spessore.md
-#
-#     markdown/Appendices/copyright.md
-#
-#     markdown/Appendices/image_copyrights.md
-#
-#     markdown/Appendices/reg.md
+
+backmatter:
+
+  markdown/Appendices/title.md
+
+    markdown/Appendices/examples.md
+
+    markdown/Appendices/thanks.md
+
+    markdown/Appendices/spessore.md
+
+    markdown/Appendices/copyright.md
+
+    markdown/Appendices/image_copyrights.md
+
+    markdown/Appendices/reg.md
