@@ -47,6 +47,7 @@
 * [coffee pots](https://www.flickr.com/photos/jforth/3360599750/) (c) 2009 Jonas Forth [Some rights reserved][by-nd].
 * [5 Barrel Roaster](https://www.flickr.com/photos/dlytle/8720139854) (c) 2013 David Lytle [Some rights reserved][by].
 * [Pantone mugs](https://www.flickr.com/photos/joebehr/5504285781) (c) 2011 Joe Wolf [Some rights reserved][by-nd].
+* [Coffee and Chess](https://www.flickr.com/photos/adders/8372085101) (c) 2013 Adam Tinworth [Some rights reserved][by-nd].
 
 [by-sa]: http://creativecommons.org/licenses/by-sa/2.0/deed.en
 [by-nd]: http://creativecommons.org/licenses/by-nd/2.0/deed.en
