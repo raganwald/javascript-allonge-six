@@ -70,7 +70,7 @@ The third one is easiest for most people to read. It separates concerns nicely: 
     (diameter) =>
       // ...
 
-Everything else is encapsulated in its body. That's how it should be, naming `PI` is is concern, not ours. The other formulation:
+Everything else is encapsulated in its body. That's how it should be, naming `PI` is its concern, not ours. The other formulation:
 
     ((PI) =>
       // ...
