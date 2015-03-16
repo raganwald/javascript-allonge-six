@@ -123,12 +123,12 @@ mainmatter:
      markdown/Collections/4.drunken.md
      
      markdown/Collections/5.interactive-generators.md
-     
-#     markdown/Collections/4.self-iterables.md
 
      markdown/Collections/recipes/title.md
 
        markdown/Collections/recipes/operations.md
+
+       markdown/Collections/recipes/more-mapping.md
 
 
 #    markdown/Instances and Classes/title.md

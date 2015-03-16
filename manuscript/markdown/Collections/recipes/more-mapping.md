@@ -1,0 +1,158 @@
+## More Iterable Mapping Operations
+
+### stateful mapping
+
+In our interlude [The Carpenter Interviews for a Job], we saw the `statefulMap` operation. A `statefulMap` is a lazy map that preserves state from iteration to iteration. A normal map is stateless:
+
+[The Carpenter Interviews for a Job]: #drunken
+
+{:lang="js"}
+~~~~~~~~
+const mapIterableWith = (fn, iterable) =>
+  ({
+    [Symbol.iterator]: function* () {
+      for (let element of iterable) {
+        yield fn(element);
+      }
+    }
+  });
+~~~~~~~~
+
+If we write `mapIterableWith(x => x * x, [1, 2, 3, 4, 5])`, we get a lazy iterable. As we iterate over the array, we invoke the function `x => x * x` with the successive values `1`, `2`, `3`, `4`, and `5` and yield the result. Semantically, the function we pass in is intended to be stateless, to make a strict mapping from inputs to outputs.
+
+But sometimes, we want to map the inputs to outputs that reflect the previous inputs. A very simple example would be a cumulative sum of the inputs (e.g. from `[1, 2, 3, 4, 5]` to `1, 3, 6, 10, 15`). We're mapping inputs to outputs, but the mapping function must somehow track the cumuative sum as it goes.
+
+We can make our mapping function track state externally:
+
+{:lang="js"}
+~~~~~~~~
+let sum = 0,
+    cumulativeSum = x => sum += x;
+    
+Array.from(mapIterableWith(cumulativeSum, [1, 3, 5, 7, 9, 11, 13]))
+  //=> [1,4,9,16,25,36,49]
+~~~~~~~~
+
+This first solution works, but relies on not using `sum` elsewhere, and also we cannot reuse `cumulativeSum`. If we use it more than once, we get the wrong answer, because it carries on adding to `sum`:
+
+{:lang="js"}
+~~~~~~~~
+let sum = 0,
+    cumulativeSum = x => sum += x;
+    
+Array.from(mapIterableWith(cumulativeSum, [1, 3, 5, 7, 9, 11, 13]))
+  //=> [1,4,9,16,25,36,49]
+    
+Array.from(mapIterableWith(cumulativeSum, [2, 4, 6, 8, 10, 12, 14]))
+  //=> [51,55,61,69,79,91,105]
+~~~~~~~~
+
+We can solve this problem with a function that makes stateful functions. Every time we map over our iterables, we call our function maker, and get a fresh function with a fresh `sum`:
+
+{:lang="js"}
+~~~~~~~~
+const cumulativeSumMaker = () => {
+  let sum = 0;
+  
+  return x => sum += x;
+}
+    
+Array.from(mapIterableWith(cumulativeSumMaker(), [1, 3, 5, 7, 9, 11, 13]))
+  //=> [1,4,9,16,25,36,49]
+    
+Array.from(mapIterableWith(cumulativeSumMaker(), [2, 4, 6, 8, 10, 12, 14]))
+  //=> [2,6,12,20,30,42,56]
+~~~~~~~~
+
+As long as we're careful to always make new stateful mapping functions, this works fine.
+
+Our function returns the same thing as its state. That isn't always the case. Here's a function that counts maps an iteration to the number of instances of each element seen so far:
+
+{:lang="js"}
+~~~~~~~~
+const cumulativeTimesSeen = () => {
+  let times = {};
+  
+  return x =>
+    times[x]
+    ? times[x] += 1
+    : times[x] = 1
+}
+    
+Array.from(mapIterableWith(cumulativeTimesSeen(), [1, 3, 1, 5, 1, 3, 7]))
+  //=> [1,1,2,1,3,2,1]
+~~~~~~~~
+
+This business of writing stateful functions by wrapping tem in a closure is quite readable, but it can be awkward. When we want to square an iteration of numbers, we just write: `mapIterableWith(x => x * x, [1, 2, 3, 4, 5])`. We don't need to set anythng up, we can write short functions inline with the literal fat arrow syntax.
+
+But if we want to set up the cumulative sum of numbers with literal inline syntax, are we really going to write:
+
+{:lang="js"}
+~~~~~~~~
+mapIterableWith((() => {
+  let sum = 0;
+  
+  return x => sum += x;
+})(), [1, 3, 5, 7, 9, 11, 13])
+~~~~~~~~
+
+Or the shorter (but slightly more subtle) `mapIterableWith(((sum = 0) => x => sum += x)(), [1, 3, 5, 7, 9, 11, 13])`?
+
+If this were to happen more than once, we'd consider extracting this idea of stateful mapping, so that the mechanics of maintaining state are kept separate from the detals of the mapping itself.
+
+### statefulMapIterableWith
+
+If we don't want to have to build stateful scaffolding around the mapping function, we can have the mapping function manage the state. So instead of a function like `x => times[x] ? times[x] += 1 : times[x] = 1` that refers to `times` from its enclosing scope, we'll pass `times` in as a parameter: `(times, x) => times[x] ? times[x] += 1 : times[x] = 1`.
+
+And of course, this particular stateful function updates its state with mutation, but others, like sum, might not. So we'll need to return the updated state as well as the value of the iteration, like this: `(times, x) => (times[x] ? times[x] += 1 : times[x] = 1, [times, times[x]])`
+
+Now we can take our `mapIterableWith` function, and modify it to take an initial seed state, pass it to the mapping function, and extract it again using destructuring:
+
+{:lang="js"}
+~~~~~~~~
+const statefulMapIterableWith = (fn, seed, iterable) =>
+  ({
+    *[Symbol.iterator] () {
+      let value,
+          state = seed;
+      
+      for (let element of iterable) {
+        [state, value] = fn(state, element);
+        yield value;
+      }
+    }
+  });
+~~~~~~~~
+
+Let's try it with our function that counts the number of times an item has been seen:
+
+{:lang="js"}
+~~~~~~~~
+Array.from(
+  statefulMapIterableWith(
+    (times, x) => {
+      times[x] ? times[x] += 1 : times[x] = 1;
+      return [times, times[x]];
+    },
+    {},
+    [1, 3, 1, 5, 1, 3, 7]
+  )
+)
+  //=> [1,4,9,16,25,36,49]
+~~~~~~~~
+
+We can do the same thing with cumulative sums. We just have to remember to return the sum twice, as it's our state *and* our iteration value:
+
+{:lang="js"}
+~~~~~~~~
+Array.from(
+  statefulMapIterableWith(
+    (sum, x) => [sum += x, sum],
+    0,
+    [1, 3, 5, 7, 9, 11, 13]
+  )
+)
+  //=> [1,1,2,1,3,2,1]
+~~~~~~~~
+
+Our recipe for `statefulMapIterableWith` simplifies the use of mapping an iteration in a stateful way.

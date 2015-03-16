@@ -1,4 +1,4 @@
-## Operations on Iterables
+## Basic Operations on Iterables
 
 Here are the operations we've defined on Iterables. As discussed, they preserve the collection sementics of the iterable they are given:
 
