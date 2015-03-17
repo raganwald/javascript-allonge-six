@@ -123,7 +123,7 @@ Let's decorate the `scaleBy` method to check its argument:
 Circle.prototype.scaleBy = requiresFinite(Circle.prototype.scaleBy);
   
 two.scaleBy(null).diameter()
-  //=> throws "Bad Wold"
+  //=> throws "Bad Wolf"
 ~~~~~~~~
 
 Looks good, let's put it into production:
@@ -338,7 +338,7 @@ likesToDrink('Peter')
   //=> undefined;
 ~~~~~~~~
 
-That's a pretty straightforward function that implements a mapping from `Bob`, `Carol`, `Ted`, and `Alice` to the drinks 'Allongé', 'Cappuccino', and 'Allongé'. The mapping is encoded implicitly in the code's `switch` statement.
+That's a pretty straightforward function that implements a mapping from `Bob`, `Carol`, `Ted`, and `Alice` to the drinks 'Ristretto', 'Cappuccino', and 'Allongé'. The mapping is encoded implicitly in the code's `switch` statement.
 
 We can use it in combination with other functions. For example, we can find out if the first letter of what someone likes is "c:"
 
