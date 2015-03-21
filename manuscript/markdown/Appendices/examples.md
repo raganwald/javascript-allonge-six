@@ -1,11 +1,11 @@
 ## How to run the examples {#online}
 
-At the time this book was written, ECMAScript-6 was not yet widely available. All of the examples in this book were tested using either [Google Traceur Compiler], [6to5], or both. Traceur and 6to5 are both *transpilers*, they work by parsing ECMAScript-6 code, then emitting valid ECMAScript-5 code that produces the same semantics.
+At the time this book was written, ECMAScript 6 was not yet widely available. All of the examples in this book were tested using either [Google Traceur Compiler], [6to5], or both. Traceur and 6to5 are both *transpilers*, they work by parsing ECMAScript 6 code, then emitting valid ECMAScript-5 code that produces the same semantics.
 
 [Google Traceur Compiler]: https://github.com/google/traceur-compiler
 [6to5]: http://6to5.org
 
-For example, this ECMAScript-6 code:
+For example, this ECMAScript 6 code:
 
     const before = (decoration) =>
       (method) =>

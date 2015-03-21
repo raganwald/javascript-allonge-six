@@ -355,6 +355,6 @@ This small error was a frequent cause of confusion, and in the days when there w
     introductions[1]('Raganwald')
       //=> 'Hello, Raganwald, my name is Friedrich'
     
-Now we're creating a new inner parameter, `i` and binding it to the value of the outer `i`. This works, but `let` is so much simpler and cleaner that it was added to the language in the ECMAScript-6 specification.
+Now we're creating a new inner parameter, `i` and binding it to the value of the outer `i`. This works, but `let` is so much simpler and cleaner that it was added to the language in the ECMAScript 6 specification.
 
 In this book, we will use function declarations sparingly, and not use `var` at all.
