@@ -4,7 +4,7 @@ As you recall from our code for making objects [extensible](#extensible), we wro
 
 Let's strip a function down to the very bare essentials:
 
-    var Ur = function () {};
+    const Ur = function () {};
 
 This doesn't look like a factory function: It doesn't have an expression that yields a Plain Old JavaScript Object when the function is applied. Yet, there is a way to make an object out of it. Behold the power of the `new` keyword:
 
@@ -16,7 +16,7 @@ We got an object back! What can we find out about this object?
     new Ur() === new Ur()
       //=> false
 
-Every time we call `new` with a function and get an object back, we get a unique object. We could call these "Objects created with the `new` keyword," but this would be cumbersome. So we're going to call them *instances*. Instances of what? Instances of the function that creates them. So given `var i = new Ur()`, we say that `i` is an instance of `Ur`.
+Every time we call `new` with a function and get an object back, we get a unique object. We could call these "Objects created with the `new` keyword," but this would be cumbersome. So we're going to call them *instances*. Instances of what? Instances of the function that creates them. So given `const i = new Ur()`, we say that `i` is an instance of `Ur`.
 
 For reasons that will be explained after we've discussed prototypes, we also say that `Ur` is the *constructor* of `i`, and that `Ur` is a *constructor function*. Therefore, an instance is an object created by using the `new` keyword on a constructor function, and that function is the instance's constructor.
 
@@ -36,7 +36,7 @@ Every function is initialized with its own unique `prototype`. What does it do? 
 
     Ur.prototype.language = 'JavaScript';
     
-    var continent = new Ur();
+    const continent = new Ur();
       //=> {}
     continent.language
       //=> 'JavaScript'
@@ -53,7 +53,7 @@ That's very interesting! Instances seem to behave as if they had the same elemen
 
 You can set elements of an instance, and they "override" the constructor's prototype, but they don't actually change the constructor's prototype. Let's make another instance and try something else.
 
-    var another = new Ur();
+    const another = new Ur();
       //=> {}
     another.language
       //=> 'JavaScript'
@@ -94,7 +94,7 @@ Very interesting! We will take another look at the `constructor` element when we
 
 Let's rewrite our Queue to use `new` and `.prototype`, using `this` and our `extend` helper from [Composition and Extension](#composition):
 
-    var Queue = function () {
+    const Queue = function () {
       extend(this, {
         array: [],
         head: 0,
@@ -103,11 +103,11 @@ Let's rewrite our Queue to use `new` and `.prototype`, using `this` and our `ext
     };
       
     extend(Queue.prototype, {
-      pushTail: function (value) {
+      pushTail (value) {
         return this.array[this.tail += 1] = value
       },
-      pullHead: function () {
-        var value;
+      pullHead () {
+        let value;
         
         if (!this.isEmpty()) {
           value = this.array[this.head]
@@ -116,10 +116,10 @@ Let's rewrite our Queue to use `new` and `.prototype`, using `this` and our `ext
           return value
         }
       },
-      isEmpty: function () {
+      isEmpty () {
         return this.tail < this.head
       }      
-    })
+    });
 
 You recall that when we first looked at `this`, we only covered the case where a function that belongs to an object is invoked. Now we see another case: When a function is invoked by the `new` operator, `this` is set to the new object being created. Thus, our code for `Queue` initializes the queue.
 
@@ -215,7 +215,7 @@ For example:
       
 Getting clever, we can write this:
 
-    var original = function (unknown) {
+    const original = function (unknown) {
       return unknown.constructor(unknown)
     }
         

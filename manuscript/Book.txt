@@ -131,9 +131,9 @@ mainmatter:
        markdown/Collections/recipes/more-mapping.md
 
 
-#    markdown/Instances and Classes/title.md
+   markdown/Instances and Classes/title.md
 
-#      markdown/Instances and Classes/simple.md
+     markdown/Instances and Classes/simple.md
 
 #      markdown/Instances and Classes/binding.md
 
