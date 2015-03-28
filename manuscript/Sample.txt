@@ -122,14 +122,14 @@ mainmatter:
      markdown/Collections/3.collections.md
 
      markdown/Collections/4.drunken.md
+
+     markdown/Collections/5.more-mapping.md
      
-     markdown/Collections/5.interactive-generators.md
+     markdown/Collections/6.interactive-generators.md
 
      markdown/Collections/recipes/title.md
 
        markdown/Collections/recipes/operations.md
-
-       markdown/Collections/recipes/more-mapping.md
        
 #
 #

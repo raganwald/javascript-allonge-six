@@ -175,14 +175,12 @@ Now let's put the two together. Here's another travesty:
 
 We get the result of concatenating `[4,5]` onto an array containing the global environment. Not what we want! Behold:
 
-    const contextualize = function (fn, context) {
-      return function () {
-        return fn.apply(context, arguments);
-      }
-    }
+    const contextualize = (fn, context) =>
+      (...args) =>
+        fn.apply(context, args)
     
-    accrete = contextualize(a.concat, a);
-    accrete([4,5]);
+    const accrete2 = contextualize(a.concat, a);
+    accrete2([4,5]);
       //=> [ 1, 2, 3, 4, 5 ]
       
 Our `contextualize` function returns a new function that calls a function with a fixed context. It can be used to fix some of the unexpected results we had above. Consider:
