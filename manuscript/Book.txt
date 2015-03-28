@@ -130,11 +130,11 @@ mainmatter:
 
        markdown/Collections/recipes/operations.md
 
-   markdown/Instances and Classes/title.md
+   markdown/Instances and Classes/0.title.md
 
-     markdown/Instances and Classes/simple.md
+     markdown/Instances and Classes/1.simple.md
 
-     markdown/Instances and Classes/binding.md
+     markdown/Instances and Classes/2.binding.md
 
 #      markdown/Instances and Classes/revisiting-partial.md
 

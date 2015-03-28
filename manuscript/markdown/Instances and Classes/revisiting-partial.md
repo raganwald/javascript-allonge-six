@@ -2,43 +2,29 @@
 
 Now that we've seen how function contexts work, we can revisit the subject of partial application. Recall our recipe for a generalized left partial application:
 
-    var callLeft = variadic( function (fn, args) {
-      return variadic( function (remainingArgs) {
+    const callLeft = (fn, ...args) =>
+      function (...remainingArgs) {
         return fn.apply(this, args.concat(remainingArgs))
-      })
-    })
+      }
     
 `Function.prototype.bind` can sometimes be used to accomplish the same thing, but will be much faster. For example, instead of:
 
-    function add (verb, a, b) { 
-      return "The " + verb + " of " + a + ' and ' + b + ' is ' + (a + b) 
-    }
+    const add = (verb, a, b) =>
+      `The ${verb} of ${a} and ${b} is ${a + b}`
     
-    var sumFive = callLeft(add, 'sum', 5);
+    const sumFive = callLeft(add, 'sum', 5);
     
     sumFive(6)
       //=> 'The sum of 5 and 6 is 11'
       
-You can write:
+You could just as easily write:
 
-    var totalSix = add.bind(null, 'total', 6);
+    const totalSix = add.bind(null, 'total', 6);
     
     totalSix(5)
       //=> 'The total of 6 and 5 is 11'
 
-The catch is the first parameter to `.bind`: It sets the context. If you write functions that don't use the context, like our `.add`, You can use `.bind` to do left partial application. But if you want to partially apply a method or other function where the context must be preserved, you can't use `.bind`. You can use the recipes given in *JavaScript Allongé* because they preserve the context properly.
-
-Typically, context matters when you want to perform partial application on methods. So for an extremely simple example, we often use `Array.prototype.slice` to convert `arguments` to an array. So instead of:
-
-    var __slice = Array.prototype.slice;
-    
-    var array = __slice.call(arguments, 0);
-    
-We could write:
-
-    var __copy = callFirst(Array.prototype.slice, 0);
-    
-    var array = __copy.call(arguments)
+The catch is the first parameter to `.bind`: It sets the context. If you write functions that don't use the context, like our `.add`, You can use `.bind` to do left partial application. But if you want to partially apply a method or other function where the context must be preserved, you can't use `.bind`, you'll need something like `callLeft` that preserves the context.
 
 The other catch is that `.bind` only does left partial evaluation. If you want to do right partial application, you'll need `callLast` or `callRight`.
 
