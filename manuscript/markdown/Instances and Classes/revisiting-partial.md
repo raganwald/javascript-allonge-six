@@ -30,49 +30,42 @@ The other catch is that `.bind` only does left partial evaluation. If you want t
 
 ### currying
 
-The terms "partial application" and "currying" are closely related but not synonymous. Currying is the act of taking a function that takes more than one argument and converting it to an equivalent function taking one argument. How can such a function be equivalent? It works provided that it returns a partially applied function.
+The terms "partial application" and "currying" are closely related but not synonymous. Currying is the act of taking a function that takes more than one argument and converting it to an equivalent function taking one argument. How can such a function be equivalent? It works, provided that it returns a partially applied function.
 
 Code is, as usual, much clearer than words. Recall:
 
-    function add (verb, a, b) { 
-      return "The " + verb + " of " + a + ' and ' + b + ' is ' + (a + b) 
-    }
+    const add = (verb, a, b) =>
+      `The ${verb} of ${a} and ${b} is ${a + b}`
     
     add('sum', 5, '6')
       //=> 'The sum of 5 and 6 is 11'
     
 Here is the curried version:
 
-    function addCurried (verb) {
-      return function (a) {
-        return function (b) {
-          return "The " + verb + " of " + a + ' and ' + b + ' is ' + (a + b) 
-        }
-      }
-    }
+    const addCurried =
+      (verb) =>
+        (a) =>
+          (b) =>
+            `The ${verb} of ${a} and ${b} is ${a + b}`
     
     addCurried('total')(6)(5)
       //=> 'The total of 6 and 5 is 11'
       
 Currying by hand would be an incredible effort, but its close relationship with partial application means that if you have left partial application, you can derive currying. Or if you have currying, you can derive left partial application. Let's derive currying from `callFirst`. [Recall](#simple-partial):
 
-    var __slice = Array.prototype.slice;
-    
-    function callFirst (fn, larg) {
-      return function () {
-        var args = __slice.call(arguments, 0);
-        
-        return fn.apply(this, [larg].concat(args))
+    const callFirst = (fn, larg) =>
+      function (...rest) {
+        return fn.call(this, larg, ...rest);
       }
-    }
 
 Here's a function that curries any function with two arguments:
 
-    function curryTwo (fn) {
-      return function (x) {
-        return callFirst(fn, x)
-      }
-    }
+    const curryTwo =
+      (fn) =>
+        (x) =>
+          callFirst(fn, x)
+          
+Given a function, it returns a 
     
     function add2 (a, b) { return a + b }
     
