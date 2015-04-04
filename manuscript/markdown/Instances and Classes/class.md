@@ -30,7 +30,7 @@ You can mix other functionality into this class by extending the prototype with 
     
 Naturally, that allows us to define mixins for other classes:
 
-    var ColourCoded = {
+    const ColourCoded = {
       setColourRGB: function (r, g, b) {
         // ...
       },

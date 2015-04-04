@@ -50,6 +50,8 @@ mainmatter:
 
       markdown/Functions/recipes/once.md
 
+      markdown/Functions/recipes/left-variadic.md
+
     markdown/Interludes/choice.md
     
     markdown/ComposingData/title.md
@@ -136,8 +138,6 @@ mainmatter:
 
      markdown/Instances and Classes/2.binding.md
 
-#      markdown/Instances and Classes/revisiting-partial.md
-
 #      markdown/Instances and Classes/class.md
 
 #      markdown/Instances and Classes/object-methods.md
@@ -146,7 +146,7 @@ mainmatter:
 
 #      markdown/Instances and Classes/summary.md
 
-#      markdown/Instances and Classes/recipes/title.md
+     markdown/Instances and Classes/recipes/0.title.md
 
 #        markdown/Instances and Classes/recipes/curry.md
 
