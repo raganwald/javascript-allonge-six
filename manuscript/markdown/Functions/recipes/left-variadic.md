@@ -1,4 +1,8 @@
-## Left-Variadic Functions {#left-variadic}
+---
+layout: default
+title: Left-Variadic Functions in JavaScript
+tags: JavaScript, noindex
+---
 
 A *variadic function* is a function that is designed to accept a variable number of arguments.[^eng] In JavaScript, you can make a variadic function by gathering parameters. For example:
 
@@ -120,7 +124,7 @@ We sure can, by using the techniques from `rightVariadic`. Mind you, we can take
 
 {:lang="js"}
 ~~~~~~~~
-const leftVaridic = (fn) => {
+const leftVariadic = (fn) => {
   if (fn.length < 1) {
     return fn;
   }
@@ -131,8 +135,68 @@ const leftVaridic = (fn) => {
   }
 };
 
-const butLastAndLast = leftVaridic((butLast, last) => [butLast, last]);
+const butLastAndLast = leftVariadic((butLast, last) => [butLast, last]);
 
 butLastAndLast('why', 'hello', 'there', 'little', 'droid')
   //=> [["why","hello","there","little"],"droid"]
 ~~~~~~~~
+
+Our `leftVariadic` function is a decorator that turns any function into a function that gathers parameters *from the left*, instead of from the right.
+
+### left-variadic destructuring
+
+Gathering arguments for functions is one of the ways JavaScript can *destructure* arrays. Another way is when assigning variables, like this:
+
+{:lang="js"}
+~~~~~~~~
+const [first, ...butFirst] = ['why', 'hello', 'there', 'little', 'droid'];
+
+first
+  //=> 'why'
+butFirst
+  //=> ["hello","there","little","droid"]
+~~~~~~~~
+
+As with parameters, we can't gather values from the left when destructuring an array:
+
+{:lang="js"}
+~~~~~~~~
+const [...butLast, last] = ['why', 'hello', 'there', 'little', 'droid'];
+  //=> Unexpected token
+~~~~~~~~
+
+We could use `leftVariadic` the hard way:
+
+{:lang="js"}
+~~~~~~~~
+const [butLast, last] = leftVariadic((butLast, last) => [butLast, last])(...['why', 'hello', 'there', 'little', 'droid']);
+
+butLast
+  //=> ['why', 'hello', 'there', 'little']
+
+last
+  //=> 'droid'
+~~~~~~~~
+
+But we can write our own left-gathering function utility using the same principles without all the tedium:
+
+{:lang="js"}
+~~~~~~~~
+const leftGather = (outputArrayLength) => {
+  return function (inputArray) {
+    return [inputArray.slice(0, inputArray.length - outputArrayLength + 1)].concat(
+      inputArray.slice(inputArray.length - outputArrayLength + 1)
+    )
+  }
+};
+
+const [butLast, last] = leftGather(2)(['why', 'hello', 'there', 'little', 'droid']);
+  
+butLast
+  //=> ['why', 'hello', 'there', 'little']
+
+last
+  //=> 'droid'
+~~~~~~~~
+
+With `leftGather`, we have to supply the length of the array we wish to use as the result, and it gathers excess arguments into it from the left, just like `leftVariadic` gathers excess parameters for a function.
