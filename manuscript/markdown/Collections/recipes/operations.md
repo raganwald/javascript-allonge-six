@@ -63,6 +63,27 @@ const take = function* (numberToTake, iterable) {
 }
 ~~~~~~~~
 
+### operations that compose two or more iterables into an iterable
+
+{:lang="js"}
+~~~~~~~~
+const zipIterables = (...iterables) =>
+  ({
+    [Symbol.iterator]: function * () {
+      const iterators = iterables.map(i => i[Symbol.iterator]());
+      
+      while (true) {
+        const pairs = iterators.map(j => j.next()),
+              dones = pairs.map(p => p.done),
+              values = pairs.map(p => p.value);
+        
+        if (dones.indexOf(true) >= 0) break;
+        yield values;
+      }
+    }
+  });
+~~~~~~~~
+
 ### operations that transform an iterable into a value
 
 {:lang="js"}
