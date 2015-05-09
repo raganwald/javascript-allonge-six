@@ -140,7 +140,7 @@ mainmatter:
 
      markdown/Instances and Classes/2.binding.md
 
-#      markdown/Instances and Classes/3.class.md
+#      markdown/Instances and Classes/3.new-class.md
 
 #      markdown/Instances and Classes/object-methods.md
 
