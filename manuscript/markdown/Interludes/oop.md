@@ -34,7 +34,9 @@ The concept of "class" is also flexible across languages. Object-oriented langua
 
 C++ has classes, but they are not "first-class entities." You can't assign a class to a variable or pass it to a function. You can, however, manipulate the constructors for classes, the functions that make new objects.
 
-Ruby has classes, and they're first-class entities. You can ask an object for its class, you can put a class in a variable, pass it to a method, or return it from a method, just like every other entity in the language.
+Ruby has classes, and they're first-class entities. You can ask an object for its class, you can put a class in a variable, pass it to a method, or return it from a method, just like every other entity in the language. Classes in Ruby and Smalltalk even have their own class, they are instances of `Class`![^meta]
+
+[^meta]: If the class of a class is `class`, what class is the class of `class`? In Ruby, `Class.class == Class`. In Smalltalk, it is `MetaClass`, which opens up the possibility for changing the way classes behave in a deep way.
 
 ### constructors
 
