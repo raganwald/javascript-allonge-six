@@ -142,7 +142,7 @@ mainmatter:
 
      markdown/Instances and Classes/3.class.md
 
-#      markdown/Instances and Classes/object-methods.md
+     markdown/Instances and Classes/4.object-methods.md
 
 #      markdown/Instances and Classes/extends.md
 
