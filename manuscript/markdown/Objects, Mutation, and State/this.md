@@ -2,7 +2,7 @@
 
 Let's take another look at [extensible objects](#extensible). Here's a Queue:
 
-    const Queue = function () {
+    const Queue = () => {
       const queue = {
         array: [], 
         head: 0, 
@@ -25,13 +25,13 @@ Let's take another look at [extensible objects](#extensible). Here's a Queue:
       return queue
     };
 
-    queue = Queue()
-    queue.pushTail('Hello')
-    queue.pushTail('JavaScript')
+    const queue = Queue();
+    queue.pushTail('Hello');
+    queue.pushTail('JavaScript');
 
 Let's make a copy of our queue using the `extend` recipe:
 
-    copyOfQueue = extend({}, queue);
+    const copyOfQueue = extend({}, queue);
     
     queue !== copyOfQueue
       //=> true
