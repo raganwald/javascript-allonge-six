@@ -20,9 +20,8 @@ It's also common to want to add a [shallow copy] of the properties of one object
 
 Both needs can be met with this recipe for `extend`:
 
-    const extend = function (consumer, ...providers) {
-      for (let i = 0; i < providers.length; ++i) {
-        const provider = providers[i];
+    const extend = (consumer, ...providers) => {
+      for (let provider of providers) {
         for (let key in provider) {
           if (provider.hasOwnProperty(key)) {
             consumer[key] = provider[key]
@@ -31,7 +30,7 @@ Both needs can be met with this recipe for `extend`:
       }
       return consumer
     };
-    
+
 You can copy an object by extending an empty object:
 
     extend({}, {
