@@ -132,7 +132,7 @@ mainmatter:
 
        markdown/Collections/recipes/operations.md
        
-  # markdown/Interludes/class.md
+  markdown/Interludes/oop.md
 
    markdown/Instances and Classes/0.title.md
 
@@ -140,7 +140,7 @@ mainmatter:
 
      markdown/Instances and Classes/2.binding.md
 
-#      markdown/Instances and Classes/3.class.md
+     markdown/Instances and Classes/3.class.md
 
 #      markdown/Instances and Classes/object-methods.md
 
