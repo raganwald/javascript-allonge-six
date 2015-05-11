@@ -15,6 +15,15 @@ const mapIterableWith = (fn, iterable) =>
     }
   });
   
+const mapAllIterableWith = (fn, iterable) =>
+  ({
+    [Symbol.iterator]: function* () {
+      for (let element of iterable) {
+        yield* fn(element);
+      }
+    }
+  });
+  
 const filterIterableWith = (fn, iterable) =>
   ({
     [Symbol.iterator]: function* () {
