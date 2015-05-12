@@ -1,6 +1,6 @@
-## Extend {#extend}
+## Object.assign
 
-It's very common to want to "extend" an object by adding properties to it:
+It's very common to want to "extend" an object by assigning properties to it:
 
     const inventory = {
       apples: 12,
@@ -10,7 +10,7 @@ It's very common to want to "extend" an object by adding properties to it:
     inventory.bananas = 54;
     inventory.pears = 24;
 
-It's also common to want to add a [shallow copy] of the properties of one object to another:
+It's also common to want to assign the properties of one object to another:
 
 [shallow copy]: https://en.wikipedia.org/wiki/Object_copy#Shallow_copy
 
@@ -18,22 +18,9 @@ It's also common to want to add a [shallow copy] of the properties of one object
         inventory[fruit] = shipment[fruit]
       }
 
-Both needs can be met with this recipe for `extend`:
+Both needs can be met with `Object.assign`, a standard function. You can copy an object by extending an empty object:
 
-    const extend = (consumer, ...providers) => {
-      for (let provider of providers) {
-        for (let key in provider) {
-          if (provider.hasOwnProperty(key)) {
-            consumer[key] = provider[key]
-          }
-        }
-      }
-      return consumer
-    };
-
-You can copy an object by extending an empty object:
-
-    extend({}, {
+    Object.assign({}, {
       apples: 12,
       oranges: 12
     })
@@ -51,7 +38,7 @@ You can extend one object with another:
       pears: 24
     }
     
-    extend(inventory, shipment)
+    Object.assign(inventory, shipment)
       //=> { apples: 12,
       //     oranges: 12,
       //     bananas: 54,
@@ -78,14 +65,14 @@ And when we discuss prototypes, we will use `extend` to turn this:
 Into this:
 
     const Queue = function () {
-      extend(this, {
+      Object.assign(this, {
         array: [],
         head: 0,
         tail: -1
       })
     };
       
-    extend(Queue.prototype, {
+    Object.assign(Queue.prototype, {
       pushTail: function (value) {
         // ...
       },
@@ -96,3 +83,5 @@ Into this:
         // ...
       }      
     });
+    
+Assigning properties from one object to another (also called "cloning" or "shallow copying") is a basic building block that we will later use to implement more advanced paradigms like mixins.

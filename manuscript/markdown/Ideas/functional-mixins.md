@@ -39,7 +39,7 @@ And a "mixin:"
     
 Mixing colour coding into our Todo prototype is straightforward:
 
-    extend(Todo.prototype, ColourCoded);
+    Object.assign(assign(Todo.prototype, ColourCoded);
     
     Todo.prototype;
       //=> { do: [Function],

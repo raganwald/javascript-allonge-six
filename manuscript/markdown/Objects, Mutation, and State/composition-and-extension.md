@@ -183,7 +183,7 @@ Now we can extend a queue into a deque:
       const deque = Queue(),
           INCREMENT = 4;
       
-      return extend(deque, {
+      return Object.assign(deque, {
         size: () => deque.tail - deque.head + 1,
         pullTail: () => {
           if (!deque.isEmpty()) {

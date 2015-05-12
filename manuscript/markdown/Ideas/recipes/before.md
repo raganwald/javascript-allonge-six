@@ -11,7 +11,7 @@ For example, using our [fluent](#fluent) recipe:
       this.ingredients = {}
     }
     
-    extend(Cake.prototype, {
+    Object.assign(Cake.prototype, {
       setFlavour: fluent( function (flavour) { 
         this.flavour = flavour
       }),
@@ -86,7 +86,7 @@ And here we are using it in conjunction with `fluent`, showing the power of comp
       this.mix()
     });
     
-    extend(Cake.prototype, {
+    Object.assign(Cake.prototype, {
       
       // Other methods...
       

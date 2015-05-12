@@ -5,14 +5,14 @@ You recall from [Composition and Extension](#extensible) that we extended a Plai
 Here's our `Queue`:
 
     const Queue = function () {
-      extend(this, {
+      Object.assign(this, {
         array: [],
         head: 0,
         tail: -1
       })
     };
 
-    extend(Queue.prototype, {
+    Object.assign(Queue.prototype, {
       pushTail: function (value) {
         return this.array[this.tail += 1] = value
       },
@@ -37,7 +37,7 @@ And here's what our `Deque` would look like before we wire things together:
 
     Dequeue.INCREMENT = 4;
 
-    extend(Dequeue.prototype, {
+    Object.assign(Dequeue.prototype, {
       size: function () {
         return this.tail - this.head + 1
       },
@@ -63,7 +63,7 @@ And here's what our `Deque` would look like before we wire things together:
 
 A> We obviously want to do all of a `Queue`'s initialization, thus we called `Queue.prototype.constructor.call(this)`. But why not just call `Queue.call(this)`? As we'll see when we wire everything together, this ensures that we're calling the correct constructor even when `Queue` itself is wired to inherit from another constructor function.
 
-So what do we want from dequeues such that we can call all of a `Queue`'s methods as well as a `Dequeue`'s? Should we copy everything from `Queue.prototype` into `Deque.prototype`, like `extend(Deque.prototype, Queue.prototype)`? That would work, except for one thing: If we later modified `Queue`, say by mixing in some new methods into its prototype, those wouldn't be picked up by `Dequeue`.
+So what do we want from dequeues such that we can call all of a `Queue`'s methods as well as a `Dequeue`'s? Should we copy everything from `Queue.prototype` into `Deque.prototype`, like `Object.assign(Deque.prototype, Queue.prototype)`? That would work, except for one thing: If we later modified `Queue`, say by mixing in some new methods into its prototype, those wouldn't be picked up by `Dequeue`.
 
 No, there's a better idea. Prototypes are objects, right? Why must they be Plain Old JavaScript Objects? Can't a prototype be an *instance*?
 
@@ -85,7 +85,7 @@ Our `QueueProxy` isn't actually a `Queue`, but its `prototype` is an alias of `Q
 
     Dequeue.prototype = new QueueProxy();
 
-    extend(Dequeue.prototype, {
+    Object.assign(Dequeue.prototype, {
       size: function () {
         return this.tail - this.head + 1
       },
@@ -170,7 +170,7 @@ And use it in `Dequeue`:
 
     Dequeue.INCREMENT = 4;
 
-    extend(Dequeue.prototype, {
+    Object.assign(Dequeue.prototype, {
       size: function () {
         return this.tail - this.head + 1
       },

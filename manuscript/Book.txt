@@ -140,12 +140,12 @@ mainmatter:
 
     markdown/mainmatter/Metaobjects/1.mixins.md
 
-    # markdown/mainmatter/Metaobjects/2.later-binding.md
-    #
+    markdown/mainmatter/Metaobjects/2.later-binding.md
+
     # markdown/mainmatter/Metaobjects/3.policies.md
-    #
-    # markdown/mainmatter/Metaobjects/4.prototypes.md
-    #
+
+    markdown/mainmatter/Metaobjects/4.prototypes.md
+
     # markdown/mainmatter/Metaobjects/5.singletons.md
     #
     # markdown/mainmatter/Metaobjects/6.shared-prototypes.md

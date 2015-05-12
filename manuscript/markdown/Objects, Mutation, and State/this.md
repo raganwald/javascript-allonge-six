@@ -31,7 +31,7 @@ Let's take another look at [extensible objects](#extensible). Here's a Queue:
 
 Let's make a copy of our queue using the `extend` recipe:
 
-    const copyOfQueue = extend({}, queue);
+    const copyOfQueue = Object.assign({}, queue);
     
     queue !== copyOfQueue
       //=> true
@@ -159,7 +159,7 @@ Now, does this solve our original problem? Can we make copies of an object? Reca
 
 Now our functions refer to members of the object, and use `this` to ensure  that they are referring to the object receiving a message. Let's see if this does, indeed, allow us to copy objects:
 
-    const copyOfQueue = extend({}, betterQueue)
+    const copyOfQueue = Object.assign({}, betterQueue)
     copyOfQueue.array = []
     for (var i = 0; i < 2; ++i) {
       copyOfQueue.array[i] = betterQueue.array[i]

@@ -4,7 +4,7 @@ Object and instance methods can be bifurcated into two classes: Those that query
 
     function Cake () {}
     
-    extend(Cake.prototype, {
+    Object.assign(Cake.prototype, {
       setFlavour: function (flavour) { 
         return this.flavour = flavour 
       },
@@ -27,7 +27,7 @@ The [fluent] style presumes that most of the time when you perform an update you
 
     function Cake () {}
     
-    extend(Cake.prototype, {
+    Object.assign(Cake.prototype, {
       setFlavour: function (flavour) { 
         this.flavour = flavour;
         return this

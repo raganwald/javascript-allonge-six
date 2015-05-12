@@ -63,7 +63,7 @@ We'll extract the decoration into a parameter like this:
         
         return clazz.apply(self, arguments);
       };
-      Decorated.prototype = extend(new clazz(), decoration);
+      Decorated.prototype = Object.assign(new clazz(), decoration);
       return Decorated;
     };
 
@@ -79,7 +79,7 @@ And then "curry" the function manually like this:
         
           return clazz.apply(self, arguments);
         };
-        Decorated.prototype = extend(new clazz(), decoration);
+        Decorated.prototype = Object.assign(new clazz(), decoration);
         return Decorated;
       };
       

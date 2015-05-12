@@ -12,7 +12,7 @@ For example, consider this "class:"
       this.done = false
     }
     
-    extend(Todo.prototype, {
+    Object.assign(assign(Todo.prototype, {
       do: fluent( function {
         this.done = true
       }),
@@ -38,17 +38,14 @@ If we're rolling our own model class, we might mix in [Backbone.Events]. Now we 
 
 [Backbone.Events]: http://backbonejs.org/#Events
 
-And here it is in use to trigger change events on our `Todo` "class." We're going to be even *more* sophisticated and paramaterize our decorators.
-
-    extend(Todo.prototype, Backbone.Events);
+And here it is in use to trigger change events on our `Todo` "class." We're going to be even *more* sophisticated and paramaterize our decoratorsObject.assign(Object.assign(Todo.prototype, Backbone.Events);
     
     function changes (propertyName) {
       return after(function () {
         this.trigger('changed changed:'+propertyName, this[propertyName])
       })
-    }
-    
-    extend(Todo.prototype, {
+ Object.assign(  
+    Object.assign(Todo.prototype, {
       do: fluent( changes('done')( function {
         this.done = true
       })),

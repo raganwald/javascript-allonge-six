@@ -43,7 +43,7 @@ Instead of writing:
 We'll extract the decoration into a parameter like this:
 
     function mixin (decoration) {
-      extend(this, decoration);
+      Object.assign(this, decoration);
       return this;
     };
 
@@ -52,7 +52,7 @@ And then "curry" the function manually like this:
     function mixin (decoration) {
 
       return function () {
-        extend(this, decoration);
+        Object.assign(this, decoration);
         return this;
       };
       
@@ -83,7 +83,7 @@ Success! Our `mixin` function makes functional mixins. A final refinement is to 
           return decorate.call(arguments[0]);
         }
         else {
-          extend(this, decoration);
+          Object.assign(this, decoration);
           return this;
         };
       };
