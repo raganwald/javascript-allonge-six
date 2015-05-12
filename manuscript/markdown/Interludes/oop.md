@@ -27,7 +27,9 @@ So we can see that the concept of "object" is flexible across languages.
 
 ### classes
 
-The concept of "class" is also flexible across languages. Object-oriented languages do not uniformly agree on whether classes are necessary, much less how they work. For example, The Common Lisp Object System has generic functions, but not classes. The [Self] and [NewtonScript] languages have prototypes instead of classes. So some "OO" languages have objects, but not classes.
+The concept of "class" is also flexible across languages. Object-oriented languages do not uniformly agree on whether classes are necessary, much less how they work. For example, The Common Lisp Object System defines behaviour with classes, and it also defines behaviour with generic functions. The [Self] and [NewtonScript] languages have prototypes instead of classes.
+
+So some "OO" languages have objects, but not classes.
 
 [Self]: https://en.wikipedia.org/wiki/Self_(programming_language)
 [NewtonScript]: https://en.wikipedia.org/wiki/NewtonScript
