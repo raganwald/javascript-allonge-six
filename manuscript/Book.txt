@@ -16,7 +16,7 @@ frontmatter:
 
 mainmatter:
 
-    markdown/Interludes/numbers.md
+    markdown/Interludes/0.numbers.md
 
     markdown/0.Functions/title.md
 
@@ -52,7 +52,7 @@ mainmatter:
 
       markdown/0.Functions/recipes/left-variadic.md
 
-    markdown/Interludes/choice.md
+    markdown/Interludes/1.choice.md
     
     markdown/1.ComposingData/title.md
     
@@ -88,7 +88,7 @@ mainmatter:
 
        markdown/1.ComposingData/recipes/y.md
 
-   markdown/Interludes/strings.md
+   markdown/Interludes/3.strings.md
 
    markdown/2.Objects and State/title.md
 
@@ -132,7 +132,7 @@ mainmatter:
 
        markdown/3.Collections/recipes/operations.md
        
-  markdown/Interludes/oop.md
+  markdown/Interludes/4.oop.md
 
   markdown/4.Metaobjects/title.md
 
@@ -145,6 +145,8 @@ mainmatter:
     markdown/4.Metaobjects/4.prototypes.md
 
     markdown/4.Metaobjects/6.shared-prototypes.md
+
+   markdown/Interludes/5.colours.md
 
    markdown/5.Instances and Classes/0.title.md
 
@@ -175,8 +177,6 @@ mainmatter:
 #        markdown/5.Instances and Classes/recipes/fluent.md
 
 #        markdown/5.Instances and Classes/recipes/named-once.md
-
-     markdown/Interludes/colours.md
 
 #    markdown/Sequence/title.md
 
