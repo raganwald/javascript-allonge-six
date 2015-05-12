@@ -4,7 +4,7 @@ You recall from [Composition and Extension](#extensible) that we extended a Plai
 
 Here's our `Queue`:
 
-    var Queue = function () {
+    const Queue = function () {
       extend(this, {
         array: [],
         head: 0,
@@ -17,10 +17,8 @@ Here's our `Queue`:
         return this.array[this.tail += 1] = value
       },
       pullHead: function () {
-        var value;
-
         if (!this.isEmpty()) {
-          value = this.array[this.head]
+          let value = this.array[this.head]
           this.array[this.head] = void 0;
           this.head += 1;
           return value
@@ -33,7 +31,7 @@ Here's our `Queue`:
 
 And here's what our `Deque` would look like before we wire things together:
 
-    var Dequeue = function () {
+    const Dequeue = function () {
       Queue.prototype.constructor.call(this)
     };
 
@@ -44,20 +42,16 @@ And here's what our `Deque` would look like before we wire things together:
         return this.tail - this.head + 1
       },
       pullTail: function () {
-        var value;
-
         if (!this.isEmpty()) {
-          value = this.array[this.tail];
+          let value = this.array[this.tail];
           this.array[this.tail] = void 0;
           this.tail -= 1;
           return value
         }
       },
       pushHead: function (value) {
-        var i;
-
         if (this.head === 0) {
-          for (i = this.tail; i >= this.head; --i) {
+          for (let i = this.tail; i >= this.head; --i) {
             this.array[i + this.constructor.INCREMENT] = this.array[i]
           }
           this.tail += this.constructor.INCREMENT;
