@@ -20,39 +20,39 @@ mainmatter:
 
     markdown/carmack.md
 
-    markdown/Functions/title.md
+    markdown/0.Functions/title.md
 
-      markdown/Functions/little.md
+      markdown/0.Functions/little.md
 
-      markdown/Functions/args.md
+      markdown/0.Functions/args.md
 
-      markdown/Functions/closures.md
+      markdown/0.Functions/closures.md
 
-      markdown/Functions/letvar.md
+      markdown/0.Functions/letvar.md
 
-      markdown/Functions/names.md
+      markdown/0.Functions/names.md
 
-      markdown/Functions/combinators.md
+      markdown/0.Functions/combinators.md
 
-      markdown/Functions/buildingblocks.md
+      markdown/0.Functions/buildingblocks.md
 
-      markdown/Functions/args-again.md
+      markdown/0.Functions/args-again.md
 
-      markdown/Functions/summary.md
+      markdown/0.Functions/summary.md
 
       markdown/cheat-sheet.md
 
-      markdown/Functions/recipes/title.md
+      markdown/0.Functions/recipes/title.md
 
-        markdown/Functions/recipes/partial.md
+        markdown/0.Functions/recipes/partial.md
 
-        markdown/Functions/recipes/ellipses.md
+        markdown/0.Functions/recipes/ellipses.md
 
-        markdown/Functions/recipes/unary.md
+        markdown/0.Functions/recipes/unary.md
 
-        markdown/Functions/recipes/tap.md
+        markdown/0.Functions/recipes/tap.md
 
-        markdown/Functions/recipes/maybe.md
+        markdown/0.Functions/recipes/maybe.md
 
     markdown/References and Rebinding/title.md
 
@@ -84,61 +84,61 @@ mainmatter:
 
         markdown/References and Rebinding/recipes/y.md
 
-    markdown/Objects, Mutation, and State/title.md
+    markdown/2.Objects and State/title.md
 
-      markdown/Objects, Mutation, and State/encapsulation.md
+      markdown/2.Objects and State/encapsulation.md
 
-      markdown/Objects, Mutation, and State/composition-and-extension.md
+      markdown/2.Objects and State/composition-and-extension.md
 
-      markdown/Objects, Mutation, and State/this.md
+      markdown/2.Objects and State/this.md
 
-      markdown/Objects, Mutation, and State/context.md
+      markdown/2.Objects and State/context.md
 
-      markdown/Objects, Mutation, and State/method-decorators.md
+      markdown/2.Objects and State/method-decorators.md
 
-      markdown/Objects, Mutation, and State/summary.md
+      markdown/2.Objects and State/summary.md
 
-      markdown/Objects, Mutation, and State/recipes/title.md
+      markdown/2.Objects and State/recipes/title.md
 
-        markdown/Objects, Mutation, and State/recipes/memoize.md
+        markdown/2.Objects and State/recipes/memoize.md
 
-        markdown/Objects, Mutation, and State/recipes/get-with.md
+        markdown/2.Objects and State/recipes/get-with.md
 
-        markdown/Objects, Mutation, and State/recipes/pluck.md
+        markdown/2.Objects and State/recipes/pluck.md
 
-        markdown/Objects, Mutation, and State/recipes/deep-map-with.md
+        markdown/2.Objects and State/recipes/deep-map-with.md
 
-    markdown/Instances and Classes/title.md
+    markdown/5.Instances and Classes/title.md
 
-      markdown/Instances and Classes/simple.md
+      markdown/5.Instances and Classes/simple.md
 
-      markdown/Instances and Classes/binding.md
+      markdown/5.Instances and Classes/binding.md
 
-      markdown/Instances and Classes/revisiting-partial.md
+      markdown/5.Instances and Classes/revisiting-partial.md
 
-      markdown/Instances and Classes/class.md
+      markdown/5.Instances and Classes/class.md
 
-      markdown/Instances and Classes/object-methods.md
+      markdown/5.Instances and Classes/object-methods.md
 
-      markdown/Instances and Classes/extends.md
+      markdown/5.Instances and Classes/extends.md
 
-      markdown/Instances and Classes/summary.md
+      markdown/5.Instances and Classes/summary.md
 
-      markdown/Instances and Classes/recipes/title.md
+      markdown/5.Instances and Classes/recipes/title.md
 
-        markdown/Instances and Classes/recipes/curry.md
+        markdown/5.Instances and Classes/recipes/curry.md
 
-        markdown/Instances and Classes/recipes/bound.md
+        markdown/5.Instances and Classes/recipes/bound.md
 
-        markdown/Instances and Classes/recipes/unbind.md
+        markdown/5.Instances and Classes/recipes/unbind.md
 
-        markdown/Instances and Classes/recipes/send.md
+        markdown/5.Instances and Classes/recipes/send.md
 
-        markdown/Instances and Classes/recipes/invoke.md
+        markdown/5.Instances and Classes/recipes/invoke.md
 
-        markdown/Instances and Classes/recipes/fluent.md
+        markdown/5.Instances and Classes/recipes/fluent.md
 
-        markdown/Instances and Classes/recipes/named-once.md
+        markdown/5.Instances and Classes/recipes/named-once.md
         
     markdown/Sequence/title.md
         

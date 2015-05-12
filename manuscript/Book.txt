@@ -18,169 +18,169 @@ mainmatter:
 
     markdown/Interludes/numbers.md
 
-    markdown/Functions/title.md
+    markdown/0.Functions/title.md
 
-      markdown/Functions/little.md
+      markdown/0.Functions/little.md
 
-      markdown/Functions/args.md
+      markdown/0.Functions/args.md
 
-      markdown/Functions/closures.md
+      markdown/0.Functions/closures.md
 
-      markdown/Functions/const.md
+      markdown/0.Functions/const.md
 
-      markdown/Functions/names.md
+      markdown/0.Functions/names.md
 
-      markdown/Functions/combinators.md
+      markdown/0.Functions/combinators.md
 
-      markdown/Functions/buildingblocks.md
+      markdown/0.Functions/buildingblocks.md
 
-      markdown/Functions/magic-names.md
+      markdown/0.Functions/magic-names.md
 
-      markdown/Functions/summary.md
+      markdown/0.Functions/summary.md
 
-    markdown/Functions/recipes/title.md
+    markdown/0.Functions/recipes/title.md
 
-      markdown/Functions/recipes/partial.md
+      markdown/0.Functions/recipes/partial.md
 
-      markdown/Functions/recipes/unary.md
+      markdown/0.Functions/recipes/unary.md
 
-      markdown/Functions/recipes/tap.md
+      markdown/0.Functions/recipes/tap.md
 
-      markdown/Functions/recipes/maybe.md
+      markdown/0.Functions/recipes/maybe.md
 
-      markdown/Functions/recipes/once.md
+      markdown/0.Functions/recipes/once.md
 
-      markdown/Functions/recipes/left-variadic.md
+      markdown/0.Functions/recipes/left-variadic.md
 
     markdown/Interludes/choice.md
     
-    markdown/ComposingData/title.md
+    markdown/1.ComposingData/title.md
     
-      markdown/ComposingData/destructuring.md
+      markdown/1.ComposingData/destructuring.md
     
-      markdown/ComposingData/linear-recursion.md
+      markdown/1.ComposingData/linear-recursion.md
     
-      markdown/ComposingData/tail.md
+      markdown/1.ComposingData/tail.md
     
-      markdown/ComposingData/garbage.md
+      markdown/1.ComposingData/garbage.md
     
-      markdown/ComposingData/pojos.md
+      markdown/1.ComposingData/pojos.md
 
-      markdown/ComposingData/mutation.md
+      markdown/1.ComposingData/mutation.md
 
-      markdown/ComposingData/reassignment.md
+      markdown/1.ComposingData/reassignment.md
 
-      markdown/ComposingData/copy-on-write.md
+      markdown/1.ComposingData/copy-on-write.md
 
-      markdown/ComposingData/turtles.md
+      markdown/1.ComposingData/turtles.md
 
-      markdown/ComposingData/functional-iterators.md
+      markdown/1.ComposingData/functional-iterators.md
 
-      markdown/ComposingData/data-out-of-functions.md
+      markdown/1.ComposingData/data-out-of-functions.md
 
-     markdown/ComposingData/recipes/title.md
+     markdown/1.ComposingData/recipes/title.md
 
-       markdown/ComposingData/recipes/map-with.md
+       markdown/1.ComposingData/recipes/map-with.md
 
-       markdown/ComposingData/recipes/flip.md
+       markdown/1.ComposingData/recipes/flip.md
 
-       markdown/ComposingData/recipes/extend.md
+       markdown/1.ComposingData/recipes/extend.md
 
-       markdown/ComposingData/recipes/y.md
+       markdown/1.ComposingData/recipes/y.md
 
    markdown/Interludes/strings.md
 
-   markdown/Objects, Mutation, and State/title.md
+   markdown/2.Objects and State/title.md
 
-     markdown/Objects, Mutation, and State/encapsulation.md
+     markdown/2.Objects and State/encapsulation.md
 
-     markdown/Objects, Mutation, and State/composition-and-extension.md
+     markdown/2.Objects and State/composition-and-extension.md
 
-     markdown/Objects, Mutation, and State/this.md
+     markdown/2.Objects and State/this.md
 
-     markdown/Objects, Mutation, and State/context.md
+     markdown/2.Objects and State/context.md
 
-     markdown/Objects, Mutation, and State/method-decorators.md
+     markdown/2.Objects and State/method-decorators.md
 
-     markdown/Objects, Mutation, and State/summary.md
+     markdown/2.Objects and State/summary.md
 
-     markdown/Objects, Mutation, and State/recipes/title.md
+     markdown/2.Objects and State/recipes/title.md
 
-       markdown/Objects, Mutation, and State/recipes/memoize.md
+       markdown/2.Objects and State/recipes/memoize.md
 
-       markdown/Objects, Mutation, and State/recipes/get-with.md
+       markdown/2.Objects and State/recipes/get-with.md
 
-       markdown/Objects, Mutation, and State/recipes/pluck.md
+       markdown/2.Objects and State/recipes/pluck.md
 
-       markdown/Objects, Mutation, and State/recipes/deep-map-with.md
+       markdown/2.Objects and State/recipes/deep-map-with.md
 
-   markdown/Collections/title.md
+   markdown/3.Collections/title.md
 
-     markdown/Collections/1.iterables.md
+     markdown/3.Collections/1.iterables.md
 
-     markdown/Collections/2.generating-iterables.md
+     markdown/3.Collections/2.generating-iterables.md
 
-     markdown/Collections/3.collections.md
+     markdown/3.Collections/3.collections.md
 
-     markdown/Collections/4.drunken.md
+     markdown/3.Collections/4.drunken.md
 
-     markdown/Collections/5.more-mapping.md
+     markdown/3.Collections/5.more-mapping.md
      
-     markdown/Collections/6.interactive-generators.md
+     markdown/3.Collections/6.interactive-generators.md
 
-     markdown/Collections/recipes/title.md
+     markdown/3.Collections/recipes/title.md
 
-       markdown/Collections/recipes/operations.md
+       markdown/3.Collections/recipes/operations.md
        
   markdown/Interludes/oop.md
 
-  markdown/mainmatter/Metaobjects/title.md
+  markdown/4.Metaobjects/title.md
 
-    markdown/mainmatter/Metaobjects/0.why.md
+    markdown/4.Metaobjects/0.why.md
 
-    markdown/mainmatter/Metaobjects/1.mixins.md
+    markdown/4.Metaobjects/1.mixins.md
 
-    markdown/mainmatter/Metaobjects/2.later-binding.md
+    markdown/4.Metaobjects/2.later-binding.md
 
-    # markdown/mainmatter/Metaobjects/3.policies.md
+    # markdown/4.Metaobjects/3.policies.md
 
-    markdown/mainmatter/Metaobjects/4.prototypes.md
+    markdown/4.Metaobjects/4.prototypes.md
 
-    # markdown/mainmatter/Metaobjects/5.singletons.md
+    # markdown/4.Metaobjects/5.singletons.md
     #
-    # markdown/mainmatter/Metaobjects/6.shared-prototypes.md
+    # markdown/4.Metaobjects/6.shared-prototypes.md
     #
-    # markdown/mainmatter/Metaobjects/7.self.md
+    # markdown/4.Metaobjects/7.self.md
 
-   markdown/Instances and Classes/0.title.md
+   markdown/5.Instances and Classes/0.title.md
 
-     markdown/Instances and Classes/1.simple.md
+     markdown/5.Instances and Classes/1.simple.md
 
-     markdown/Instances and Classes/2.binding.md
+     markdown/5.Instances and Classes/2.binding.md
 
-     markdown/Instances and Classes/3.class.md
+     markdown/5.Instances and Classes/3.class.md
 
-     markdown/Instances and Classes/4.object-methods.md
+     markdown/5.Instances and Classes/4.object-methods.md
 
-#      markdown/Instances and Classes/extends.md
+#      markdown/5.Instances and Classes/extends.md
 
-#      markdown/Instances and Classes/summary.md
+#      markdown/5.Instances and Classes/summary.md
 
-     markdown/Instances and Classes/recipes/0.title.md
+     markdown/5.Instances and Classes/recipes/0.title.md
 
-#        markdown/Instances and Classes/recipes/curry.md
+#        markdown/5.Instances and Classes/recipes/curry.md
 
-#        markdown/Instances and Classes/recipes/bound.md
+#        markdown/5.Instances and Classes/recipes/bound.md
 
-#        markdown/Instances and Classes/recipes/unbind.md
+#        markdown/5.Instances and Classes/recipes/unbind.md
 
-#        markdown/Instances and Classes/recipes/send.md
+#        markdown/5.Instances and Classes/recipes/send.md
 
-#        markdown/Instances and Classes/recipes/invoke.md
+#        markdown/5.Instances and Classes/recipes/invoke.md
 
-#        markdown/Instances and Classes/recipes/fluent.md
+#        markdown/5.Instances and Classes/recipes/fluent.md
 
-#        markdown/Instances and Classes/recipes/named-once.md
+#        markdown/5.Instances and Classes/recipes/named-once.md
 
      markdown/Interludes/colours.md
 

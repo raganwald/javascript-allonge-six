@@ -1,4 +1,4 @@
-# Stir the Allongé: Objects and Persistent State {#mutable}
+# Stir the Allongé: Objects and State {#mutable}
 
 ![Life measured out by coffee spoons](images/coffee-spoons.jpg)
 
