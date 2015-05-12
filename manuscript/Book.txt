@@ -142,15 +142,9 @@ mainmatter:
 
     markdown/4.Metaobjects/2.later-binding.md
 
-    # markdown/4.Metaobjects/3.policies.md
-
     markdown/4.Metaobjects/4.prototypes.md
 
-    # markdown/4.Metaobjects/5.singletons.md
-    #
-    # markdown/4.Metaobjects/6.shared-prototypes.md
-    #
-    # markdown/4.Metaobjects/7.self.md
+    markdown/4.Metaobjects/6.shared-prototypes.md
 
    markdown/5.Instances and Classes/0.title.md
 

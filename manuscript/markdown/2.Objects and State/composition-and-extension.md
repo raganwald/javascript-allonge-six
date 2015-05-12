@@ -36,7 +36,7 @@ const Stack = () => {
       array[index += 1] = value
     },
     pop: function () {
-      var value = array[index];
+      let value = array[index];
       if (index >= 0) {
         index -= 1
       }
@@ -49,8 +49,8 @@ const Stack = () => {
 }
     
 const Model = function (initialAttributes) {
-  let   redoStack = Stack(),
-        attributes = shallowCopy(initialAttributes || {});
+  const redoStack = Stack();
+  let attributes = shallowCopy(initialAttributes || {});
         
   const undoStack = Stack(),
       obj = {
