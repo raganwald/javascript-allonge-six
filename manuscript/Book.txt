@@ -146,7 +146,7 @@ mainmatter:
 
     markdown/4.Metaobjects/6.shared-prototypes.md
 
-   markdown/Interludes/5.colours.md
+   markdown/Interludes/5.impostors.md
 
    markdown/5.Instances and Classes/0.title.md
 
@@ -158,11 +158,9 @@ mainmatter:
 
      markdown/5.Instances and Classes/4.object-methods.md
 
-#      markdown/5.Instances and Classes/extends.md
+     markdown/5.Instances and Classes/5.extends.md
 
-#      markdown/5.Instances and Classes/summary.md
-
-     markdown/Interludes/6.impostors.md
+     markdown/5.Instances and Classes/summary.md
 
      markdown/5.Instances and Classes/recipes/0.title.md
 
@@ -179,6 +177,8 @@ mainmatter:
 #        markdown/5.Instances and Classes/recipes/fluent.md
 
 #        markdown/5.Instances and Classes/recipes/named-once.md
+
+   markdown/Interludes/6.colours.md
 
 #    markdown/Sequence/title.md
 

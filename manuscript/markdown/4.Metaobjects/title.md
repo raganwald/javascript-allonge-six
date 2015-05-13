@@ -1,4 +1,4 @@
-# Metaobjects {#metaobjects}
+# Life on the Plantation: Metaobjects {#metaobjects}
 
 ![Krups Machines](images/shadowbecomeswhite.jpg)[^shadowbecomeswhite]
 
