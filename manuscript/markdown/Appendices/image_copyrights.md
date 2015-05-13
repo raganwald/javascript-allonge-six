@@ -48,6 +48,8 @@
 * [5 Barrel Roaster](https://www.flickr.com/photos/dlytle/8720139854) (c) 2013 David Lytle [Some rights reserved][by].
 * [Pantone mugs](https://www.flickr.com/photos/joebehr/5504285781) (c) 2011 Joe Wolf [Some rights reserved][by-nd].
 * [Coffee and Chess](https://www.flickr.com/photos/adders/8372085101) (c) 2013 Adam Tinworth [Some rights reserved][by-nd].
+* [Vac Pot Upper Chamber](https://www.flickr.com/photos/digitalcolony/2843767532) (c) 2007 Michael Allen Smith [Some rights reserved][by-sa].
+* [Decaf espresso](https://www.flickr.com/photos/arisvrakas/4217869291) (c) 2009 Aris Vrakas [Some rights reserved][by].
 
 [by-sa]: http://creativecommons.org/licenses/by-sa/2.0/deed.en
 [by-nd]: http://creativecommons.org/licenses/by-nd/2.0/deed.en
