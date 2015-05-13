@@ -2,11 +2,7 @@
 
 Earlier, we saw a recipe for [getWith](#getWith) that plays nicely with properties:
 
-    function get (attr) {
-      return function (obj) {
-        return obj[attr]
-      }
-    }
+    const getWith = (attr) => (object) => object[attr]
 
 Simple and useful. But now that we've spent some time looking at objects with methods we can see that `get` (and `pluck`) has a failure mode. Specifically, it's not very useful if we ever want to get a *method*, since we'll lose the context. Consider some hypothetical class:
 
@@ -30,7 +26,7 @@ Simple and useful. But now that we've spent some time looking at objects with me
       return this.record.eggs
     }
     
-    var inventories = [
+    const inventories = [
       new InventoryRecord( 0, 144, 36 ),
       new InventoryRecord( 240, 54, 12 ),
       new InventoryRecord( 24, 12, 42 )
@@ -46,44 +42,29 @@ Now how do we get all the egg counts?
 And if we try applying those functions...
 
     mapWith(getWith('eggs'))(inventories).map(
-      function (unboundmethod) { 
-        return unboundmethod() 
-      }
+      unboundmethod => unboundmethod()
     )
       //=> TypeError: Cannot read property 'eggs' of undefined
       
-Of course, these are unbound methods we're "getting" from each object. Here's a new version of `get` that plays nicely with methods. It uses [variadic](#ellipses):
+It doesn't work, because these are unbound methods we're "getting" from each object. The context has been lost! Here's a new version of `get` that plays nicely with methods:
 
-    var bound = variadic( function (messageName, args) {
-      
-      if (args === []) {
-        return function (instance) {
-          return instance[messageName].bind(instance)
-        }
-      }
-      else {
-        return function (instance) {
-          return Function.prototype.bind.apply(
-            instance[messageName], [instance].concat(args)
-          )
-        }
-      }
-    });
+    const bound = (messageName, ...args) =>
+      (args === [])
+        ? instance => instance[messageName].bind(instance)
+        : instance => Function.prototype.bind.apply(
+                        instance[messageName], [instance].concat(args)
+                      );
 
     mapWith(bound('eggs'))(inventories).map(
-      function (boundmethod) { 
-        return boundmethod() 
-      }
+      boundmethod =>  boundmethod()
     )
       //=> [ 36, 12, 42 ]
 
 `bound` is the recipe for getting a bound method from an object by name. It has other uses, such as callbacks. `bound('render')(aView)` is equivalent to `aView.render.bind(aView)`. There's an option to add a variable number of additional arguments, handled by:
 
-    return function (instance) {
-      return Function.prototype.bind.apply(
-        instance[messageName], [instance].concat(args)
-      )
-    }
+    instance => Function.prototype.bind.apply(
+                  instance[messageName], [instance].concat(args)
+                );
         
 The exact behaviour will be covered in [Binding Functions to Contexts](#binding). You can use it like this to add arguments to the bound function to be evaluated:
 
@@ -94,9 +75,7 @@ The exact behaviour will be covered in [Binding Functions to Contexts](#binding)
     }
     
     mapWith(bound('add', 'eggs', 12))(inventories).map(
-      function (boundmethod) { 
-        return boundmethod() 
-      }
+      boundmethod => boundmethod()
     )
       //=> [ { record: 
       //       { apples: 0,
