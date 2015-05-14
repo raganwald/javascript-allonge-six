@@ -164,15 +164,13 @@ mainmatter:
 
      markdown/5.Instances and Classes/recipes/0.title.md
 
-#        markdown/5.Instances and Classes/recipes/curry.md
-
        markdown/5.Instances and Classes/recipes/bound.md
 
 #        markdown/5.Instances and Classes/recipes/unbind.md
 
        markdown/5.Instances and Classes/recipes/send.md
 
-#        markdown/5.Instances and Classes/recipes/invoke.md
+       markdown/5.Instances and Classes/recipes/invoke.md
 
 #        markdown/5.Instances and Classes/recipes/fluent.md
 
