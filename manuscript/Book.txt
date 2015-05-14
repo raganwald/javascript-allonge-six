@@ -160,6 +160,8 @@ mainmatter:
 
      markdown/5.Instances and Classes/5.extends.md
 
+     markdown/5.Instances and Classes/6.mixins.md
+
      markdown/5.Instances and Classes/summary.md
 
      markdown/5.Instances and Classes/recipes/0.title.md
