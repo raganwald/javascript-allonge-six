@@ -150,7 +150,7 @@ mainmatter:
 
    markdown/5.Instances and Classes/0.title.md
 
-     markdown/5.Instances and Classes/1.constructors.md
+     markdown/5.Instances and Classes/1a.constructors.md
 
      markdown/5.Instances and Classes/2.binding.md
 
