@@ -150,17 +150,15 @@ mainmatter:
 
    markdown/5.Instances and Classes/0.title.md
 
-     markdown/5.Instances and Classes/1a.constructors.md
+     markdown/5.Instances and Classes/1.constructors.md
 
-     markdown/5.Instances and Classes/2.binding.md
+     markdown/5.Instances and Classes/2.why.md
 
      markdown/5.Instances and Classes/3.class.md
 
      markdown/5.Instances and Classes/4.object-methods.md
 
-     markdown/5.Instances and Classes/5.extends.md
-
-     markdown/5.Instances and Classes/6.mixins.md
+     markdown/5.Instances and Classes/5.mixins.md
 
      markdown/5.Instances and Classes/summary.md
 

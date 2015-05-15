@@ -55,12 +55,11 @@ For one-liners like setting a property, this is fine. But some functions are lon
 
 The `fluent` method decorator solves this problem:
 
-    function fluent (methodBody) {
-      return function () {
-        methodBody.apply(this, arguments);
+    const fluent = (methodBody) =>
+      function (...args) {
+        methodBody.apply(this, args);
         return this;
       }
-    }
 
 Now you can write methods like this:
 
