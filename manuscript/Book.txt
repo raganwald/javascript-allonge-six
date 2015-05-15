@@ -174,9 +174,9 @@ mainmatter:
 
        markdown/5.Instances and Classes/recipes/invoke.md
 
-#        markdown/5.Instances and Classes/recipes/fluent.md
+       markdown/5.Instances and Classes/recipes/fluent.md
 
-#        markdown/5.Instances and Classes/recipes/named-once.md
+       markdown/5.Instances and Classes/recipes/named-once.md
 
    markdown/Interludes/6.colours.md
 

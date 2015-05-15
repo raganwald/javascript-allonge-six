@@ -15,7 +15,7 @@ As we noted when we saw the recipe for [once](#once), you do have to be careful 
 This is expected, but sometimes not what we want. Instead of the simple implementation, we can use a *named once*:
 
     function once (fn) {
-      var done = false,
+      let done = false,
           testAndSet;
           
       if (!!fn.name) {
@@ -75,7 +75,7 @@ The named once adds a property, `__once__`, to the context where the function is
       return this;
     });
     
-    var w = new Widget()
+    const w = new Widget()
       .setVolume(...)
       .setDensity(...)
       .setLength(...)

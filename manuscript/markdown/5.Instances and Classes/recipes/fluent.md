@@ -2,58 +2,54 @@
 
 Object and instance methods can be bifurcated into two classes: Those that query something, and those that update something. Most design philosophies arrange things such that update methods return the value being updated. For example:
 
-    function Cake () {}
-    
-    Object.assign(Cake.prototype, {
-      setFlavour: function (flavour) { 
+    class Cake {
+      setFlavour (flavour) { 
         return this.flavour = flavour 
       },
-      setLayers: function (layers) { 
+      setLayers (layers) { 
         return this.layers = layers 
       },
-      bake: function () {
+      bake () {
         // do some baking
       }
-    });
+    }
     
-    var cake = new Cake();
+    const cake = new Cake();
     cake.setFlavour('chocolate');
     cake.setLayers(3);
     cake.bake();
 
 Having methods like `setFlavour` return the value being set mimics the behaviour of assignment, where `cake.flavour = 'chocolate'` is an expression that in addition to setting a property also evaluates to the value `'chocolate'`.
 
-The [fluent] style presumes that most of the time when you perform an update you are more interested in doing other things with the receiver than the values being passed as argument(s), so the rule is to return the receiver unless the method is a query:
+The [fluent] style presumes that most of the time when you perform an update, you are more interested in doing other things with the receiver than the values being passed as argument(s). Thereore, the rule is to return the receiver unless the method is a query:
 
-    function Cake () {}
-    
-    Object.assign(Cake.prototype, {
-      setFlavour: function (flavour) { 
+    class Cake {
+      setFlavour (flavour) { 
         this.flavour = flavour;
-        return this
+        return this;
       },
-      setLayers: function (layers) { 
+      setLayers (layers) { 
         this.layers = layers;
-        return this
+        return this;
       },
-      bake: function () {
+      bake () {
         // do some baking
-        return this
+        return this;
       }
-    });
+    }
 
 The code to work with cakes is now easier to read and less repetitive:
 
-    var cake = new Cake().
-      setFlavour('chocolate').
-      setLayers(3).
-      bake();
+    const cake = new Cake().
+                   setFlavour('chocolate').
+                   setLayers(3).
+                   bake();
 
 For one-liners like setting a property, this is fine. But some functions are longer, and we want to signal the intent of the method at the top, not buried at the bottom. Normally this is done in the method's name, but fluent interfaces are rarely written to include methods like `setLayersAndReturnThis`.
 
 [fluent]: https://en.wikipedia.org/wiki/Fluent_interface
 
-The `fluent` method decorator solves this problem:
+When we write our own prototypes, the `fluent` method decorator solves this problem:
 
     const fluent = (methodBody) =>
       function (...args) {
@@ -63,10 +59,46 @@ The `fluent` method decorator solves this problem:
 
 Now you can write methods like this:
 
-    Cake.prototype.bake = fluent( function () {
-      // do some baking
-      // using many lines of code
-      // and possibly multiple returns
+    function Cake () {}
+
+    Cake.prototype.setFlavour = fluent( function (flavour) { 
+      this.flavour = flavour;
     });
 
 It's obvious at a glance that this method is "fluent."
+
+When we use the `class` keyword, we can decorate functions in a similar manner:
+
+    class Cake {
+      setFlavour (flavour) { 
+        this.flavour = flavour;
+      },
+      setLayers (layers) { 
+        this.layers = layers;
+      },
+      bake () {
+        // do some baking
+      }
+    }
+    Cake.prototype.setFlavour = fluent(Cake.prototype.setFlavour);
+    Cake.prototype.setLayers = fluent(Cake.prototype.setLayers);
+    Cake.prototype.bake = fluent(Cake.prototype.bake);
+    
+Or, we could write ourselves a slight variation:
+
+    const fluent = (methodBody) =>
+      function (...args) {
+        methodBody.apply(this, args);
+        return this;
+      }
+    
+    const fluentClass = (clazz, ...methodNames) {
+      for (let methodName of methodNames) {
+        clazz.prototype[methodName] = fluent(clazz.prototype[methodName]);
+      }
+      return clazz;
+    }
+    
+Now we can simply write:
+
+    fluentClass(Cake, 'setFlavour', 'setLayers', 'bake');
