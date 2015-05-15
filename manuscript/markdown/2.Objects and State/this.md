@@ -29,7 +29,7 @@ Let's take another look at [extensible objects](#extensible). Here's a Queue:
     queue.pushTail('Hello');
     queue.pushTail('JavaScript');
 
-Let's make a copy of our queue using the `extend` recipe:
+Let's make a copy of our queue using `Object.assign`:
 
     const copyOfQueue = Object.assign({}, queue);
     

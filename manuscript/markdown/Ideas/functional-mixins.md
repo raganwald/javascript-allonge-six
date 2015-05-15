@@ -1,6 +1,6 @@
 ## Mixins {#functional-mixins}
 
-In [A Class By Any Other Name](#class-other-name), we saw that you can emulate "mixins" using our `extend` function. We'll revisit this subject now and spend more time looking at mixing functionality into classes.
+In [A Class By Any Other Name](#class-other-name), we saw that you can emulate "mixins" using `Object.assign`. We'll revisit this subject now and spend more time looking at mixing functionality into classes.
 
 First, a quick recap: In JavaScript, a "class" is implemented as a constructor function and its prototype. Instances of the class are created by calling the constructor with `new`. They "inherit" shared behaviour from the constructor's `prototype` property. One way to share behaviour scattered across multiple classes, or to untangle behaviour by factoring it out of an overweight prototype, is to extend a prototype with a mixin.
 

@@ -44,7 +44,7 @@ You can extend one object with another:
       //     bananas: 54,
       //     pears: 24 }
       
-And when we discuss prototypes, we will use `extend` to turn this:
+And when we discuss prototypes, we will use `Object.assign` to turn this:
 
     const Queue = function () {
       this.array = [];
