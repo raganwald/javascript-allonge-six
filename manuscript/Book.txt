@@ -180,37 +180,33 @@ mainmatter:
 
    markdown/Interludes/6.colours.md
 
-   markdown/6.Sequence/title.md
+#    markdown/6.Ideas/title.md
 
-#      markdown/6.Sequence/compose-and-pipeline.md
+#      markdown/6.Ideas/1.coroutines.md
 
-#    markdown/Ideas/title.md
+#      markdown/6.Ideas/prototype.md
 
-#      markdown/Ideas/1.coroutines.md
+#      markdown/6.Ideas/agnostic.md
 
-#      markdown/Ideas/prototype.md
+#      markdown/6.Ideas/functional-mixins.md
 
-#      markdown/Ideas/agnostic.md
+#      markdown/6.Ideas/class-decorators.md
 
-#      markdown/Ideas/functional-mixins.md
+#      markdown/6.Ideas/trampolining.md
 
-#      markdown/Ideas/class-decorators.md
+#      markdown/6.Ideas/recipes/title.md
 
-#      markdown/Ideas/trampolining.md
+#        markdown/6.Ideas/recipes/before.md
 
-#      markdown/Ideas/recipes/title.md
+#        markdown/6.Ideas/recipes/after.md
 
-#        markdown/Ideas/recipes/before.md
+#        markdown/6.Ideas/recipes/provided.md
 
-#        markdown/Ideas/recipes/after.md
+#        markdown/6.Ideas/recipes/functional-mixin.md
 
-#        markdown/Ideas/recipes/provided.md
+#        markdown/6.Ideas/recipes/class-decorator.md
 
-#        markdown/Ideas/recipes/functional-mixin.md
-
-#        markdown/Ideas/recipes/class-decorator.md
-
-#        markdown/Ideas/recipes/iterator-recipes.md
+#        markdown/6.Ideas/recipes/iterator-recipes.md
 
 backmatter:
 

@@ -49,9 +49,9 @@ The take-away is that `compose` is helpful when we are defining a new function t
 
 Sometimes it makes more sense to compose functions in data flow order, as in "The value flows through a and then through b." For this, we can use the `pipeline` function:
 
-    var pipeline = flip(compose);
+    const pipeline = flip(compose);
     
-    var setter = pipeline(addOne, double);
+    const setter = pipeline(addOne, double);
     
 Comparing `pipeline` to `compose`, pipeline says "add one to the number and then double it." Compose says, "double the result of adding one to the number." Both do the same job, but communicate their intention in opposite ways.
 

@@ -144,37 +144,37 @@ mainmatter:
         
       markdown/Sequence/compose-and-pipeline.md
 
-    markdown/Ideas/title.md
+    markdown/6.Ideas/title.md
 
-      markdown/Ideas/prototype.md
+      markdown/6.Ideas/prototype.md
 
-      markdown/Ideas/agnostic.md
+      markdown/6.Ideas/agnostic.md
 
-      markdown/Ideas/functional-mixins.md
+      markdown/6.Ideas/functional-mixins.md
 
-      markdown/Ideas/class-decorators.md
+      markdown/6.Ideas/class-decorators.md
       
-      markdown/Ideas/turtles.md
+      markdown/6.Ideas/turtles.md
       
-      markdown/Ideas/iterators.md
+      markdown/6.Ideas/iterators.md
       
-      markdown/Ideas/drunken.md
+      markdown/6.Ideas/drunken.md
       
-      markdown/Ideas/trampolining.md
+      markdown/6.Ideas/trampolining.md
 
-      markdown/Ideas/recipes/title.md
+      markdown/6.Ideas/recipes/title.md
 
-        markdown/Ideas/recipes/before.md
+        markdown/6.Ideas/recipes/before.md
 
-        markdown/Ideas/recipes/after.md
+        markdown/6.Ideas/recipes/after.md
 
-        markdown/Ideas/recipes/provided.md
+        markdown/6.Ideas/recipes/provided.md
 
-        markdown/Ideas/recipes/functional-mixin.md
+        markdown/6.Ideas/recipes/functional-mixin.md
 
-        markdown/Ideas/recipes/class-decorator.md
+        markdown/6.Ideas/recipes/class-decorator.md
 
-        markdown/Ideas/recipes/iterator-recipes.md
+        markdown/6.Ideas/recipes/iterator-recipes.md
 
 backmatter:
 
