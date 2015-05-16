@@ -180,7 +180,7 @@ mainmatter:
 
    markdown/Interludes/6.colours.md
 
-#    markdown/6.Ideas/title.md
+   markdown/6.Ideas/title.md
 
 #      markdown/6.Ideas/1.coroutines.md
 
@@ -188,7 +188,7 @@ mainmatter:
 
 #      markdown/6.Ideas/agnostic.md
 
-#      markdown/6.Ideas/functional-mixins.md
+     markdown/6.Ideas/functional-mixins.md
 
 #      markdown/6.Ideas/class-decorators.md
 
