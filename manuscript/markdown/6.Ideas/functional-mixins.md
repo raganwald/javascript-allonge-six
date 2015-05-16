@@ -80,8 +80,32 @@ The challenge with this approach is that it only works with constructor function
 			})
     
     becomeColourCoded(Todo.prototype);
+		
+Either way, we can make ourselves a convenience function (that also names the pattern):
 
- Twitter's [Flight] framework uses a variation on this technique that targets the mixin function's context:
+		const fClassMixin = (mixin) =>
+			clazz => Object.assign(clazz.prototype, mixin);
+			
+or:
+
+		const fMixin = (mixin) =>
+			behaviour => Object.assign(behaviour, mixin);
+			
+This allows us to define functional mixins neatly:
+
+		const becomeColourCoded = fMixin({
+      setColourRGB: function (r, g, b) {
+        this.colourCode = { r: r, g: g, b: b };
+				return this;
+      },
+      getColourRGB: function () {
+        return this.colourCode;
+      }
+		});
+			
+### taking flight
+
+Twitter's [Flight] framework uses a variation on this technique that targets the mixin function's context:
 
     function asColourCoded () {
       return Object.assign(this, {
