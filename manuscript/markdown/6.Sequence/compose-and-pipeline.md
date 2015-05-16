@@ -2,31 +2,22 @@
 
 In [Combinators and Function Decorators](#combinators), we saw the function `compose`:
 
-    function compose (a, b) {
-      return function (c) {
-        return a(b(c))
-      }
-    }
+    const compose = (a, b) =>
+      (c) => a(b(c))
 
 As we saw before, given:
 
-    function addOne (number) {
-      return number + 1
-    }
+    const addOne = (number) > number + 1;
     
-    function double (number) {
-      return number * 2
-    }
+    const doubleOf = (number) => number * 2;
 
 Instead of:
 
-    function doubleOfAddOne (number) {
-      return double(addOne(number))
-    }
+    const doubleOfAddOne = (number) => doubleOf(addOne(number));
     
 We could write:
 
-    var doubleOfAddOne = compose(double, addOne);
+    const doubleOfAddOne = compose(doubleOf, addOne);
     
 ### the semantics of compose
 
@@ -34,7 +25,7 @@ With `compose`, we're usually making a new function. Although it works perfectly
 
 On the other hand, when working with something like method decorators, it can help to write:
 
-    var setter = compose(fluent, maybe);
+    const setter = compose(fluent, maybe);
     
     // ...
     
@@ -46,11 +37,9 @@ On the other hand, when working with something like method decorators, it can he
       this.privileges = privileges;
     });
     
-This makes it clear that `setter` adds the behaviour of both `fluent` and `maybe` to each method it decorates, and it's simpler to read `var setter = compose(fluent, maybe);` than:
+This makes it clear that `setter` adds the behaviour of both `fluent` and `maybe` to each method it decorates, and it's sometimes easier to read `const setter = compose(fluent, maybe);` than:
 
-    function setter (fn) {
-      return fluent(maybe(fn));
-    }
+    const setter = (fn) => fluent(maybe(fn));
 
 The take-away is that `compose` is helpful when we are defining a new function that combines the effects of existing functions.
 

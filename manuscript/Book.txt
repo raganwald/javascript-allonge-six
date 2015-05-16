@@ -180,9 +180,9 @@ mainmatter:
 
    markdown/Interludes/6.colours.md
 
-#    markdown/Sequence/title.md
+   markdown/6.Sequence/title.md
 
-#      markdown/Sequence/compose-and-pipeline.md
+#      markdown/6.Sequence/compose-and-pipeline.md
 
 #    markdown/Ideas/title.md
 
