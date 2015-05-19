@@ -1,4 +1,4 @@
-## Mixins {#functional-mixins}
+## Functional Mixins {#functional-mixins}
 
 In [Extending Classes with Mixins](#classes-and-mixins), we saw that you can emulate "mixins" using `Object.assign` on classes. We'll revisit this subject now and spend more time looking at mixing functionality into classes.
 

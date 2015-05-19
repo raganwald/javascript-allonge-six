@@ -1,0 +1,343 @@
+## Resolving Mixin Conflicts
+
+Mixins, Private Mixins, Forwarding, and Delegation all provide a potentially *many-to-many relationship between objects and metaobjects that define behaviour. Whether you're mixing metaobjects directly into an object, or mixing behaviour into a class' prototype, it's possible and often desirable to have more than one metaobject mixed into the same object or prototype.
+
+Breaking behaviour into multiple metaobjects is desirable for several reasons: It encourages the creation of entities with a single responsibility, it enhances re-use, and it flattens class hierarchies, reducing the coupling that leads to fragile base classes.
+
+For example
+
+~~~~~~~~
+class Person {
+	constructor (namedArguments) {
+		const {first, last} = namedArguments;
+		
+		this.setName(first, last);
+	}
+  setName (first, last) {
+    this._firstName = first;
+    this._lastName= last;
+    return this;
+  }
+  fullName () {
+    return this._firstName + " " + this._lastName;
+  }
+  rename (first, last) {
+    this._firstName = first;
+    this._lastName = last;
+    return this;
+  }
+}
+
+const IsAuthor = {
+  addBook: function (name) {
+    this._books.push(name);
+    return this;
+  },
+  books: function () {
+    return this._books;
+  }
+};
+
+Object.assign(Person.prototype, IsAuthor);
+
+const raganwald = new Person({first: 'reginald', last: 'braithwaite'})
+									  .addBook('JavaScript Spessore')
+									  .addBook('JavaScript Allongé');
+~~~~~~~~
+
+### initializations
+
+Did you spot the error? You can't add books to an array that doesn't exist! Let's fix that. Initialization for mixins is always an interesting problem to solve, we'll use a simple pattern: The class will do its own initialization, then call an `.initialize` method that mixins can overwrite if they choose.
+
+~~~~~~~~
+class Person {
+	constructor (namedArguments) {
+		const {first, last} = namedArguments;
+		
+		this.setName(first, last);
+		this.initialize(namedArguments);
+	}
+	initialize () {
+	}
+  setName (first, last) {
+    this._firstName = first;
+    this._lastName= last;
+    return this;
+  }
+  fullName () {
+    return this._firstName + " " + this._lastName;
+  }
+  rename (first, last) {
+    this._firstName = first;
+    this._lastName = last;
+    return this;
+  }
+}
+
+const IsAuthor = {
+	initialize: function () {
+		this._books = [];
+    return this;
+	},
+  addBook: function (name) {
+    this._books.push(name);
+    return this;
+  },
+  books: function () {
+    return this._books;
+  }
+};
+
+Object.assign(Person.prototype, IsAuthor);
+
+const raganwald = new Person({first: 'reginald', last: 'braithwaite'})
+									  .addBook('JavaScript Spessore')
+									  .addBook('JavaScript Allongé');
+										
+raganwald.books()
+	//=> ["JavaScript Spessore","JavaScript Allongé"]
+~~~~~~~~
+
+It could be that a person has children, not books:
+
+~~~~~~~~
+class Person {
+	constructor (namedArguments) {
+		const {first, last} = namedArguments;
+		
+		this.setName(first, last);
+		this.initialize(namedArguments);
+	}
+	initialize () {
+	}
+  setName (first, last) {
+    this._firstName = first;
+    this._lastName= last;
+    return this;
+  }
+  fullName () {
+    return this._firstName + " " + this._lastName;
+  }
+  rename (first, last) {
+    this._firstName = first;
+    this._lastName = last;
+    return this;
+  }
+}
+
+const HasChildren = {
+  initialize: function () {
+    this._children = [];
+    return this;
+  },
+  addChild: function (name) {
+    this._children.push(name);
+    return this;
+  },
+  numberOfChildren: function () {
+    return this._children.length;
+  }
+};
+
+Object.assign(Person.prototype, HasChildren);
+
+const reginald = new Person({first: 'reginald', last: 'braithwaite'})
+                   .addChild('Thomas')
+                   .addChild('Clara');
+									 
+reginald.numberOfChildren()
+	//=> 2
+~~~~~~~~
+
+So, if a `Person` can have books *and* children, we can write:
+
+~~~~~~~~
+Object.assign(Person.prototype, IsAuthor, HasChildren);
+
+const raganwald = new Person({first: 'reginald', last: 'braithwaite'})
+									  .addBook('JavaScript Spessore')
+									  .addBook('JavaScript Allongé')
+                    .addChild('Thomas')
+                    .addChild('Clara');
+~~~~~~~~
+
+Or can we?
+
+### method conflicts
+
+As you can see, both `IsAuthor` and `HasChildren` provide an `initialize` method. Revisiting `Object.assign`, we see that when you extend an object, properties get copied in from the provider using assignment. This creates a property if none existed, but it overwrites any property that may already have been there. And since methods are properties, a Using `Object.assign` to incorporate a mixin will overwrite an existing method of the same name.
+
+(The same is true for our Private Mixin, Forward, and Delegation patterns.)
+
+So what we get is:
+
+~~~~~~~~
+Object.assign(Person.prototype, IsAuthor, HasChildren);
+
+const raganwald = new Person({first: 'reginald', last: 'braithwaite'})
+									  .addBook('JavaScript Spessore')
+									  .addBook('JavaScript Allongé')
+                    .addChild('Thomas')
+                    .addChild('Clara');
+										
+	//=> undefined is not an object (evaluating 'this._books.push')
+~~~~~~~~
+
+Unfortunately, the `HasChildren#initialize` method has overwritten the `IsAuthor#initialize` method.
+
+To summarize:
+
+> Simple mixins have a simple mechanism for resolving conflicts: The last method mixed in overwrites the previous method of the same name.
+
+"Overwriting" is rarely the correct policy. So let's change the policy. For example, we might want this policy: *When there are two or more methods with the same name, execute them in the same order that you mixed them in. Return the value of the last one.*
+
+Let's roll our own variation on `Object.assign` with this behaviour:
+
+~~~~~~~~
+const concatenativeAssign = (receiver, ...behaviours) => {
+	for (let behaviour of behaviours) {
+		for (let key in behaviour) {
+			if (behaviour.hasOwnProperty(key)) {
+				if (receiver.hasOwnProperty(key)
+				    && typeof receiver[key] === 'function'
+						&& typeof behaviour[key] === 'function') {
+							const oldMethod = receiver[key],
+							      newMethod = behaviour[key];
+							receiver[key] = function (...args) {
+								oldMethod.apply(this, args);
+								return newMethod.apply(this, args);
+							}
+				}
+				else receiver[key] = behaviour[key];
+			}
+		}
+	}
+	return receiver;
+}
+
+concatenativeAssign(Person.prototype, HasChildren, IsAuthor);
+
+const raganwald = new Person({first: 'reginald', last: 'braithwaite'})
+									  .addBook('JavaScript Spessore')
+									  .addBook('JavaScript Allongé')
+                    .addChild('Thomas')
+                    .addChild('Clara');
+									
+
+console.log(raganwald.books())
+	//=> ["JavaScript Spessore","JavaScript Allongé"]
+	
+console.log(raganwald.numberOfChildren())
+	//=> 2
+~~~~~~~~
+
+### responsibilities
+
+There are other policies for resolving conflicting methods: The second method to be mixed in could run before the first. Or around the first. Or the policy could be specified on a method-by-method basis, rather than for all conflicting methods. Or the methods can be automatically namespaced. Elaborating on other protocols is beyond the scope of this book.
+
+But one thing sticks out with this approach: The code mixing the metaobject into the class is responsible for determining how to resolve the conflict. When we choose whether to write `Object.assign` or `concatenativeAssign`, we're taking responsibility for resolving conflicts.
+
+There are other ways. For example, we could decide that the *mixin* should be responsible. Recall our pattern for a [functional mixin](#functional-mixins):
+
+~~~~~~~~
+const fClassMixin = (mixin) =>
+	clazz => Object.assign(clazz.prototype, mixin);
+~~~~~~~~
+
+We can alter this to resolve conflicts:
+
+~~~~~~~~
+const concatenativeAssign = (receiver, ...behaviours) => {
+	for (let behaviour of behaviours) {
+		for (let key in behaviour) {
+			if (behaviour.hasOwnProperty(key)) {
+				if (receiver.hasOwnProperty(key)
+				    && typeof receiver[key] === 'function'
+						&& typeof behaviour[key] === 'function') {
+							const oldMethod = receiver[key],
+							      newMethod = behaviour[key];
+							receiver[key] = function (...args) {
+								oldMethod.apply(this, args);
+								return newMethod.apply(this, args);
+							}
+				}
+				else receiver[key] = behaviour[key];
+			}
+		}
+	}
+	return receiver;
+}
+
+const fClassMixin = (mixin) =>
+	clazz => concatenativeAssign(clazz.prototype, mixin);
+~~~~~~~~
+
+And now we can write:
+
+~~~~~~~~
+class Person {
+	constructor (namedArguments) {
+		const {first, last} = namedArguments;
+		
+		this.setName(first, last);
+	}
+  setName (first, last) {
+    this._firstName = first;
+    this._lastName= last;
+    return this;
+  }
+  fullName () {
+    return this._firstName + " " + this._lastName;
+  }
+  rename (first, last) {
+    this._firstName = first;
+    this._lastName = last;
+    return this;
+  }
+}
+
+const IsAuthor = fClassMixin({
+	initialize: function () {
+		this._books = [];
+    return this;
+	},
+  addBook: function (name) {
+    this._books.push(name);
+    return this;
+  },
+  books: function () {
+    return this._books;
+  }
+});
+
+const HasChildren = fClassMixin({
+  initialize: function () {
+    this._children = [];
+    return this;
+  },
+  addChild: function (name) {
+    this._children.push(name);
+    return this;
+  },
+  numberOfChildren: function () {
+    return this._children.length;
+  }
+});
+
+IsAuthor(Person);
+HasChildren(Person);
+
+const raganwald = new Person({first: 'reginald', last: 'braithwaite'})
+									  .addBook('JavaScript Spessore')
+									  .addBook('JavaScript Allongé')
+                    .addChild('Thomas')
+                    .addChild('Clara');
+~~~~~~~~
+
+Now the mixin is responsible for resolving conflicts, notthe code that mixes it in. Conflict resolution is encapsulated within the function.
+
+Is that better? Or worse? It *depends*. Often, the cod edoing the mixing in is the one that "knows" what may conflict and how to best resolve the problem. But sometimes, this should be fully encapsulated to keep the rest of the code simple. The functional mixin pattern is best when you want the mixin to the responsibility.
+
+### why progrmming with functions is teh responsible thing to do
+
+This speaks very strongly to JavaScript's strength: Having good support for functions as first-class entities makes it easy to decide which code ought to have which responsibility. As we have seen here, we can use functions to give eiether the mixing in code or the mixin responsibility for resolving conflicts, in a simple and direct way.

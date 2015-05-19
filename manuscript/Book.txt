@@ -182,13 +182,15 @@ mainmatter:
 
    markdown/6.Ideas/title.md
 
+     markdown/6.Ideas/functional-mixins.md
+
+     markdown/6.Ideas/mixin-conflicts.md
+
 #      markdown/6.Ideas/1.coroutines.md
 
 #      markdown/6.Ideas/prototype.md
 
 #      markdown/6.Ideas/agnostic.md
-
-     markdown/6.Ideas/functional-mixins.md
 
 #      markdown/6.Ideas/class-decorators.md
 
@@ -201,8 +203,6 @@ mainmatter:
 #        markdown/6.Ideas/recipes/after.md
 
 #        markdown/6.Ideas/recipes/provided.md
-
-#        markdown/6.Ideas/recipes/functional-mixin.md
 
 #        markdown/6.Ideas/recipes/class-decorator.md
 
