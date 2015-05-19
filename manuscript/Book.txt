@@ -128,9 +128,7 @@ mainmatter:
      
      markdown/3.Collections/6.interactive-generators.md
 
-     markdown/3.Collections/recipes/title.md
-
-       markdown/3.Collections/recipes/operations.md
+     markdown/3.Collections/recipes/7.operations.md
        
   markdown/Interludes/4.oop.md
 
