@@ -189,7 +189,11 @@ To summarize:
 
 > Simple mixins have a simple mechanism for resolving conflicts: The last method mixed in overwrites the previous method of the same name.
 
-"Overwriting" is rarely the correct policy. So let's change the policy. For example, we might want this policy: *When there are two or more methods with the same name, execute them in the same order that you mixed them in. Return the value of the last one.*
+### crafting a policy for resolving conflicts
+
+"Overwriting" is rarely the correct policy. So let's change the policy.
+
+For example, we might want this policy: *When there are two or more methods with the same name, execute them in the same order that you mixed them in. Return the value of the last one.*
 
 Let's roll our own variation on `Object.assign` with this behaviour:
 
