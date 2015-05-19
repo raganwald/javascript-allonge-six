@@ -338,6 +338,6 @@ Now the mixin is responsible for resolving conflicts, notthe code that mixes it 
 
 Is that better? Or worse? It *depends*. Often, the cod edoing the mixing in is the one that "knows" what may conflict and how to best resolve the problem. But sometimes, this should be fully encapsulated to keep the rest of the code simple. The functional mixin pattern is best when you want the mixin to the responsibility.
 
-### why progrmming with functions is teh responsible thing to do
+### why programming with functions is the responsible thing to do
 
 This speaks very strongly to JavaScript's strength: Having good support for functions as first-class entities makes it easy to decide which code ought to have which responsibility. As we have seen here, we can use functions to give eiether the mixing in code or the mixin responsibility for resolving conflicts, in a simple and direct way.
