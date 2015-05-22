@@ -6,23 +6,18 @@ As we've seen, JavaScript functions take values as arguments and return values. 
 
 Here's a very simple higher-order function that takes a function as an argument:
 
-    function repeat (num, fn) {
-      if (num <= 0) {
-        return;
-      }
-      else {
-        fn();
-        return repeat(num - 1, fn);
-      }
-    }
+    const repeat = (num, fn) =>
+      (num > 0)
+        ? (repeat(num - 1, fn), fn(num))
+        : undefined
     
-    repeat(3, function () { 
-      console.log('Hello') 
+    repeat(3, function (n) { 
+      console.log(`Hello ${n}`) 
     })
       //=>
-        'Hello'
-        'Hello'
-        'Hello'
+        'Hello 3'
+        'Hello 2'
+        'Hello 1'
         undefined
     
 Higher-order functions dominate *JavaScript Allongé*. But before we go on, we'll talk about some specific types of higher-order functions.
