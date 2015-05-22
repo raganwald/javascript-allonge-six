@@ -29,11 +29,11 @@ class Person {
 }
 
 const IsAuthor = {
-  addBook: function (name) {
+  addBook (name) {
     this._books.push(name);
     return this;
   },
-  books: function () {
+  books () {
     return this._books;
   }
 };
@@ -75,15 +75,15 @@ class Person {
 }
 
 const IsAuthor = {
-  initialize: function () {
+  initialize () {
     this._books = [];
     return this;
   },
-  addBook: function (name) {
+  addBook (name) {
     this._books.push(name);
     return this;
   },
-  books: function () {
+  books () {
     return this._books;
   }
 };
@@ -126,15 +126,15 @@ class Person {
 }
 
 const HasChildren = {
-  initialize: function () {
+  initialize () {
     this._children = [];
     return this;
   },
-  addChild: function (name) {
+  addChild (name) {
     this._children.push(name);
     return this;
   },
-  numberOfChildren: function () {
+  numberOfChildren () {
     return this._children.length;
   }
 };
@@ -301,29 +301,29 @@ class Person {
 }
 
 const IsAuthor = fClassMixin({
-  initialize: function () {
+  initialize () {
     this._books = [];
     return this;
   },
-  addBook: function (name) {
+  addBook (name) {
     this._books.push(name);
     return this;
   },
-  books: function () {
+  books () {
     return this._books;
   }
 });
 
 const HasChildren = fClassMixin({
-  initialize: function () {
+  initialize () {
     this._children = [];
     return this;
   },
-  addChild: function (name) {
+  addChild (name) {
     this._children.push(name);
     return this;
   },
-  numberOfChildren: function () {
+  numberOfChildren () {
     return this._children.length;
   }
 });
