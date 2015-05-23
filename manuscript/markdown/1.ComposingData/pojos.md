@@ -84,20 +84,80 @@ Expressions can be used for keys as well. The syntax is to enclose the key's exp
     }
       //=> {"pi":3.14159265}
 
-All containers can contain any value, including functions or other containers:
+All containers can contain any value, including functions or other containers, like a fat arrow function:
 
     const Mathematics = {
-      abs: (a) =>a < 0 ? -a : a
+      abs: (a) => a < 0 ? -a : a
     };
 
     Mathematics.abs(-5)
       //=> 5
-
-Funny we should mention `Mathematics`. If you recall, JavaScript provides a global environment that contains some existing objects that have handy functions you can use. One of them is called `Math`, and it contains functions for `abs`, `max`, `min`, and many others. Since it is always available, you can use it in any environment provided you don't shadow `Math`.
-
-    Math.abs(-5)
-      //=> 5
       
+Or proper functions:
+
+    const SecretDecoderRing = {
+      encode: function (plaintext) {
+        return plaintext
+          .split('')
+          .map( char => char.charCodeAt() )
+          .map( code => code + 1 )
+          .map( code => String.fromCharCode(code) )
+          .join('');
+      },
+      decode: function (cyphertext) {
+        return cyphertext
+          .split('')
+          .map( char => char.charCodeAt() )
+          .map( code => code - 1 )
+          .map( code => String.fromCharCode(code) )
+          .join('');
+      }
+    }
+      
+Or named function expressions:
+
+    const SecretDecoderRing = {
+      encode: function encode (plaintext) {
+        return plaintext
+          .split('')
+          .map( char => char.charCodeAt() )
+          .map( code => code + 1 )
+          .map( code => String.fromCharCode(code) )
+          .join('');
+      },
+      decode: function encode (cyphertext) {
+        return cyphertext
+          .split('')
+          .map( char => char.charCodeAt() )
+          .map( code => code - 1 )
+          .map( code => String.fromCharCode(code) )
+          .join('');
+      }
+    }
+
+It is very common to associate named function expressions with keys in objects, and there is a "compact method syntax" for binding named function expressions to keywords:
+
+const SecretDecoderRing = {
+  encode (plaintext) {
+    return plaintext
+      .split('')
+      .map( char => char.charCodeAt() )
+      .map( code => code + 1 )
+      .map( code => String.fromCharCode(code) )
+      .join('');
+  },
+  decode (cyphertext) {
+    return cyphertext
+      .split('')
+      .map( char => char.charCodeAt() )
+      .map( code => code - 1 )
+      .map( code => String.fromCharCode(code) )
+      .join('');
+  }
+}
+
+(There are some other technical differences between binding a named function expression and using compact method syntax, but they are not relevant here. We will generally prefer compact method syntax whenever we can.)
+
 ### destructuring objects
 
 Just as we saw with arrays, we can write destructuring assignments with literal object syntax. So, we can write:
