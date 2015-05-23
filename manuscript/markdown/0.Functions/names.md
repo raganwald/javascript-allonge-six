@@ -8,7 +8,7 @@ It doesn't name the function "repeat" for the same reason that `const answer = 4
 
 ### the `function` keyword
 
-JavaScript *does* have a syntax for naming a function, we use the `function` keyword. Until ECMAScript 6 was created, `function` was the usual syntax for writing functions.
+JavaScript *does* have a syntax for naming a function, we use the `function` keyword. Until ECMAScript 2015 was created, `function` was the usual syntax for writing functions.
 
 Here's our `repeat` function written using a "fat arrow"
 
