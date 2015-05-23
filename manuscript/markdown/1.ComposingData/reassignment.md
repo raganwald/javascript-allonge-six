@@ -271,7 +271,7 @@ In that way, `var` is a little like `const` and `let`, we should always declare 
 We haven't looked at it yet, but JavaScript provides a `for` loop for your iterating pleasure and convenience. It looks a lot like the `for` loop in C. Here it is with `var`:
 
     var sum = 0;
-    for (var i = 1; i <= 100; i++) {
+    for (let i = 1; i <= 100; i++) {
       sum = sum + i
     }
     sum
@@ -286,7 +286,7 @@ Yes. Consider this variation:
     var introductions = [],
         names = ['Karl', 'Friedrich', 'Gauss'];
       
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       introductions[i] = "Hello, my name is " + names[i]
     }
     introductions
@@ -299,7 +299,7 @@ So far, so good. Hey, remember that functions in JavaScript are values? Let's ge
     var introductions = [],
         names = ['Karl', 'Friedrich', 'Gauss'];
       
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       introductions[i] = (soAndSo) =>
         `Hello, ${soAndSo}, my name is ${names[i]}`
     }
@@ -345,7 +345,7 @@ This small error was a frequent cause of confusion, and in the days when there w
     var introductions = [],
         names = ['Karl', 'Friedrich', 'Gauss'];
       
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       ((i) => {
         introductions[i] = (soAndSo) =>
           `Hello, ${soAndSo}, my name is ${names[i]}`

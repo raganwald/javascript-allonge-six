@@ -90,19 +90,19 @@ mainmatter:
 
    markdown/2.strings.md
 
-   markdown/2.Objects and State/title.md
+   markdown/2.Objects and State/0.title.md
 
-     markdown/2.Objects and State/encapsulation.md
+     markdown/2.Objects and State/1.encapsulation.md
 
-     markdown/2.Objects and State/composition-and-extension.md
+     markdown/2.Objects and State/2.composition-and-extension.md
 
-     markdown/2.Objects and State/this.md
+     markdown/2.Objects and State/3.this.md
 
-     markdown/2.Objects and State/context.md
+     markdown/2.Objects and State/4.context.md
 
-     markdown/2.Objects and State/method-decorators.md
+     markdown/2.Objects and State/5.method-decorators.md
 
-     markdown/2.Objects and State/summary.md
+     markdown/2.Objects and State/6.summary.md
 
      markdown/2.Objects and State/recipes/title.md
 

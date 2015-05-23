@@ -43,7 +43,7 @@ And it wold be "transpiled" into:
     var before = function (decoration) {
       return function (method) {
         return function () {
-          for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          for (let _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
             args[_key] = arguments[_key];
           }
 

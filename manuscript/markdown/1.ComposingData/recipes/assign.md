@@ -73,13 +73,13 @@ Into this:
     };
       
     Object.assign(Queue.prototype, {
-      pushTail: function (value) {
+      pushTail (value) {
         // ...
       },
-      pullHead: function () {
+      pullHead () {
         // ...
       },
-      isEmpty: function () {
+      isEmpty () {
         // ...
       }      
     });
