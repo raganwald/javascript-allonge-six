@@ -166,8 +166,6 @@ mainmatter:
 
        markdown/5.Instances and Classes/recipes/bound.md
 
-#        markdown/5.Instances and Classes/recipes/unbind.md
-
        markdown/5.Instances and Classes/recipes/send.md
 
        markdown/5.Instances and Classes/recipes/invoke.md
@@ -183,10 +181,10 @@ mainmatter:
      markdown/6.Class Mixins/1.mixins.md
 
      markdown/6.Class Mixins/2.functional-mixins.md
-
-     markdown/6.Class Mixins/3.coupling.md
      
-     markdown/6.Class Mixins/4.property-conflicts.md
+     markdown/6.Class Mixins/3.property-conflicts.md
+
+     markdown/6.Class Mixins/4.coupling.md
 
      markdown/6.Class Mixins/5.method-conflicts.md
 
