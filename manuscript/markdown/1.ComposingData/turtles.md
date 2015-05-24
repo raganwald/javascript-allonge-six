@@ -1,4 +1,4 @@
-## Interlude: Tortoises, Hares, and Teleporting Turtles {#tortoises}
+## Tortoises, Hares, and Teleporting Turtles {#tortoises}
 
 A good long while ago (The First Age of Internet Startups), someone asked me one of those pet algorithm questions. It was, "Write an algorithm to detect a loop in a linked list, in constant space."
 

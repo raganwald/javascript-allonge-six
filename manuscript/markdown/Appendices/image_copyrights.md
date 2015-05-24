@@ -50,6 +50,8 @@
 * [Coffee and Chess](https://www.flickr.com/photos/adders/8372085101) (c) 2013 Adam Tinworth [Some rights reserved][by-nd].
 * [Vac Pot Upper Chamber](https://www.flickr.com/photos/digitalcolony/2843767532) (c) 2007 Michael Allen Smith [Some rights reserved][by-sa].
 * [Decaf espresso](https://www.flickr.com/photos/arisvrakas/4217869291) (c) 2009 Aris Vrakas [Some rights reserved][by].
+* [Con Panna](https://www.flickr.com/photos/vscript/8708520929) (c) 2013 Vee Satayamas [Some rights reserved][by].
+* [Tiny's Coffeehouse](https://www.flickr.com/photos/peterme/1271652) (c) 2004 Peter Merholz [Some rights reserved][by-sa].
 
 [by-sa]: http://creativecommons.org/licenses/by-sa/2.0/deed.en
 [by-nd]: http://creativecommons.org/licenses/by-nd/2.0/deed.en
