@@ -71,19 +71,19 @@ JavaScript Allongé, The "Six" Edition packs all the goodness of JavaScript Allo
 
 Actually, no.
 
-If it were just a matter of updating the syntax, the original version of JavaScript Allongé could have simply iterated, slowly replacing old synatx with new. It would have continued to say much the same things, only with new syntax.
+If it were just a matter of updating the syntax, the original version of JavaScript Allongé could have simply iterated, slowly replacing old syntax with new. It would have continued to say much the same things, only with new syntax.
 
-But theres more to it than that. The original JavaScript Allongé was not written to teach JavaScript. It was written to describe certain ideas in programming: Working with small, independent entities that compose together to make bigger programs. Thus, the focus on things like writing decorators.
+*But there's more to it than that*. The original JavaScript Allongé was not just written to teach JavaScript: It was written to describe certain ideas in programming: Working with small, independent entities that compose together to make bigger programs. Thus, the focus on things like writing decorators.
 
 As noted above, JavaScript was chosen as the language for Allongé because it hit a sweet spot of having a large audience of programmers and having certain language features that happen to work well with this style of programming.
 
 ECMAScript 2015 does more than simply update the language with some simpler syntax for a few things and help us avoid warts. It makes a number of interesting programming techniques easy to explain and easy to use. And these techniques dovetail nicely with Allongé's focus on composing entities and working with functions.
 
-Thus, the "six" edition introduces classes and mixins. It introduces the notion of implementing private properties with symbols. It introduces iterators and generators. But the common thread that runs through all these things is that since they are all simple objects and simple functions, we can use the same set of "programming with functions" techniques to build programs by composing small, flexible, and decoupled entities.
+Thus, the "six" edition introduces [classes](#classes) and [mixins](#mixins). It introduces the notion of implementing private properties with [symbols](#symbols). It introduces [iterators and generators](#collections). But the common thread that runs through all these things is that since they are all simple objects and simple functions, we can use the same set of "programming with functions" techniques to build programs by composing small, flexible, and decoupled entities.
 
 We just call some of those functions constructors, others decorators, others functional mixins, and yet others, generators.
 
-Introducing so many new ideas did require a major rethink of teh way the book was organized. And introducing these new ideas did add substantially to its bulk. But even so, in a way it is still explaining the exact same original idea that programs are built out of small, flexible functions composed together.
+Introducing so many new ideas did require a major rethink of the way the book was organized. And introducing these new ideas did add substantially to its bulk. But even so, in a way it is still explaining the exact same original idea that programs are built out of small, flexible functions composed together.
 
 ### how the book is organized
 

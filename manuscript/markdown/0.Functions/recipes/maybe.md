@@ -43,7 +43,7 @@ Naturally, there's a function decorator recipe for that, borrowed from Haskell's
     maybe((a, b, c) => a + b + c)(1, null, 3)
       //=> undefined
     
-As a bonus, `maybe` plays very nicely with instance methods, we'll discuss those [later](#methods):
+As a bonus, `maybe` plays very nicely with instance methods, we'll discuss those [later](#classes):
 
     function Model () {};
     
