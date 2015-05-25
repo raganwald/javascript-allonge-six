@@ -12,7 +12,7 @@ It also provides recipes for using functions to write software that is simpler, 
 
 ### why the "six" edition?
 
-ECMAScript 2015, also called ECMAScript 2015, is ushering in a very large number of improvements to the way programmers can write small, powerful components and combine them into larger, fully featured programs. Features like destructuring, block-structured variables, iterables, generators, and the class keyword are poised to make JavaScript programming more expressive.
+ECMAScript 2015 (formerly called ECMAScript 2015), is ushering in a very large number of improvements to the way programmers can write small, powerful components and combine them into larger, fully featured programs. Features like destructuring, block-structured variables, iterables, generators, and the class keyword are poised to make JavaScript programming more expressive.
 
 Prior to ECMAScript 2015, JavaScript did not include many features that programmers have discovered are vital to writing great software. For example, JavaScript did not include block-structured variables. Over time, programmers discovered ways to roll their own versions of important features.
 
@@ -24,7 +24,9 @@ For example, block-structured languages allow us to write:
     
 And the variable `i` is scoped locally to the code within the braces. Prior to ECMAScript 2015, JavaScript did not support block-structuring, so programmers borrowed a trick from the Scheme programming language, and would write:
 
-    for (int i = 0; i < array.length; ++i) {
+    var i;
+
+    for (i = 0; i < array.length; ++i) {
       (function (i) {
         // ...
       })(i)
@@ -64,6 +66,24 @@ And `i` is scoped to the for loop. We can also write:
 And presto, `rest` collects the rest of the arguments without a lot of malarky involving slicing `arguments`. Not having to work around these kinds of missing features makes JavaScript Allongé a *better book*, because it can focus on the *why* to do something and *when* to do it, instead of on the how to make it work
 
 JavaScript Allongé, The "Six" Edition packs all the goodness of JavaScript Allongé into a new, updated package that is relevant for programmers working with (or planning to work with) the latest version of JavaScript.
+
+### that's nice. is that the only reason?
+
+Actually, no.
+
+If it were just a matter of updating the syntax, the original version of JavaScript Allongé could have simply iterated, slowly replacing old synatx with new. It would have continued to say much the same things, only with new syntax.
+
+But theres more to it than that. The original JavaScript Allongé was not written to teach JavaScript. It was written to describe certain ideas in programming: Working with small, independent entities that compose together to make bigger programs. Thus, the focus on things like writing decorators.
+
+As noted above, JavaScript was chosen as the language for Allongé because it hit a sweet spot of having a large audience of programmers and having certain language features that happen to work well with this style of programming.
+
+ECMAScript 2015 does more than simply update the language with some simpler syntax for a few things and help us avoid warts. It makes a number of interesting programming techniques easy to explain and easy to use. And these techniques dovetail nicely with Allongé's focus on composing entities and working with functions.
+
+Thus, the "six" edition introduces classes and mixins. It introduces the notion of implementing private properties with symbols. It introduces iterators and generators. But the common thread that runs through all these things is that since they are all simple objects and simple functions, we can use the same set of "programming with functions" techniques to build programs by composing small, flexible, and decoupled entities.
+
+We just call some of those functions constructors, others decorators, others functional mixins, and yet others, generators.
+
+Introducing so many new ideas did require a major rethink of teh way the book was organized. And introducing these new ideas did add substantially to its bulk. But even so, in a way it is still explaining the exact same original idea that programs are built out of small, flexible functions composed together.
 
 ### how the book is organized
 
