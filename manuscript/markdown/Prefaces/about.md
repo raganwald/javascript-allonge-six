@@ -81,7 +81,7 @@ ECMAScript 2015 does more than simply update the language with some simpler synt
 
 Thus, the "six" edition introduces [classes](#classes) and [mixins](#mixins). It introduces the notion of implementing private properties with [symbols](#symbols). It introduces [iterators and generators](#collections). But the common thread that runs through all these things is that since they are all simple objects and simple functions, we can use the same set of "programming with functions" techniques to build programs by composing small, flexible, and decoupled entities.
 
-We just call some of those functions constructors, others decorators, others functional mixins, and yet others, generators.
+We just call some of those functions [constructors](#new), others [decorators](#decorators), others [functional mixins](#functional-mixins), and yet others, [policies](#policies).
 
 Introducing so many new ideas did require a major rethink of the way the book was organized. And introducing these new ideas did add substantially to its bulk. But even so, in a way it is still explaining the exact same original idea that programs are built out of small, flexible functions composed together.
 
