@@ -198,6 +198,8 @@ backmatter:
 
     markdown/Appendices/spessore.md
 
+    markdown/Appendices/kindle.md
+
     markdown/Appendices/copyright.md
 
     markdown/Appendices/image_copyrights.md
