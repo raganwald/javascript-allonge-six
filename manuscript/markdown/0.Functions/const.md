@@ -289,7 +289,7 @@ Yes. Binding values to names with `const` works just like binding values to name
 
 [lexical scoping]: https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope_vs._dynamic_scope
 
-### shadowy consts from a shadowy planet
+### are consts also from a shadowy planet?
 
 We just saw that values bound with `const` use lexical scope, just like values bound with parameters. They are looked up in the environment where they are declared. And we know that functions create environments. Parameters are declared when we create functions, so it makes sense that parameters are bound to environments created when we invoke functions.
 
