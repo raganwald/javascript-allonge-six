@@ -1,6 +1,6 @@
 ## JavaScript Spessore
 
-![JavaScript Spessore](images/spessore.png)
+![JavaScript Spessore](images/spessore.jpg)
 
 Programming languages are (loosely) defined by their basic activity. In FORTRAN, we program with numbers. In C, we program with pointers. In ML, we program with types. And as [JavaScript Allongé][ja] explains, in JavaScript we program with functions.
 

@@ -31,7 +31,7 @@ We may not be creating 3,000 stack frames, but we are creating three thousand ne
 
 So here's a question: If this is such a slow approach, why do some examples of "functional" algorithms work this exact way?
 
-![The IBM 704](images/IBM704.jpg)
+![The IBM 704](images/IBM704b.jpg)
 
 ### some history
 
