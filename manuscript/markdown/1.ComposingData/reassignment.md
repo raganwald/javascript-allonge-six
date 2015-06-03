@@ -357,4 +357,4 @@ This small error was a frequent cause of confusion, and in the days when there w
     
 Now we're creating a new inner parameter, `i` and binding it to the value of the outer `i`. This works, but `let` is so much simpler and cleaner that it was added to the language in the ECMAScript 2015 specification.
 
-In this book, we will use function declarations sparingly, and not use `var` at all.
+In this book, we will use function declarations sparingly, and not use `var` at all. That does not mean that you should follow the exact same practice in your own code: The purpose of this book is to illustrate certain principles of programming. The purpose of your own code is to get things done. The two goals are often, but not always, aligned.
