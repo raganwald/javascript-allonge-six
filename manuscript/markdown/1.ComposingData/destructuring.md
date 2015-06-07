@@ -29,7 +29,7 @@ Including an expression denoting another array:
 
     [[[[[]]]]]
     
-This is an array with one element that is an array array with one element this an array with one element that is an array with one element that is an empty array. Although that seems like something nobody would ever construct, many students have worked with almost the exact same thing when they explored various means of constructing arithmetic from Set Theory.
+This is an array with one element that is an array with one element that is an array with one element that is an array with one element that is an empty array. Although that seems like something nobody would ever construct, many students have worked with almost the exact same thing when they explored various means of constructing arithmetic from Set Theory.
 
 Any expression will do, including names:
 
