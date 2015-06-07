@@ -12,7 +12,7 @@ It also provides recipes for using functions to write software that is simpler, 
 
 ### why the "six" edition?
 
-ECMAScript 2015 (formerly called ECMAScript 2015), is ushering in a very large number of improvements to the way programmers can write small, powerful components and combine them into larger, fully featured programs. Features like destructuring, block-structured variables, iterables, generators, and the class keyword are poised to make JavaScript programming more expressive.
+ECMAScript 2015 (formerly called ECMAScript 6 or "ES-6"), is ushering in a very large number of improvements to the way programmers can write small, powerful components and combine them into larger, fully featured programs. Features like destructuring, block-structured variables, iterables, generators, and the class keyword are poised to make JavaScript programming more expressive.
 
 Prior to ECMAScript 2015, JavaScript did not include many features that programmers have discovered are vital to writing great software. For example, JavaScript did not include block-structured variables. Over time, programmers discovered ways to roll their own versions of important features.
 
@@ -32,7 +32,9 @@ And the variable `i` is scoped locally to the code within the braces. Prior to E
       })(i)
     }
     
-To create the same scoping with an Immediately Invoked Function Expression, or "IIFE." Likewise, many programming languages permit functions to have a variable number of arguments, and to collect the arguments into a single variable as an array. In Ruby, we can write:
+To create the same scoping with an Immediately Invoked Function Expression, or "IIFE."
+
+Likewise, many programming languages permit functions to have a variable number of arguments, and to collect the arguments into a single variable as an array. In Ruby, we can write:
 
     def foo (first, *rest)
       # ...
