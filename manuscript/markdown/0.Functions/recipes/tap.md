@@ -28,7 +28,7 @@ It's easy to turn off:
 
 Libraries like [Underscore] use a version of `tap` that is "uncurried:"
 
-    _.tap('espresso', () =>
+    _.tap('espresso', (it) =>
       console.log(`Our drink is '${it}'`) 
     );
       //=> Our drink is 'espresso'
