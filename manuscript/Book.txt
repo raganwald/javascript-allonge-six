@@ -4,6 +4,8 @@ frontmatter:
 
   markdown/Prefaces/about.md
 
+  markdown/Prefaces/isnt.md
+
   markdown/Prefaces/first-edition.md
 
   markdown/Prefaces/recipes.md

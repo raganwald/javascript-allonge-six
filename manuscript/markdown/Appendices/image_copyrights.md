@@ -52,6 +52,7 @@
 * [Decaf espresso](https://www.flickr.com/photos/arisvrakas/4217869291) (c) 2009 Aris Vrakas [Some rights reserved][by].
 * [Con Panna](https://www.flickr.com/photos/vscript/8708520929) (c) 2013 Vee Satayamas [Some rights reserved][by].
 * [Tiny's Coffeehouse](https://www.flickr.com/photos/peterme/1271652) (c) 2004 Peter Merholz [Some rights reserved][by-sa].
+* [Thinking about programming](https://www.flickr.com/photos/renaud-camus/6165559492) (c) 2011 Renaud Camus [Some rights reserved][by]. 
 
 [by-sa]: http://creativecommons.org/licenses/by-sa/2.0/deed.en
 [by-nd]: http://creativecommons.org/licenses/by-nd/2.0/deed.en
