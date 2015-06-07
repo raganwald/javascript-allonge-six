@@ -86,9 +86,3 @@ Thus, the "six" edition introduces [classes](#classes) and [mixins](#mixins). It
 We just call some of those functions [constructors](#new), others [decorators](#decorators), others [functional mixins](#functional-mixins), and yet others, [policies](#policies).
 
 Introducing so many new ideas did require a major rethink of the way the book was organized. And introducing these new ideas did add substantially to its bulk. But even so, in a way it is still explaining the exact same original idea that programs are built out of small, flexible functions composed together.
-
-### how the book is organized
-
-*JavaScript Allongé* introduces new aspects of programming with functions in each chapter, explaining exactly how JavaScript works. Code examples within each chapter are small and emphasize exposition rather than serving as patterns for everyday use.
-
-Following each chapter are a series of recipes designed to show the application of the chapters ideas in practical form. While the content of each chapter builds naturally on what was discussed in the previous chapter, the recipes may draw upon any aspect of the JavaScript programming language.
