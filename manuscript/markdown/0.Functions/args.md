@@ -57,6 +57,8 @@ What happened internally is that the expression `1 + 1` was evaluated first, res
 
 [^f2f]: We said that you can't apply a function to an expression. You *can* apply a function to one or more functions. Functions are values! This has interesting applications, and they will be explored much more thoroughly in [Functions That Are Applied to Functions](#consumers).
 
+We'll see [below](#call-by-sharing) that while JavaScript always calls by value, the notion of a "value" has additonal subtlety. But before we do, let's look at variables.
+
 ### variables and bindings
 
 Right now everything looks simple and straightforward, and we can move on to talk about arguments in more detail. And we're going to work our way up from `(diameter) => diameter * 3.14159265` to functions like:
@@ -93,7 +95,7 @@ When we talk about environments, we'll use an [unsurprising syntax][json] for sh
 
 [json]: http://json.org/
 
-### call by sharing
+### call by sharing {#call-by-sharing}
 
 Earlier, we distinguished JavaScript's *value types* from its *reference types*. At that time, we looked at how JavaScript distinguishes objects that are identical from objects that are not. Now it is time to take another look at the distinction between value and reference types.
 
