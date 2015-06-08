@@ -107,10 +107,4 @@ Notice that you are always generating arrays with the same contents. But are the
   
 How about that! When you type `[1, 2, 3]` or any of its variations, you are typing an expression that generates its own *unique* array that is not identical to any other array, even if that other array also looks like `[1, 2, 3]`. It's as if JavaScript is generating new cups of coffee with serial numbers on the bottom.
 
-A> Arrays look exceedingly simple, but this word "reference" is so laden with possibilities that there's an entire chapter devoted to discussing [rebinding and references](#references). Try typing this code out:
-A>
-A> <<(code/ouroboros.js)
-A>
-A> You've just created an [ouroborian](https://en.wikipedia.org/wiki/Ouroboros) array, an array that contains itself.
-
 They look the same, but if you examine them with `===`, you see that they are different. Every time you evaluate an expression (including typing something in) to create an array, you're creating a new, distinct value even if it *appears* to be the same as some other array value. As we'll see, this is true of many other kinds of values, including *functions*, the main subject of this book.
