@@ -134,9 +134,7 @@ Destructuring can nest:
     
     description([["Reginald", "Braithwaite"], "programmer"])
       //=> "Reginald is a programmer"
-      
 
-       
 ### gathering
 
 Sometimes we need to extract arrays from arrays. Here is the most common pattern: Extracting the head and gathering everything but the head from an array:
