@@ -137,24 +137,24 @@ Or named function expressions:
 
 It is very common to associate named function expressions with keys in objects, and there is a "compact method syntax" for binding named function expressions to keywords:
 
-const SecretDecoderRing = {
-  encode (plaintext) {
-    return plaintext
-      .split('')
-      .map( char => char.charCodeAt() )
-      .map( code => code + 1 )
-      .map( code => String.fromCharCode(code) )
-      .join('');
-  },
-  decode (cyphertext) {
-    return cyphertext
-      .split('')
-      .map( char => char.charCodeAt() )
-      .map( code => code - 1 )
-      .map( code => String.fromCharCode(code) )
-      .join('');
-  }
-}
+    const SecretDecoderRing = {
+      encode (plaintext) {
+        return plaintext
+          .split('')
+          .map( char => char.charCodeAt() )
+          .map( code => code + 1 )
+          .map( code => String.fromCharCode(code) )
+          .join('');
+      },
+      decode (cyphertext) {
+        return cyphertext
+          .split('')
+          .map( char => char.charCodeAt() )
+          .map( code => code - 1 )
+          .map( code => String.fromCharCode(code) )
+          .join('');
+      }
+    }
 
 (There are some other technical differences between binding a named function expression and using compact method syntax, but they are not relevant here. We will generally prefer compact method syntax whenever we can.)
 

@@ -256,7 +256,7 @@ It is very much like an array literal. And consider how we bind values to parame
    
 It *looks* like destructuring. It acts like destructuring. There is only one difference: We have not tried gathering. Let's do that:
 
-const numbers = (...nums) => nums;
+    const numbers = (...nums) => nums;
 
     numbers(1, 2, 3, 4, 5)
       //=> [1,2,3,4,5]

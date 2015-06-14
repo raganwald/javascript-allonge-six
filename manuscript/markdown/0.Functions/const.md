@@ -389,7 +389,7 @@ Ah! `const` statements don't just shadow values bound within the environments cr
 
 This is enormously important. Consider the alternative: What if `const` could be declared inside of a block, but it always bound the name in the function's scope. In that case, we'd see things like this:
 
-   ((diameter) => {
+    ((diameter) => {
       const PI = 3.14159265;
       
       if (true) {
@@ -401,7 +401,7 @@ This is enormously important. Consider the alternative: What if `const` could be
       
 If `const` always bound its value to the name defined in the function's environment, placing a `const` statement inside of a block would merely rebind the existing name, overwriting its old contents. That would be super-confusing. And this code would "work:"
 
-   ((diameter) => {
+    ((diameter) => {
       if (true) {
         const PI = 3.14159265;
       }

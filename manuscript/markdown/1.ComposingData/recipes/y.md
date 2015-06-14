@@ -2,10 +2,10 @@
 
 This is the [canonical Y Combinator][y]:
 
-  const Y = (f) =>
-    ( x => f(v => x(x)(v)) )(
-      x => f(v => x(x)(v))
-    );
+    const Y = (f) =>
+      ( x => f(v => x(x)(v)) )(
+        x => f(v => x(x)(v))
+      );
 
 You use it like this:
 
