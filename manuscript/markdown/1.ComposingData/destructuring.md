@@ -146,7 +146,7 @@ Sometimes we need to extract arrays from arrays. Here is the most common pattern
     cdr
       //=> [2, 3, 4, 5]
       
-[`car` and `cdr`](https://en.wikipedia.org/wiki/CAR_and_CDR) are archaic terms that go back to an implementation of Lisp running on the IBM 704 computer. Some other languages call them `first` and `butFirst`, or `head` and `tail`. We will use a common convention and call variables we gather `rest`, but refer to the `...` operation as a "gather," follow Kyle Simpson's example.[^getify]
+[`car` and `cdr`](https://en.wikipedia.org/wiki/CAR_and_CDR) are archaic terms that go back to an implementation of Lisp running on the IBM 704 computer. Some other languages call them `first` and `butFirst`, or `head` and `tail`. We will use a common convention and call variables we gather `rest`, but refer to the `...` operation as a "gather," following Kyle Simpson's example.[^getify]
 
 [^getify]: Kyle Simpson is the author of [You Don't Know JS](https://github.com/getify/You-Dont-Know-JS/blob/master/README.md#you-dont-know-js-book-series), available [here](http://search.oreilly.com/?q=you+don%27t+know+js+kyle+simpson)
 
