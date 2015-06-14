@@ -17,7 +17,7 @@ The first magic name is  `this`, and it is bound to something called the functio
     plus(2,3)
       //=> 5
       
-Although `arguments` looks like an array, it isn't an array:[^pojo] It's more like an object[^pojo] that happens to bind some values to properties with names that look like integers starting with zero:
+Although `arguments` looks like an array, it isn't an array: It's more like an object[^pojo] that happens to bind some values to properties with names that look like integers starting with zero:
 
     const args = function (a, b) {
       return arguments;
