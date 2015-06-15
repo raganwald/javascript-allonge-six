@@ -216,7 +216,7 @@ latin(second)
   //=> "secundus"
 ~~~~~~~~
 
-It works! Now what is this `node` function? If we change the names to `x`, `y`, and `z`, we get: `(x) => (y) => (z) => z(x)(y)`. That's the V combinator, the Vireo! So we can write:
+It works! Now what is this `pair` function? If we change the names to `x`, `y`, and `z`, we get: `(x) => (y) => (z) => z(x)(y)`. That's the V combinator, the Vireo! So we can write:
 
 {:lang="javascript"}
 ~~~~~~~~

@@ -1,6 +1,6 @@
 ## Reading JavaScript Allongé on Kindle
 
-JavaScript Allongé has over 400 pages and many photographs. For this reason, the `.mobi` version of the book is too big to be sent to your Kinmdle via email, and that is the feature that LeanPub uses when you purchase the book.
+JavaScript Allongé has over 400 pages and many photographs. For this reason, the `.mobi` version of the book is too big to be sent to your Kindle via email, and that is the feature that LeanPub uses when you purchase the book.
 
 ![Send to Kindle](images/kindle.png)
 

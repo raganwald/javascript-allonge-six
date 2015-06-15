@@ -1,9 +1,9 @@
 ## How to run the examples {#online}
 
-At the time this book was written, ECMAScript 2015 was not yet widely available. All of the examples in this book were tested using either [Google Traceur Compiler], [6to5], or both. Traceur and 6to5 are both *transpilers*, they work by parsing ECMAScript 2015 code, then emitting valid ECMAScript-5 code that produces the same semantics.
+At the time this book was written, ECMAScript 2015 was not yet widely available. All of the examples in this book were tested using either [Google Traceur Compiler], [Babel], or both. Traceur and Babel are both *transpilers*, they work by parsing ECMAScript 2015 code, then emitting valid ECMAScript-5 code that produces the same semantics.
 
 [Google Traceur Compiler]: https://github.com/google/traceur-compiler
-[6to5]: http://6to5.org
+[Babel]: http://babeljs.io/
 
 For example, this ECMAScript 2015 code:
 
@@ -27,7 +27,7 @@ Is translated into this ECMAScript-5 code:
       };
     };
     
-![The 6to5 "try it out" page](images/6to5.png)
+![The Babel "try it out" page](images/6to5.png)
     
 If we make it even more idiomatic, we could write:
 

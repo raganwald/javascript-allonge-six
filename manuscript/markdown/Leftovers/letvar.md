@@ -389,7 +389,7 @@ Ah! `let` statements don't just shadow values bound within the environments crea
 
 This is enormously important. Consider the alternative: What if `let` could be declared inside of a block, but it always bound the name in the function's scope. In that case, we'd see things like this:
 
-   ((diameter) => {
+    ((diameter) => {
       let PI = 3.14159265;
       
       if (true) {
@@ -401,7 +401,7 @@ This is enormously important. Consider the alternative: What if `let` could be d
       
 If `let` always bound its value to the name defined in the function's environment, placing a `let` statement inside of a block would merely rebind the existing name, ovewriting its old contents. That would be super-confusing. And this code would "work:"
 
-   ((diameter) => {
+    ((diameter) => {
       if (true) {
         let PI = 3.14159265;
       }
@@ -417,7 +417,7 @@ Again, confusing. Typically, we want to bind our names as close to where we need
 
 `let` binding names within blocks is clearly superior to it binding names within functions only. So why mention function-level scope rather than block-level scope? Well, JavaScript also supports a construct like `let` that only binds names within the function's environment. It's the `var` statement:
 
-   ((diameter) => {
+    ((diameter) => {
       var PI = 3.14159265;
       
       if (true) {
@@ -429,7 +429,7 @@ Again, confusing. Typically, we want to bind our names as close to where we need
       
 If `let` always bound its value to the name defined in the function's environment, placing a `let` statement inside of a block would merely rebind the existing name, ovewriting its old contents. That would be super-confusing. And this code would "work:"
 
-   ((diameter) => {
+    ((diameter) => {
       if (true) {
         var PI = 3.14159265;
       }

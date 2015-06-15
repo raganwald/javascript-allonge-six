@@ -108,7 +108,7 @@ This is often a good thing.
 
 This behaviour of pure functions and closures has many, many consequences that can be exploited to write software. We are going to explore them in some detail as well as look at some of the other mechanisms JavaScript provides for working with variables and mutable state.
 
-But before we do so, there's one final question: Where does the ancestry start? If there's no other code in a file, what is `(x) => x's parent environment?
+But before we do so, there's one final question: Where does the ancestry start? If there's no other code in a file, what is `(x) => x`'s parent environment?
 
 JavaScript always has the notion of at least one environment we do not control: A global environment in which many useful things are bound such as libraries full of standard functions. So when you invoke `((x) => x)(1)` in the REPL, its full environment is going to look like this: `{x: 1, '..': `*global environment*`}`.
 
