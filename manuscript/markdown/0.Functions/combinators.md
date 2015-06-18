@@ -43,7 +43,7 @@ Let's start with a useful combinator: Most programmers call it *Compose*, althou
 
 Let's say we have:
 
-    const addOne = (number) > number + 1;
+    const addOne = (number) => number + 1;
     
     const doubleOf = (number) => number * 2;
     

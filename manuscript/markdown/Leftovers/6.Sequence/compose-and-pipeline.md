@@ -7,7 +7,7 @@ In [Combinators and Function Decorators](#combinators), we saw the function `com
 
 As we saw before, given:
 
-    const addOne = (number) > number + 1;
+    const addOne = (number) => number + 1;
     
     const doubleOf = (number) => number * 2;
 
