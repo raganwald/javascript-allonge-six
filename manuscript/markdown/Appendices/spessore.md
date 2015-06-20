@@ -14,7 +14,7 @@ Programming with objects can be done in this style, and JavaScript makes it part
 
 JavaScript Spessore describes how to build JavaScript programs that scale in code, in time, and across a team, using the one technique that has passed the test of time: Objects and metaobjects that have a single responsibility, are decoupled from each other, and can be composed freely.
 
-Now that you've read [JavaScript Allongé][ja], [JavaScript Spessore][js] should be next. 
+Now that you've read [JavaScript Allongé][ja], [JavaScript Spessore][js] should be next.
 
 [js]: https://leanpub.com/javascript-spessore
-[ja]: https://leanpub.com/javascript-allonge
+[ja]: https://leanpub.com/javascriptallongesix
