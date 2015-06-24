@@ -12,7 +12,7 @@ It also provides recipes for using functions to write software that is simpler, 
 
 ### why the "six" edition?
 
-ECMAScript 2015 (formerly called ECMAScript 6 or "ES-6"), is ushering in a very large number of improvements to the way programmers can write small, powerful components and combine them into larger, fully featured programs. Features like destructuring, block-structured variables, iterables, generators, and the class keyword are poised to make JavaScript programming more expressive.
+ECMAScript 2015 (formerly called ECMAScript 6 or "ES6"), is ushering in a very large number of improvements to the way programmers can write small, powerful components and combine them into larger, fully featured programs. Features like destructuring, block-structured variables, iterables, generators, and the class keyword are poised to make JavaScript programming more expressive.
 
 Prior to ECMAScript 2015, JavaScript did not include many features that programmers have discovered are vital to writing great software. For example, JavaScript did not include block-structured variables. Over time, programmers discovered ways to roll their own versions of important features.
 
@@ -21,7 +21,7 @@ For example, block-structured languages allow us to write:
     for (int i = 0; i < array.length; ++i) {
       // ...
     }
-    
+
 And the variable `i` is scoped locally to the code within the braces. Prior to ECMAScript 2015, JavaScript did not support block-structuring, so programmers borrowed a trick from the Scheme programming language, and would write:
 
     var i;
@@ -31,7 +31,7 @@ And the variable `i` is scoped locally to the code within the braces. Prior to E
         // ...
       })(i)
     }
-    
+
 To create the same scoping with an Immediately Invoked Function Expression, or "IIFE."
 
 Likewise, many programming languages permit functions to have a variable number of arguments, and to collect the arguments into a single variable as an array. In Ruby, we can write:
@@ -39,13 +39,13 @@ Likewise, many programming languages permit functions to have a variable number 
     def foo (first, *rest)
       # ...
     end
-    
+
 Prior to ECMAScript 2015, JavaScript did not support collecting a variable number of arguments into a parameter, so programmers would take advantage of an awkward work-around and write things like:
 
     function foo () {
       var first = arguments[0],
           rest  = [].slice.call(arguments, 1);
-          
+
       // ...
     }
 
