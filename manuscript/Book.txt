@@ -11,7 +11,7 @@ frontmatter:
   markdown/Prefaces/recipes.md
 
   markdown/Prefaces/legend.md
-  
+
   # markdown/Sample/about.md
 
   markdown/prelude.md
@@ -55,17 +55,17 @@ mainmatter:
       markdown/0.Functions/recipes/left-variadic.md
 
     markdown/1.choice.md
-    
+
     markdown/1.ComposingData/title.md
-    
+
       markdown/1.ComposingData/destructuring.md
-    
+
       markdown/1.ComposingData/linear-recursion.md
-    
+
       markdown/1.ComposingData/tail.md
-    
+
       markdown/1.ComposingData/garbage.md
-    
+
       markdown/1.ComposingData/pojos.md
 
       markdown/1.ComposingData/mutation.md
@@ -115,7 +115,7 @@ mainmatter:
        markdown/2.Objects and State/recipes/pluck.md
 
        markdown/2.Objects and State/recipes/deep-map-with.md
-       
+
    markdown/3.oop.md
 
    markdown/3.Collections/title.md
@@ -129,11 +129,11 @@ mainmatter:
      markdown/3.Collections/4.drunken.md
 
      markdown/3.Collections/5.more-mapping.md
-     
+
      markdown/3.Collections/6.interactive-generators.md
 
      markdown/3.Collections/7.operations.md
-       
+
    markdown/4.symbols.md
 
   markdown/4.Metaobjects/title.md
@@ -174,16 +174,16 @@ mainmatter:
 
        markdown/5.Instances and Classes/recipes/fluent.md
 
-       markdown/5.Instances and Classes/recipes/named-once.md
-
    markdown/6.colours.md
+
+   markdown/7.method-decorators.md
 
    markdown/6.Class Mixins/0.title.md
 
      markdown/6.Class Mixins/1.mixins.md
 
      markdown/6.Class Mixins/2.functional-mixins.md
-     
+
      markdown/6.Class Mixins/3.property-conflicts.md
 
      markdown/6.Class Mixins/4.coupling.md
