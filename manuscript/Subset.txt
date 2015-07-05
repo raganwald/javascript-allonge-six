@@ -20,22 +20,20 @@ mainmatter:
 
     markdown/0.numbers.md
 
+
     markdown/1.choice.md
 
-   markdown/2.strings.md
 
+   markdown/2.strings.md
 
 
    markdown/3.oop.md
 
 
-
    markdown/4.symbols.md
 
 
-
    markdown/5.impostors.md
-
 
 
    markdown/6.colours.md
@@ -43,5 +41,4 @@ mainmatter:
    markdown/7.method-decorators.md
 
 
-
-   99.closing-time.md
+   markdown/99.closing-time.md

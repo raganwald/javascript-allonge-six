@@ -18,77 +18,77 @@ frontmatter:
 
 mainmatter:
 
-    markdown/0.numbers.md
+  markdown/0.numbers.md
 
-    markdown/0.Functions/title.md
+  markdown/0.Functions/title.md
 
-      markdown/0.Functions/little.md
+    markdown/0.Functions/little.md
 
-      markdown/0.Functions/args.md
+    markdown/0.Functions/args.md
 
-      markdown/0.Functions/closures.md
+    markdown/0.Functions/closures.md
 
-      markdown/0.Functions/const.md
+    markdown/0.Functions/const.md
 
-      markdown/0.Functions/names.md
+    markdown/0.Functions/names.md
 
-      markdown/0.Functions/combinators.md
+    markdown/0.Functions/combinators.md
 
-      markdown/0.Functions/buildingblocks.md
+    markdown/0.Functions/buildingblocks.md
 
-      markdown/0.Functions/magic-names.md
+    markdown/0.Functions/magic-names.md
 
-      markdown/0.Functions/summary.md
+    markdown/0.Functions/summary.md
 
-    markdown/0.Functions/recipes/title.md
+  markdown/0.Functions/recipes/title.md
 
-      markdown/0.Functions/recipes/partial.md
+    markdown/0.Functions/recipes/partial.md
 
-      markdown/0.Functions/recipes/unary.md
+    markdown/0.Functions/recipes/unary.md
 
-      markdown/0.Functions/recipes/tap.md
+    markdown/0.Functions/recipes/tap.md
 
-      markdown/0.Functions/recipes/maybe.md
+    markdown/0.Functions/recipes/maybe.md
 
-      markdown/0.Functions/recipes/once.md
+    markdown/0.Functions/recipes/once.md
 
-      markdown/0.Functions/recipes/left-variadic.md
+    markdown/0.Functions/recipes/left-variadic.md
 
-    markdown/1.choice.md
+  markdown/1.choice.md
 
-    markdown/1.ComposingData/title.md
+  markdown/1.ComposingData/title.md
 
-      markdown/1.ComposingData/destructuring.md
+    markdown/1.ComposingData/destructuring.md
 
-      markdown/1.ComposingData/linear-recursion.md
+    markdown/1.ComposingData/linear-recursion.md
 
-      markdown/1.ComposingData/tail.md
+    markdown/1.ComposingData/tail.md
 
-      markdown/1.ComposingData/garbage.md
+    markdown/1.ComposingData/garbage.md
 
-      markdown/1.ComposingData/pojos.md
+    markdown/1.ComposingData/pojos.md
 
-      markdown/1.ComposingData/mutation.md
+    markdown/1.ComposingData/mutation.md
 
-      markdown/1.ComposingData/reassignment.md
+    markdown/1.ComposingData/reassignment.md
 
-      markdown/1.ComposingData/copy-on-write.md
+    markdown/1.ComposingData/copy-on-write.md
 
-      markdown/1.ComposingData/turtles.md
+    markdown/1.ComposingData/turtles.md
 
-      markdown/1.ComposingData/functional-iterators.md
+    markdown/1.ComposingData/functional-iterators.md
 
-      markdown/1.ComposingData/data-out-of-functions.md
+    markdown/1.ComposingData/data-out-of-functions.md
 
-     markdown/1.ComposingData/recipes/title.md
+   markdown/1.ComposingData/recipes/title.md
 
-       markdown/1.ComposingData/recipes/map-with.md
+     markdown/1.ComposingData/recipes/map-with.md
 
-       markdown/1.ComposingData/recipes/flip.md
+     markdown/1.ComposingData/recipes/flip.md
 
-       markdown/1.ComposingData/recipes/extend.md
+     markdown/1.ComposingData/recipes/extend.md
 
-       markdown/1.ComposingData/recipes/y.md
+     markdown/1.ComposingData/recipes/y.md
 
    markdown/2.strings.md
 
@@ -116,25 +116,25 @@ mainmatter:
 
        markdown/2.Objects and State/recipes/deep-map-with.md
 
-   markdown/3.oop.md
+  markdown/3.oop.md
 
-   markdown/3.Collections/title.md
+  markdown/3.Collections/title.md
 
-     markdown/3.Collections/1.iterables.md
+    markdown/3.Collections/1.iterables.md
 
-     markdown/3.Collections/2.generating-iterables.md
+    markdown/3.Collections/2.generating-iterables.md
 
-     markdown/3.Collections/3.collections.md
+    markdown/3.Collections/3.collections.md
 
-     markdown/3.Collections/4.drunken.md
+    markdown/3.Collections/4.drunken.md
 
-     markdown/3.Collections/5.more-mapping.md
+    markdown/3.Collections/5.more-mapping.md
 
-     markdown/3.Collections/6.interactive-generators.md
+    markdown/3.Collections/6.interactive-generators.md
 
-     markdown/3.Collections/7.operations.md
+    markdown/3.Collections/7.operations.md
 
-   markdown/4.symbols.md
+  markdown/4.symbols.md
 
   markdown/4.Metaobjects/title.md
 
@@ -148,49 +148,49 @@ mainmatter:
 
     markdown/4.Metaobjects/6.shared-prototypes.md
 
-   markdown/5.impostors.md
+  markdown/5.impostors.md
 
-   markdown/5.Instances and Classes/0.title.md
+  markdown/5.Instances and Classes/0.title.md
 
-     markdown/5.Instances and Classes/1.constructors.md
+    markdown/5.Instances and Classes/1.constructors.md
 
-     markdown/5.Instances and Classes/2.why.md
+    markdown/5.Instances and Classes/2.why.md
 
-     markdown/5.Instances and Classes/3.class.md
+    markdown/5.Instances and Classes/3.class.md
 
-     markdown/5.Instances and Classes/4.object-methods.md
+    markdown/5.Instances and Classes/4.object-methods.md
 
-     markdown/5.Instances and Classes/6.caveats.md
+    markdown/5.Instances and Classes/6.caveats.md
 
-     markdown/5.Instances and Classes/summary.md
+    markdown/5.Instances and Classes/summary.md
 
-     markdown/5.Instances and Classes/recipes/0.title.md
+    markdown/5.Instances and Classes/recipes/0.title.md
 
-       markdown/5.Instances and Classes/recipes/bound.md
+      markdown/5.Instances and Classes/recipes/bound.md
 
-       markdown/5.Instances and Classes/recipes/send.md
+      markdown/5.Instances and Classes/recipes/send.md
 
-       markdown/5.Instances and Classes/recipes/invoke.md
+      markdown/5.Instances and Classes/recipes/invoke.md
 
-       markdown/5.Instances and Classes/recipes/fluent.md
+      markdown/5.Instances and Classes/recipes/fluent.md
 
-   markdown/6.colours.md
+  markdown/6.colours.md
 
-   markdown/7.method-decorators.md
+  markdown/7.method-decorators.md
 
-   markdown/6.Class Mixins/0.title.md
+  markdown/6.Class Mixins/0.title.md
 
-     markdown/6.Class Mixins/1.mixins.md
+    markdown/6.Class Mixins/1.mixins.md
 
-     markdown/6.Class Mixins/2.functional-mixins.md
+    markdown/6.Class Mixins/2.functional-mixins.md
 
-     markdown/6.Class Mixins/3.property-conflicts.md
+    markdown/6.Class Mixins/3.property-conflicts.md
 
-     markdown/6.Class Mixins/4.coupling.md
+    markdown/6.Class Mixins/4.coupling.md
 
-     markdown/6.Class Mixins/5.method-conflicts.md
+    markdown/6.Class Mixins/5.method-conflicts.md
 
-   99.closing-time.md
+  markdown/99.closing-time.md
 
 backmatter:
 
