@@ -190,6 +190,8 @@ mainmatter:
 
      markdown/6.Class Mixins/5.method-conflicts.md
 
+   99.closing-time.md
+
 backmatter:
 
   markdown/Appendices/title.md
