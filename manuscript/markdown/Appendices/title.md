@@ -1,3 +1,3 @@
-# The Golden Crema
+# The Golden Crema: Appendices and Afterwords
 
-![You've earned a break!](images/la_marzocco.jpg)
+![La Marzocco](images/la_marzocco.jpg)

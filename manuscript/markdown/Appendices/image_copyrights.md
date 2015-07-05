@@ -55,6 +55,7 @@
 * [Thinking about programming](https://www.flickr.com/photos/renaud-camus/6165559492) (c) 2011 Renaud Camus [Some rights reserved][by].
 * [Biscotti og kaffe](https://www.flickr.com/photos/cyclonebill/2606398721) (c) 2008 [Some rights reserved][by-sa].
 * [Espresso, Empty](https://www.flickr.com/photos/tillwe/8154272083) (c) 2012 Till Westermayer [Some rights reserved][by-sa].
+* [The End](https://www.flickr.com/photos/peddhapati/11671457605) (c) 2013 peddhapati [Some rights reserved][by].
 
 [by-sa]: http://creativecommons.org/licenses/by-sa/2.0/deed.en
 [by-nd]: http://creativecommons.org/licenses/by-nd/2.0/deed.en
