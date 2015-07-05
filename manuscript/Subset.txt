@@ -12,22 +12,36 @@ frontmatter:
 
   markdown/Prefaces/legend.md
 
-  markdown/Sample/about.md
+  # markdown/Sample/about.md
 
   markdown/prelude.md
 
-backmatter:
+mainmatter:
 
-  markdown/Appendices/title.md
+    markdown/0.numbers.md
 
-    markdown/Appendices/examples.md
+    markdown/1.choice.md
 
-    markdown/Appendices/thanks.md
+   markdown/2.strings.md
 
-    markdown/Appendices/spessore.md
 
-    markdown/Appendices/copyright.md
 
-    markdown/Appendices/image_copyrights.md
+   markdown/3.oop.md
 
-    markdown/Appendices/reg.md
+
+
+   markdown/4.symbols.md
+
+
+
+   markdown/5.impostors.md
+
+
+
+   markdown/6.colours.md
+
+   markdown/7.method-decorators.md
+
+
+
+   99.closing-time.md
