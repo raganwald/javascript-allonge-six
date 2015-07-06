@@ -1,44 +1,4 @@
-frontmatter:
-
-  markdown/Prefaces/title.md
-
-  markdown/Prefaces/about.md
-
-  markdown/Prefaces/isnt.md
-
-  markdown/Prefaces/first-edition.md
-
-  markdown/Prefaces/recipes.md
-
-  markdown/Prefaces/legend.md
-
-  # markdown/Sample/about.md
-
-  markdown/prelude.md
 
 mainmatter:
-
-    markdown/0.numbers.md
-
-
-    markdown/1.choice.md
-
-
-   markdown/2.strings.md
-
-
-   markdown/3.oop.md
-
-
-   markdown/4.symbols.md
-
-
-   markdown/5.impostors.md
-
-
-   markdown/6.colours.md
-
-   markdown/7.method-decorators.md
-
 
    markdown/99.closing-time.md
