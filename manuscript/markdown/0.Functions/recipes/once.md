@@ -4,7 +4,7 @@
 
     const once = (fn) => {
       let done = false;
-      
+
       return function () {
         return done ? void 0 : ((done = true), fn.apply(this, arguments))
       }
@@ -15,26 +15,16 @@ Very simple! You pass it a function, and you get a function back. That function 
     const askedOnBlindDate = once(
       () => "sure, why not?"
     );
-    
+
     askedOnBlindDate()
       //=> 'sure, why not?'
-      
-    askedOnBlindDate()
-      //=> undefined
-      
+
     askedOnBlindDate()
       //=> undefined
 
-It seems some people will only try blind dating once. But you do have to be careful that you are calling the function `once` returns multiple times. If you keep calling `once`, you'll get a new function that executes once, so you'll keep calling your function:
+    askedOnBlindDate()
+      //=> undefined
 
-    once(
-      () => "sure, why not?"
-    )()
-      //=> 'sure, why not?'
+It seems some people will only try blind dating once.
 
-    once(
-      () => "sure, why not?"
-    )()
-      //=> 'sure, why not?'
-
-This is expected, but sometimes not what we want. So we must either be careful with our code, or use a variation, the [named once](#named-once) recipe.
+(Note: There are some subtleties with decorators like `once` that involve the intersection of state with methods. We'll look at that again in [stateful method decorators](#stateful-method-decorators).)
