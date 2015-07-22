@@ -86,7 +86,7 @@ mainmatter:
 
      markdown/1.ComposingData/recipes/flip.md
 
-     markdown/1.ComposingData/recipes/extend.md
+     markdown/1.ComposingData/recipes/assign.md
 
      markdown/1.ComposingData/recipes/y.md
 
