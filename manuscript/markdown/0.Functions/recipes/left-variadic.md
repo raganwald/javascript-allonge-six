@@ -1,8 +1,4 @@
----
-layout: default
-title: Left-Variadic Functions in JavaScript
-tags: JavaScript, noindex
----
+## Left-Variadic Functions
 
 A *variadic function* is a function that is designed to accept a variable number of arguments.[^eng] In JavaScript, you can make a variadic function by gathering parameters. For example:
 
@@ -74,12 +70,12 @@ function rightVariadic (fn) {
   if (fn.length < 1) return fn;
 
   return function () {
-    var ordinaryArgs = (1 <= arguments.length ? 
+    var ordinaryArgs = (1 <= arguments.length ?
           __slice.call(arguments, 0, fn.length - 1) : []),
         restOfTheArgsList = __slice.call(arguments, fn.length - 1),
         args = (fn.length <= arguments.length ?
           ordinaryArgs.concat([restOfTheArgsList]) : []);
-    
+
     return fn.apply(this, args);
   }
 };
@@ -136,7 +132,7 @@ const leftVariadic = (fn) => {
     return function (...args) {
       const gathered = args.slice(0, args.length - fn.length + 1),
             spread   = args.slice(args.length - fn.length + 1);
-            
+
       return fn.apply(
         this, [gathered].concat(spread)
       );
@@ -200,7 +196,7 @@ const leftGather = (outputArrayLength) => {
 };
 
 const [butLast, last] = leftGather(2)(['why', 'hello', 'there', 'little', 'droid']);
-  
+
 butLast
   //=> ['why', 'hello', 'there', 'little']
 
