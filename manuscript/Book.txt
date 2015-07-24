@@ -192,6 +192,10 @@ mainmatter:
 
     markdown/7.More Decorators/1.method-decorators.md
 
+    markdown/7.More Decorators/2.es7-class-decorators.md
+
+    markdown/7.More Decorators/3.es7-method-decorators.md
+
   markdown/99.closing-time.md
 
 backmatter:
