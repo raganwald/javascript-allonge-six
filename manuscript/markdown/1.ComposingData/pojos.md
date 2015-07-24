@@ -24,17 +24,17 @@ const NAME = 0,
       OCCUPATION = 1,
       TITLE = 0,
       RESPONSIBILITIES = 1;
-      
+
 const user = [["Reginald", "Braithwaite"],[ "author", ["JavaScript Allongé", "JavaScript Spessore", "CoffeeScript Ristretto"]]];
 ~~~~~~~~
 
-Now they could write `user[NAME][LAST]` or `user[OCCUPATION][TITLE]` instead of `user[0][1]` or `user[1][0]`. Over time, this need to build heterogeneous data structures with access to members by name evolved into the [Dictionary] data type, a mapping from a unique set of objects to another set of objects. 
+Now they could write `user[NAME][LAST]` or `user[OCCUPATION][TITLE]` instead of `user[0][1]` or `user[1][0]`. Over time, this need to build heterogeneous data structures with access to members by name evolved into the [Dictionary] data type, a mapping from a unique set of objects to another set of objects.
 
 [Dictionary]: https://en.wikipedia.org/wiki/Associative_array
 
 Dictionaries store key-value pairs, so instead of binding `NAME` to `0` and then storing a name in an array at index `0`, we can bind a name directly to `name` in a dictionary, and we let JavaScript sort out whether the implementation is a list of key-value pairs, a hashed collection, a tree of some sort, or anything else.
 
-Java has dictionaries, and it calls them "objects." The word "object" is loaded in programming circles, due to the widespread use of the term "object-oriented programming" that was coined by Alan Kay but has since come to mean many, many things to many different people.
+JavaScript has dictionaries, and it calls them "objects." The word "object" is loaded in programming circles, due to the widespread use of the term "object-oriented programming" that was coined by Alan Kay but has since come to mean many, many things to many different people.
 
 In JavaScript, an object is a map from string keys to values.
 
@@ -73,7 +73,7 @@ Names needn't be alphanumeric strings. For anything else, enclose the label in q
 If the name is an alphanumeric string conforming to the same rules as names of variables, there's a simplified syntax for accessing the values:
 
     const date = { year: 2012, month: 6, day: 14 };
-    
+
     date['day'] === date.day
       //=> true
 
@@ -92,7 +92,7 @@ All containers can contain any value, including functions or other containers, l
 
     Mathematics.abs(-5)
       //=> 5
-      
+
 Or proper functions:
 
     const SecretDecoderRing = {
@@ -113,7 +113,7 @@ Or proper functions:
           .join('');
       }
     }
-      
+
 Or named function expressions:
 
     const SecretDecoderRing = {
@@ -169,7 +169,7 @@ const user = {
           last: "Braithwaite"
         },
   occupation: { title: "Author",
-                responsibilities: [ "JavaScript Allongé", 
+                responsibilities: [ "JavaScript Allongé",
                                     "JavaScript Spessore",
                                     "CoffeeScript Ristretto"
                                   ]
@@ -178,7 +178,7 @@ const user = {
 
 user.name.last
   //=> "Braithwaite"
-  
+
 user.occupation.title
   //=> "Author"
 ~~~~~~~~
@@ -191,7 +191,7 @@ const {name: { first: given, last: surname}, occupation: { title: title } } = us
 
 surname
   //=> "Braithwaite"
-  
+
 title
   //=> "Author"
 ~~~~~~~~
@@ -254,10 +254,10 @@ const OneTwoThree = { first: 1, rest: { first: 2, rest: { first: 3, rest: EMPTY 
 
 OneTwoThree.first
   //=> 1
-  
+
 OneTwoThree.rest
   //=> {"first":2,"rest":{"first":3,"rest":{}}}
-  
+
 OneTwoThree.rest.rest.first
   //=> 3
 ~~~~~~~~
@@ -283,7 +283,7 @@ const slowcopy = (node) =>
   node === EMPTY
     ? EMPTY
     : { first: node.first, rest: slowcopy(node.rest)};
-    
+
 slowcopy(OneTwoThree)
   //=> {"first":1,"rest":{"first":2,"rest":{"first":3,"rest":{}}}}
 ~~~~~~~~
@@ -298,7 +298,7 @@ const copy2 = (node, delayed = EMPTY) =>
   node === EMPTY
     ? delayed
     : copy2(node.rest, { first: node.first, rest: delayed });
-    
+
 copy2(OneTwoThree)
   //=> {"first":3,"rest":{"first":2,"rest":{"first":1,"rest":{}}}}
 ~~~~~~~~
@@ -321,7 +321,7 @@ const reverseMapWith = (fn, node, delayed = EMPTY) =>
   node === EMPTY
     ? delayed
     : reverseMapWith(fn, node.rest, { first: fn(node.first), rest: delayed });
-    
+
 reverseMapWith((x) => x * x, OneTwoThree)
   //=> {"first":9,"rest":{"first":4,"rest":{"first":1,"rest":{}}}}
 ~~~~~~~~
@@ -339,7 +339,7 @@ const mapWith = (fn, node, delayed = EMPTY) =>
   node === EMPTY
     ? reverse(delayed)
     : mapWith(fn, node.rest, { first: fn(node.first), rest: delayed });
-    
+
 mapWith((x) => x * x, OneTwoThree)
   //=> {"first":1,"rest":{"first":4,"rest":{"first":9,"rest":{}}}}
 ~~~~~~~~
