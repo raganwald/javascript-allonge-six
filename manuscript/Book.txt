@@ -196,6 +196,11 @@ mainmatter:
 
     markdown/7.More Decorators/3.es7-method-decorators.md
 
+    markdown/7.More Decorators/recipes/0.title.md
+
+    markdown/7.More Decorators/recipes/1.after.md
+
+
   markdown/99.closing-time.md
 
 backmatter:
