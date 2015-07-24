@@ -176,8 +176,6 @@ mainmatter:
 
   markdown/6.colours.md
 
-  markdown/7.method-decorators.md
-
   markdown/6.Class Mixins/0.title.md
 
     markdown/6.Class Mixins/1.mixins.md
@@ -189,6 +187,10 @@ mainmatter:
     markdown/6.Class Mixins/4.coupling.md
 
     markdown/6.Class Mixins/5.method-conflicts.md
+
+  markdown/7.More Decorators/0.title.md
+
+    markdown/7.More Decorators/1.method-decorators.md
 
   markdown/99.closing-time.md
 
