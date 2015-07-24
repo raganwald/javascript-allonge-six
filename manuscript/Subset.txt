@@ -1,5 +1,178 @@
+frontmatter:
+
+  markdown/Prefaces/title.md
+
+  markdown/Prefaces/about.md
+
+  markdown/Prefaces/isnt.md
+
+  markdown/Prefaces/first-edition.md
+
+  markdown/Prefaces/recipes.md
+
+  markdown/Prefaces/legend.md
+
+  # markdown/Sample/about.md
+
+  markdown/prelude.md
 
 mainmatter:
+
+  markdown/0.numbers.md
+
+  markdown/0.Functions/title.md
+
+    markdown/0.Functions/little.md
+
+    markdown/0.Functions/args.md
+
+    markdown/0.Functions/closures.md
+
+    markdown/0.Functions/const.md
+
+    markdown/0.Functions/names.md
+
+    markdown/0.Functions/combinators.md
+
+    markdown/0.Functions/buildingblocks.md
+
+    markdown/0.Functions/magic-names.md
+
+    markdown/0.Functions/summary.md
+
+  markdown/0.Functions/recipes/title.md
+
+    markdown/0.Functions/recipes/partial.md
+
+    markdown/0.Functions/recipes/unary.md
+
+    markdown/0.Functions/recipes/tap.md
+
+    markdown/0.Functions/recipes/maybe.md
+
+    markdown/0.Functions/recipes/once.md
+
+    markdown/0.Functions/recipes/left-variadic.md
+
+  markdown/1.choice.md
+
+  markdown/1.ComposingData/title.md
+
+    markdown/1.ComposingData/destructuring.md
+
+    markdown/1.ComposingData/linear-recursion.md
+
+    markdown/1.ComposingData/tail.md
+
+    markdown/1.ComposingData/garbage.md
+
+    markdown/1.ComposingData/pojos.md
+
+    markdown/1.ComposingData/mutation.md
+
+    markdown/1.ComposingData/reassignment.md
+
+    markdown/1.ComposingData/copy-on-write.md
+
+    markdown/1.ComposingData/turtles.md
+
+    markdown/1.ComposingData/functional-iterators.md
+
+    markdown/1.ComposingData/data-out-of-functions.md
+
+   markdown/1.ComposingData/recipes/title.md
+
+     markdown/1.ComposingData/recipes/map-with.md
+
+     markdown/1.ComposingData/recipes/flip.md
+
+     markdown/1.ComposingData/recipes/assign.md
+
+     markdown/1.ComposingData/recipes/y.md
+
+   markdown/2.strings.md
+
+   markdown/2.Objects and State/0.title.md
+
+     markdown/2.Objects and State/1.encapsulation.md
+
+     markdown/2.Objects and State/2.composition-and-extension.md
+
+     markdown/2.Objects and State/3.this.md
+
+     markdown/2.Objects and State/4.context.md
+
+     markdown/2.Objects and State/5.method-decorators.md
+
+     markdown/2.Objects and State/6.summary.md
+
+     markdown/2.Objects and State/recipes/title.md
+
+       markdown/2.Objects and State/recipes/memoize.md
+
+       markdown/2.Objects and State/recipes/get-with.md
+
+       markdown/2.Objects and State/recipes/pluck.md
+
+       markdown/2.Objects and State/recipes/deep-map-with.md
+
+  markdown/3.oop.md
+
+  markdown/3.Collections/title.md
+
+    markdown/3.Collections/1.iterables.md
+
+    markdown/3.Collections/2.generating-iterables.md
+
+    markdown/3.Collections/3.collections.md
+
+    markdown/3.Collections/4.drunken.md
+
+    markdown/3.Collections/5.more-mapping.md
+
+    markdown/3.Collections/6.interactive-generators.md
+
+    markdown/3.Collections/7.operations.md
+
+  markdown/4.symbols.md
+
+  markdown/4.Metaobjects/title.md
+
+    markdown/4.Metaobjects/0.why.md
+
+    markdown/4.Metaobjects/1.mixins.md
+
+    markdown/4.Metaobjects/2.later-binding.md
+
+    markdown/4.Metaobjects/4.prototypes.md
+
+    markdown/4.Metaobjects/6.shared-prototypes.md
+
+  markdown/5.impostors.md
+
+  markdown/5.Instances and Classes/0.title.md
+
+    markdown/5.Instances and Classes/1.constructors.md
+
+    markdown/5.Instances and Classes/2.why.md
+
+    markdown/5.Instances and Classes/3.class.md
+
+    markdown/5.Instances and Classes/4.object-methods.md
+
+    markdown/5.Instances and Classes/6.caveats.md
+
+    markdown/5.Instances and Classes/summary.md
+
+    markdown/5.Instances and Classes/recipes/0.title.md
+
+      markdown/5.Instances and Classes/recipes/bound.md
+
+      markdown/5.Instances and Classes/recipes/send.md
+
+      markdown/5.Instances and Classes/recipes/invoke.md
+
+      markdown/5.Instances and Classes/recipes/fluent.md
 
   markdown/6.colours.md
 
@@ -24,3 +197,21 @@ mainmatter:
     markdown/7.More Decorators/3.es7-method-decorators.md
 
   markdown/99.closing-time.md
+
+backmatter:
+
+  markdown/Appendices/title.md
+
+    markdown/Appendices/examples.md
+
+    markdown/Appendices/thanks.md
+
+    markdown/Appendices/spessore.md
+
+    markdown/Appendices/kindle.md
+
+    markdown/Appendices/copyright.md
+
+    markdown/Appendices/image_copyrights.md
+
+    markdown/Appendices/reg.md
