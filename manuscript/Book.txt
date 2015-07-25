@@ -200,6 +200,8 @@ mainmatter:
 
     markdown/7.More Decorators/recipes/1.after.md
 
+    markdown/7.More Decorators/recipes/2.before.md
+
 
   markdown/99.closing-time.md
 
