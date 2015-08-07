@@ -204,6 +204,8 @@ mainmatter:
 
     markdown/7.More Decorators/recipes/3.provided.md
 
+    markdown/7.More Decorators/recipes/4.method-advice.md
+
 
   markdown/99.closing-time.md
 
