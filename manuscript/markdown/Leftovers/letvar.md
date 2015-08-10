@@ -456,7 +456,7 @@ By default, JavaScript permits us to *rebind* new values to names bound with a p
     evenStevens(42)
       //=> true
     
-The line `even = evenStevens(n - 1);` *rebinds* a new value to the name `even`. We will discuss this at much greater length in the chapter on [Rebinding and References](#references), but long before we do, here is the `const` statement at work:
+The line `even = evenStevens(n - 1);` *rebinds* a new value to the name `even`. We will discuss this at much greater length in [Reassignment](#reassignment), but long before we do, here is the `const` statement at work:
 
     function evenStevens (n) {
       const even = true;
