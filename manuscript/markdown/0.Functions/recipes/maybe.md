@@ -19,7 +19,7 @@ Alternately, the function may be intended to work with any value, but the code c
       isSomething(value)
         ? doesntCheckForSomething(value)
         : value;
-    
+
 Naturally, there's a function decorator recipe for that, borrowed from Haskell's [maybe monad][maybe], Ruby's [andand], and CoffeeScript's existential method invocation:
 
     const maybe = (fn) =>
@@ -28,7 +28,7 @@ Naturally, there's a function decorator recipe for that, borrowed from Haskell's
           return
         }
         else {
-          for (let arg in args) {
+          for (let arg of args) {
             if (arg == null) return;
           }
           return fn.apply(this, args)
@@ -39,18 +39,18 @@ Naturally, there's a function decorator recipe for that, borrowed from Haskell's
 
     maybe((a, b, c) => a + b + c)(1, 2, 3)
       //=> 6
-      
+
     maybe((a, b, c) => a + b + c)(1, null, 3)
       //=> undefined
-    
+
 As a bonus, `maybe` plays very nicely with instance methods, we'll discuss those [later](#classes):
 
     function Model () {};
-    
+
     Model.prototype.setSomething = maybe(function (value) {
       this.something = value;
     });
-    
+
 If some code ever tries to call `model.setSomething` with nothing, the operation will be skipped.
 
 [andand]: https://github.com/raganwald/andand

@@ -86,7 +86,7 @@ const maybe = (fn) =>
       return;
     }
     else {
-      for (let arg in args) {
+      for (let arg of args) {
         if (arg == null) return;
       }
       return fn.apply(this, args);
