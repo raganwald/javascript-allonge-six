@@ -14,6 +14,8 @@ Choices in software development are also often driven by requirements specific t
 
 Choices in software development must also consider the question of consistency. If a particular codebase is written with lots of helper functions that place the subject first, like this:
 
+{:lang="js"}
+~~~~~~~~
 const mapIterableWith = (iterable, fn) =>
   ({
     [Symbol.iterator]: function* () {
@@ -22,9 +24,12 @@ const mapIterableWith = (iterable, fn) =>
       }
     }
   });
-    
+~~~~~~~~
+
 Then it can be jarring to add new helpers written that place the verb first, like this:
 
+{:lang="js"}
+~~~~~~~~
 const filterIterableWith = (fn, iterable) =>
   ({
     [Symbol.iterator]: function* () {
@@ -33,6 +38,7 @@ const filterIterableWith = (fn, iterable) =>
       }
     }
   });
+~~~~~~~~
 
 There are reasons why the second form is more flexible, especially when used in combination with partial application, but does that outweigh the benefit of having an entire codebase do everything consistently the first way or the second way?
 
