@@ -217,8 +217,6 @@ backmatter:
 
     markdown/Appendices/thanks.md
 
-    markdown/Appendices/spessore.md
-
     markdown/Appendices/kindle.md
 
     markdown/Appendices/copyright.md
