@@ -61,9 +61,9 @@ But now, JavaScript is gaining many important features, in part because the gove
 
 And `i` is scoped to the for loop. We can also write:
 
-    function foo (first, ...rest)
+    function foo (first, ...rest) {
       // ...
-    end
+    }
 
 And presto, `rest` collects the rest of the arguments without a lot of malarky involving slicing `arguments`. Not having to work around these kinds of missing features makes JavaScript Allongé a *better book*, because it can focus on the *why* to do something and *when* to do it, instead of on the how to make it work
 
