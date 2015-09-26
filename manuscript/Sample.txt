@@ -6,11 +6,13 @@ frontmatter:
 
   markdown/Prefaces/isnt.md
 
+  markdown/Prefaces/foreword.md
+
   markdown/Prefaces/first-edition.md
 
-  markdown/Prefaces/recipes.md
+  # markdown/Prefaces/recipes.md
 
-  markdown/Prefaces/legend.md
+  # markdown/Prefaces/legend.md
 
   markdown/Sample/about.md
 
