@@ -1,4 +1,4 @@
-## Forwards to the First Edition
+## Forewords to the First Edition
 
 ### michael fogus
 
