@@ -71,8 +71,8 @@ const foldTreeWith = (fn, terminalValue, [first, ...rest]) =>
   first === undefined
     ? terminalValue
     : Array.isArray(first)
-      ? fn(foldArrayWith(fn, terminalValue, first), foldTreeWith(fn, terminalValue, rest))
-      : fn(first, foldArrayWith(fn, terminalValue, rest));
+      ? fn(foldTreeWith(fn, terminalValue, first), foldTreeWith(fn, terminalValue, rest))
+      : fn(first, foldTreeWith(fn, terminalValue, rest));
 
 const foldTree = (tree) => callRight(foldTreeWith, tree);
 
