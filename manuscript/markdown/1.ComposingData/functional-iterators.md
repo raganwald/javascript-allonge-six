@@ -8,7 +8,7 @@ const arraySum = ([first, ...rest], accumulator = 0) =>
   first === undefined
     ? accumulator
     : arraySum(rest, first + accumulator)
-    
+
 arraySum([1, 4, 9, 16, 25])
   //=> 55
 ~~~~~~~~
@@ -20,14 +20,14 @@ As we saw earlier, this entangles the mechanism of traversing the array with the
 const callLeft = (fn, ...args) =>
     (...remainingArgs) =>
       fn(...args, ...remainingArgs);
-          
+
 const foldArrayWith = (fn, terminalValue, [first, ...rest]) =>
   first === undefined
     ? terminalValue
     : fn(first, foldArrayWith(fn, terminalValue, rest));
 
 const arraySum = callLeft(foldArrayWith, (a, b) => a + b, 0);
-    
+
 arraySum([1, 4, 9, 16, 25])
   //=> 55
 ~~~~~~~~
@@ -43,16 +43,16 @@ Well, we call `arraySum` with an array, and it has baked into it a method for tr
 const callRight = (fn, ...args) =>
     (...remainingArgs) =>
       fn(...remainingArgs, ...args);
-          
+
 const foldArrayWith = (fn, terminalValue, [first, ...rest]) =>
   first === undefined
     ? terminalValue
     : fn(first, foldArrayWith(fn, terminalValue, rest));
-    
+
 const foldArray = (array) => callRight(foldArrayWith, array);
 
 const sumFoldable = (folder) => folder((a, b) => a + b, 0);
-    
+
 sumFoldable(foldArray([1, 4, 9, 16, 25]))
   //=> 55
 ~~~~~~~~
@@ -66,18 +66,18 @@ Here it is summing a tree of numbers:
 const callRight = (fn, ...args) =>
     (...remainingArgs) =>
       fn(...remainingArgs, ...args);
-          
+
 const foldTreeWith = (fn, terminalValue, [first, ...rest]) =>
   first === undefined
     ? terminalValue
     : Array.isArray(first)
-      ? fn(foldArrayWith(fn, terminalValue, first), foldArrayWith(fn, terminalValue, rest))
+      ? fn(foldArrayWith(fn, terminalValue, first), foldTreeWith(fn, terminalValue, rest))
       : fn(first, foldArrayWith(fn, terminalValue, rest));
-    
+
 const foldTree = (tree) => callRight(foldTreeWith, tree);
 
 const sumFoldable = (folder) => folder((a, b) => a + b, 0);
-    
+
 sumFoldable(foldTree([1, [4, [9, 16]], 25]))
   //=> 55
 ~~~~~~~~
@@ -94,7 +94,7 @@ JavaScript has a particularly low-level verison of `for` loop that mimics the se
 ~~~~~~~~
 const arraySum = (array) => {
   let sum = 0;
-  
+
   for (let i = 0; i < array.length; ++i) {
     sum += array[i];
   }
@@ -115,7 +115,7 @@ const arraySum = (array) => {
   let done,
       sum = 0,
       i = 0;
-  
+
   while ((done = i == array.length, !done)) {
     const value = array[i++];
     sum += value;
@@ -135,7 +135,7 @@ const arraySum = (array) => {
   let iter,
       sum = 0,
       index = 0;
-  
+
   while (
     (eachIteration = {
         done: index === array.length,
@@ -159,10 +159,10 @@ With this code, we make a POJO that has `done` and `value` keys. All the summing
 ~~~~~~~~
 const arrayIterator = (array) => {
   let i = 0;
-  
+
   return () => {
     const done = i === array.length;
-    
+
     return {
       done,
       value: done ? undefined : array[i++]
@@ -173,13 +173,13 @@ const arrayIterator = (array) => {
 const iteratorSum = (iterator) => {
   let eachIteration,
       sum = 0;;
-  
+
   while ((eachIteration = iterator(), !eachIteration.done)) {
     sum += eachIteration.value;
   }
   return sum
 }
-    
+
 iteratorSum(arrayIterator([1, 4, 9, 16, 25]))
   //=> 55
 ~~~~~~~~
@@ -198,7 +198,7 @@ const pair = (first, rest = EMPTY) => ({first, rest});
 
 const list = (...elements) => {
   const [first, ...rest] = elements;
-  
+
   return elements.length === 0
     ? EMPTY
     : pair(first, list(...rest))
@@ -208,7 +208,7 @@ const print = (aPair) =>
   isEmpty(aPair)
     ? ""
     : `${aPair.first} ${print(aPair.rest)}`
-    
+
 const listIterator = (aPair) =>
   () => {
     const done = isEmpty(aPair);
@@ -217,7 +217,7 @@ const listIterator = (aPair) =>
     }
     else {
       const {first, rest} = aPair;
-      
+
       aPair = aPair.rest;
       return { done, value: first }
     }
@@ -226,7 +226,7 @@ const listIterator = (aPair) =>
 const iteratorSum = (iterator) => {
   let eachIteration,
       sum = 0;;
-  
+
   while ((eachIteration = iterator(), !eachIteration.done)) {
     sum += eachIteration.value;
   }
@@ -234,7 +234,7 @@ const iteratorSum = (iterator) => {
 }
 
 const aListIterator = listIterator(list(1, 4, 9, 16, 25));
-    
+
 iteratorSum(aListIterator)
   //=> 55
 ~~~~~~~~
@@ -261,7 +261,7 @@ fromOne().value;
 fromOne().value;
   //=> 5
 ~~~~~~~~
-  
+
 And here's another one:
 
 {:lang="js"}
@@ -269,15 +269,15 @@ And here's another one:
 const FibonacciIterator  = () => {
   let previous = 0,
       current = 1;
-      
+
   return () => {
     const value = current;
-    
+
     [previous, current] = [current, current + previous];
     return {done: false, value};
   };
 };
-  
+
 const fib = FibonacciIterator()
 
 fib().value
@@ -291,7 +291,7 @@ fib().value
 fib().value
   //=> 5
 ~~~~~~~~
-  
+
 A function that starts with a seed and expands it into a data structure is called an *unfold*. It's the opposite of a fold. It's possible to write a generic unfold mechanism, but let's pass on to what we can do with unfolded iterators.
 
 For starters, we can `map` an iterator, just like we map a collection:
@@ -301,10 +301,10 @@ For starters, we can `map` an iterator, just like we map a collection:
 const mapIteratorWith = (fn, iterator) =>
   () => {
     const {done, value} = iterator();
-    
+
     return ({done, value: done ? undefined : fn(value)});
   }
-  
+
 const squares = mapIteratorWith((x) => x * x, NumberIterator(1));
 
 squares().value
@@ -321,7 +321,7 @@ This business of going on forever has some drawbacks. Let's introduce an idea: A
 ~~~~~~~~
 const take = (iterator, numberToTake) => {
   let count = 0;
-  
+
   return () => {
     if (++count <= numberToTake) {
       return iterator();
@@ -330,11 +330,11 @@ const take = (iterator, numberToTake) => {
     }
   };
 };
-  
+
 const toArray = (iterator) => {
   let eachIteration,
       array = [];
-      
+
   while ((eachIteration = iterator(), !eachIteration.done)) {
     array.push(eachIteration.value);
   }
@@ -343,21 +343,21 @@ const toArray = (iterator) => {
 
 toArray(take(FibonacciIterator(), 5))
   //=> [1, 1, 2, 3, 5]
-  
+
 toArray(take(squares, 5))
   //=> [1, 4, 9, 16, 25]
 ~~~~~~~~
-  
+
 How about the squares of the first five odd numbers? We'll need an iterator that produces odd numbers. We can write that directly:
 
 {:lang="js"}
 ~~~~~~~~
 const odds = () => {
   let number = 1;
-  
+
   return () => {
     const value = number;
-    
+
     number += 2;
     return {done: false, value};
   }
