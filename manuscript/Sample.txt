@@ -118,8 +118,6 @@ backmatter:
 
     markdown/Appendices/thanks.md
 
-    markdown/Appendices/spessore.md
-
     markdown/Appendices/copyright.md
 
     markdown/Appendices/image_copyrights.md

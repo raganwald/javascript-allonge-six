@@ -12,8 +12,6 @@ frontmatter:
 
   markdown/Prefaces/legend.md
 
-  markdown/Prefaces/spessore.md
-
   markdown/prelude.md
 
 mainmatter:
@@ -139,9 +137,9 @@ mainmatter:
         markdown/5.Instances and Classes/recipes/fluent.md
 
         markdown/5.Instances and Classes/recipes/named-once.md
-        
+
     markdown/Sequence/title.md
-        
+
       markdown/Sequence/compose-and-pipeline.md
 
     markdown/6.Ideas/title.md
@@ -153,13 +151,13 @@ mainmatter:
       markdown/6.Ideas/functional-mixins.md
 
       markdown/6.Ideas/class-decorators.md
-      
+
       markdown/6.Ideas/turtles.md
-      
+
       markdown/6.Ideas/iterators.md
-      
+
       markdown/6.Ideas/drunken.md
-      
+
       markdown/6.Ideas/trampolining.md
 
       markdown/6.Ideas/recipes/title.md
@@ -183,8 +181,6 @@ backmatter:
     markdown/Appendices/examples.md
 
     markdown/Appendices/thanks.md
-
-    markdown/Appendices/spessore.md
 
     markdown/Appendices/copyright.md
 
