@@ -12,7 +12,7 @@ T> * Function bodies have zero or more statements.
 T> * Expression bodies evaluate to the value of the expression.
 T> * Block bodies evaluate to whatever is returned with the `return` keyword, or to `undefined`.
 T> * JavaScript uses `const` to bind values to names within block scope.
-T> * JavaScript uses function declaration functions to names within function scope scope. Function declarations are "hoisted."
+T> * JavaScript uses function declarations to bind functions to names within function scope. Function declarations are "hoisted."
 T> * Function application creates a scope.
 T> * Blocks also create scopes if `const` statements are within them.
 T> * Scopes are nested and free variable references closed over.

@@ -15,7 +15,7 @@ We could write a function that behaves like the `.map` method if we wanted:
 const map = (list, fn) =>
   list.map(fn);
 ~~~~~~~~
-      
+
 This recipe isn't for `map`: It's for `mapWith`, a function that wraps around `map` and turns any other function into a mapper. `mapWith` is very simple:[^mapWith]
 
 {:lang="js"}
@@ -29,21 +29,21 @@ That means that you can pass a function to `mapWith` and get back a function tha
 
     const squaresOf = (list) =>
       list.map(x => x * x);
-    
+
     squaresOf([1, 2, 3, 4, 5])
       //=> [1, 4, 9, 16, 25]
 
 We can call `mapWith` in one step:
 
     const squaresOf = mapWith(n => n * n);
-    
+
     squaresOf([1, 2, 3, 4, 5])
       //=> [1, 4, 9, 16, 25]
-      
+
 If we didn't use `mapWith`, we'd could have also used `callRight` with `map` to accomplish the same result:
 
     const squaresOf = callRight(map, (n => n * n);
-    
+
     squaresOf([1, 2, 3, 4, 5])
       //=> [1, 4, 9, 16, 25]
 
@@ -51,4 +51,4 @@ Both patterns take us to the same destination: Composing functions out of common
 
 *`mapWith` was suggested by [ludicast](http://github.com/ludicast)*
 
-[^mapWith]: If we were always mapWithting arrays, we could write `list.map(fn)`. However, there are some objects that have a `.length` property and `[]` accessors that can be mapWithted but do not have a `.map` method. `mapWith` works with those objects. This points to a larger issue around the question of whether containers really ought to implement methods like `.map`. In a language like JavaScript, we are free to define objects that know about their own implementations, such as exactly how `[]` and `.length` works and then to define standalone functions that do the rest.
+[^mapWith]: If we were always `mapWith`-ing arrays, we could write `list.map(fn)`. However, there are some objects that have a `.length` property and `[]` accessors that can be mapWithted but do not have a `.map` method. `mapWith` works with those objects. This points to a larger issue around the question of whether containers really ought to implement methods like `.map`. In a language like JavaScript, we are free to define objects that know about their own implementations, such as exactly how `[]` and `.length` works and then to define standalone functions that do the rest.

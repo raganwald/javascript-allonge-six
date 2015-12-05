@@ -13,16 +13,16 @@ The first magic name is  `this`, and it is bound to something called the functio
     const plus = function (a, b) {
       return arguments[0] + arguments[1];
     }
-    
+
     plus(2,3)
       //=> 5
-      
+
 Although `arguments` looks like an array, it isn't an array: It's more like an object[^pojo] that happens to bind some values to properties with names that look like integers starting with zero:
 
     const args = function (a, b) {
       return arguments;
     }
-    
+
     args(2,3)
       //=> { '0': 2, '1': 3 }
 
@@ -31,7 +31,7 @@ Although `arguments` looks like an array, it isn't an array: It's more like an o
     const plus = function () {
       return arguments[0] + arguments[1];
     }
-    
+
     plus(2,3)
       //=> 5
 
@@ -40,18 +40,18 @@ When discussing objects, we'll discuss properties in more depth. Here's somethin
     const howMany = function () {
       return arguments['length'];
     }
-    
+
     howMany()
       //=> 0
-    
+
     howMany('hello')
       //=> 1
-    
+
     howMany('sharks', 'are', 'apex', 'predators')
       //=> 4
-      
+
 The most common use of the `arguments` binding is to build functions that can take a variable number of arguments. We'll see it used in many of the recipes, starting off with [partial application](#simple-partial) and [ellipses](#ellipses).
-      
+
 [^pojo]: We'll look at [arrays](#arrays) and [plain old javascript objects](#pojos) in depth later.
 
 ### magic names and fat arrows
@@ -71,22 +71,25 @@ But if we use a fat arrow, `arguments` will be defined in the outer environment,
       return (() => arguments[0])('inner');
     })('outer')
       //=> "outer"
-      
+
 Although it seems quixotic for the two syntaxes to have different semantics, it makes sense when you consider the design goal: Fat arrow functions are designed to be very lightweight and are often used with constructs like mapping or callbacks to emulate syntax.
 
 To give a contrived example, this function takes a number and returns an array representing a row in a hypothetical multiplication table. It uses `mapWith`, which we discussed in [Building Blocks](#buildingblocks).[^mapWith] We'll use `arguments` just to show the difference between using a fat arrow and the function keyword:
 
 [^mapWith]: We can also write the following: `const mapWith = (fn, a) => a.map(fn);`, and trust that it works even though we haven't discussed methods yet.
 
-    const row = function () {
-      return mapWith(
-        (column) => column * arguments[0],
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-      )
-    }
-    
-    row(3)
-      //=> [3,6,9,12,15,18,21,24,27,30,33,36]
+{:lang="js"}
+~~~~~~~~
+const row = function () {
+  return mapWith(
+    (column) => column * arguments[0],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  )
+}
+
+row(3)
+  //=> [3,6,9,12,15,18,21,24,27,30,33,36]
+~~~~~~~~
 
 This works just fine, because `arguments[0]` refers to the `3` we passed to the function `row`. Our "fat arrow" function `(column) => column * arguments[0]` doesn't bind `arguments` when it's invoked. But if we rewrite `row` to use the `function` keyword, it stops working:
 
@@ -96,7 +99,7 @@ This works just fine, because `arguments[0]` refers to the `3` we passed to the 
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
       )
     }
-    
+
     row(3)
       //=> [1,4,9,16,25,36,49,64,81,100,121,144]
 

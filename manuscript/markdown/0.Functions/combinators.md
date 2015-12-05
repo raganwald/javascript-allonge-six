@@ -10,16 +10,16 @@ Here's a very simple higher-order function that takes a function as an argument:
       (num > 0)
         ? (repeat(num - 1, fn), fn(num))
         : undefined
-    
-    repeat(3, function (n) { 
-      console.log(`Hello ${n}`) 
+
+    repeat(3, function (n) {
+      console.log(`Hello ${n}`)
     })
       //=>
-        'Hello 3'
-        'Hello 2'
         'Hello 1'
+        'Hello 2'
+        'Hello 3'
         undefined
-    
+
 Higher-order functions dominate *JavaScript Allongé*. But before we go on, we'll talk about some specific types of higher-order functions.
 
 ### combinators
@@ -44,17 +44,17 @@ Let's start with a useful combinator: Most programmers call it *Compose*, althou
 Let's say we have:
 
     const addOne = (number) => number + 1;
-    
+
     const doubleOf = (number) => number * 2;
-    
+
 With `compose`, anywhere you would write
 
     const doubleOfAddOne = (number) => doubleOf(addOne(number));
-    
+
 You could also write:
 
     const doubleOfAddOne = compose(doubleOf, addOne);
-    
+
 This is, of course, just one example of many. You'll find lots more perusing the recipes in this book. While some programmers believe "There Should Only Be One Way To Do It," having combinators available as well as explicitly writing things out with lots of symbols and keywords has some advantages when used judiciously.
 
 ### a balanced statement about combinators
@@ -66,7 +66,7 @@ Code that uses a lot of combinators tends to name the verbs and adverbs (like `d
 A *function decorator* is a higher-order function that takes one function as an argument, returns another function, and the returned function is a variation of the argument function. Here's a ridiculously simple  decorator:[^variadic]
 
     const not = (fn) => (x) => !fn(x)
-      
+
 [^variadic]: We'll see later why an even more useful version would be written `(fn) => (...args) => !fn(...args)`
 
 So instead of writing `!someFunction(42)`, we can write `not(someFunction)(42)`. Hardly progress. But like `compose`, we could write either:
