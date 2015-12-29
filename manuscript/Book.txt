@@ -184,6 +184,8 @@ mainmatter:
 
     markdown/6.Class Mixins/2.functional-mixins.md
 
+    markdown/6.Class Mixins/2b.subclass-factory.md
+
     markdown/6.Class Mixins/3.property-conflicts.md
 
     markdown/6.Class Mixins/4.coupling.md
