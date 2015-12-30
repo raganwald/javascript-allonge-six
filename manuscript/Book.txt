@@ -190,7 +190,7 @@ mainmatter:
 
     markdown/6.Class Mixins/4.coupling.md
 
-    markdown/6.Class Mixins/5.method-conflicts.md
+    # markdown/6.Class Mixins/5.method-conflicts.md
 
   markdown/7.More Decorators/0.title.md
 
@@ -209,6 +209,8 @@ mainmatter:
     markdown/7.More Decorators/recipes/3.provided.md
 
     markdown/7.More Decorators/recipes/4.method-advice.md
+
+    markdown/7.More Decorators/recipes/5.lightweight-traits.md
 
 
   markdown/99.closing-time.md
