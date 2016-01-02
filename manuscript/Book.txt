@@ -56,6 +56,8 @@ mainmatter:
 
     markdown/0.Functions/recipes/left-variadic.md
 
+    markdown/0.Functions/recipes/compose-and-pipeline.md
+
   markdown/1.choice.md
 
   markdown/1.ComposingData/title.md
@@ -200,6 +202,8 @@ mainmatter:
 
     markdown/7.More Decorators/3.es7-method-decorators.md
 
+    markdown/7.More Decorators/4.lightweight-traits.md
+
     markdown/7.More Decorators/recipes/0.title.md
 
     markdown/7.More Decorators/recipes/1.after.md
@@ -210,8 +214,8 @@ mainmatter:
 
     markdown/7.More Decorators/recipes/4.method-advice.md
 
-    markdown/7.More Decorators/recipes/5.lightweight-traits.md
 
+  markdown/88.beyond-es6.md
 
   markdown/99.closing-time.md
 
