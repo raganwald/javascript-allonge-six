@@ -214,9 +214,6 @@ mainmatter:
 
     markdown/7.More Decorators/recipes/4.method-advice.md
 
-
-  markdown/88.beyond-es6.md
-
   markdown/99.closing-time.md
 
 backmatter:
