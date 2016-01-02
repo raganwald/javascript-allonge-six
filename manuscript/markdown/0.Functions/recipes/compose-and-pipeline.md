@@ -71,7 +71,7 @@ There are others, of course. `compose` can be implemented with iteration or with
       (value) =>
         fns.reverse().reduce((acc, fn) => fn(acc), value);
 
-But the principle behaviour is the same: To compose a serie of functions, creating a new one. And the value is the same: We cna write samller, single purpose functions and put them together in different ways.
+But the principle behaviour is the same: To compose a series of functions together, creating a new one. And the value is the same: We can write smaller, single purpose functions and put them together in different ways.
 
 ### the semantics of compose
 
