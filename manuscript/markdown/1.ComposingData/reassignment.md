@@ -16,10 +16,10 @@ By default, JavaScript permits us to *rebind* new values to names bound with a p
         return evenStevens(n);
       }
     }
-    
+
     evenStevens(42)
       //=> true
-    
+
 The line `n = n - 2;` *rebinds* a new value to the name `n`. We will discuss this at much greater length in [Reassignment](#reassignment), but long before we do, let's try a similar thing with a name bound using `const`. We've already bound `evenStevens` using `const`, let's try rebinding it:
 
     evenStevens = (n) => {
@@ -34,7 +34,7 @@ The line `n = n - 2;` *rebinds* a new value to the name `n`. We will discuss thi
       }
     }
       //=> ERROR, evenStevens is read-only
-      
+
 JavaScript does not permit us to rebind a name that has been bound with `const`. We can *shadow* it by using `const` to declare a new binding with a new function or block scope, but we cannot rebind a name that was bound with `const` in an existing scope.
 
 Rebinding parameters is usually avoided, but what about rebinding names we declare within a function? What we want is a statement that works like `const`, but permits us to rebind variables. JavaScript has such a thing, it's called `let`:
@@ -54,7 +54,7 @@ So let's consider what happens with a shadowed variable:
 
     (() => {
       let age = 49;
-      
+
       if (true) {
         let age = 50;
       }
@@ -65,11 +65,11 @@ So let's consider what happens with a shadowed variable:
 Using `let` to bind `50` to age within the block does not change the binding of `age` in the outer environment because the binding of `age` in the block shadows the binding of `age` in the outer environment, just like `const`. We go from:
 
     {age: 49, '..': global-environment}
-    
+
 To:
 
     {age: 50, '..': {age: 49, '..': global-environment}}
-    
+
 Then back to:
 
     {age: 49, '..': global-environment}
@@ -78,7 +78,7 @@ However, if we don't shadow `age` with `let`, reassigning within the block chang
 
     (() => {
       let age = 49;
-      
+
       if (true) {
         age = 50;
       }
@@ -96,7 +96,7 @@ If you dislike deliberately shadowing variables, you'll probably take an even mo
 
     (() => {
       let age = 49;
-      
+
       if (true) {
         const age = 50;
       }
@@ -104,12 +104,12 @@ If you dislike deliberately shadowing variables, you'll probably take an even mo
       return age;
     })()
       //=> 51
-      
+
 Shadowing a `let` with a `const` does not change our ability to rebind the variable in its original scope. And:
 
     (() => {
       const age = 49;
-      
+
       if (true) {
         let age = 50;
       }
@@ -143,7 +143,7 @@ const factorial = (n) => {
 
 factorial(5)
   //=> 120
-  
+
 const factorial2 = (n) => {
   var x = n;
   if (x === 1) {
@@ -165,7 +165,7 @@ But of course, it's not exactly like `let`. It's just different enough to presen
 ~~~~~~~~
 (() => {
   var age = 49;
-  
+
   if (true) {
     var age = 50;
   }
@@ -181,9 +181,9 @@ But, again, it is unwise to expect consistency. A function declaration can appea
 {:lang="javascript"}
 ~~~~~~~~
 const factorial = (n) => {
-  
+
   return innerFactorial(n, 1);
-  
+
   function innerFactorial (x, y) {
     if (x == 1) {
       return y;
@@ -211,7 +211,7 @@ const factorial = (n) => {
         return innerFactorial(x-1, x * y);
       }
     }
-  
+
   return innerFactorial(n, 1);
 }
 ~~~~~~~~
@@ -221,9 +221,9 @@ JavaScript hoists the `let` and the assignment. But not so with `var`:
 {:lang="javascript"}
 ~~~~~~~~
 const factorial = (n) => {
-  
+
   return innerFactorial(n, 1);
-  
+
   var innerFactorial = function innerFactorial (x, y) {
     if (x == 1) {
       return y;
@@ -243,11 +243,11 @@ JavaScript hoists the declaration, but not the assignment. It is as if we'd writ
 {:lang="javascript"}
 ~~~~~~~~
 const factorial = (n) => {
-  
+
   let innerFactorial = undefined;
-  
+
   return innerFactorial(n, 1);
-  
+
   innerFactorial = function innerFactorial (x, y) {
     if (x == 1) {
       return y;
@@ -271,7 +271,7 @@ In that way, `var` is a little like `const` and `let`, we should always declare 
 We haven't looked at it yet, but JavaScript provides a `for` loop for your iterating pleasure and convenience. It looks a lot like the `for` loop in C. Here it is with `var`:
 
     var sum = 0;
-    for (let i = 1; i <= 100; i++) {
+    for (var i = 1; i <= 100; i++) {
       sum = sum + i
     }
     sum
@@ -285,8 +285,8 @@ Yes. Consider this variation:
 
     var introductions = [],
         names = ['Karl', 'Friedrich', 'Gauss'];
-      
-    for (let i = 0; i < 3; i++) {
+
+    for (var i = 0; i < 3; i++) {
       introductions[i] = "Hello, my name is " + names[i]
     }
     introductions
@@ -298,8 +298,8 @@ So far, so good. Hey, remember that functions in JavaScript are values? Let's ge
 
     var introductions = [],
         names = ['Karl', 'Friedrich', 'Gauss'];
-      
-    for (let i = 0; i < 3; i++) {
+
+    for (var i = 0; i < 3; i++) {
       introductions[i] = (soAndSo) =>
         `Hello, ${soAndSo}, my name is ${names[i]}`
     }
@@ -307,45 +307,45 @@ So far, so good. Hey, remember that functions in JavaScript are values? Let's ge
       //=> [ [Function],
       //     [Function],
       //     [Function] ]
-    
-So far, so good. Let's try one of our functions:
+
+Again, so far, so good. Let's try one of our functions:
 
     introductions[1]('Raganwald')
       //=> 'Hello, Raganwald, my name is undefined'
-    
+
 What went wrong? Why didn't it give us 'Hello, Raganwald, my name is Friedrich'? The answer is that pesky `var i`. Remember that `i` is bound in the surrounding environment, so it's as if we wrote:
 
     var introductions = [],
         names = ['Karl', 'Friedrich', 'Gauss'],
         i = undefined;
-      
+
     for (i = 0; i < 3; i++) {
       introductions[i] = function (soAndSo) {
         return "Hello, " + soAndSo + ", my name is " + names[i]
       }
     }
     introductions
-  
+
 Now, at the time we created each function, `i` had a sensible value, like `0`, `1`, or `2`. But at the time we *call* one of the functions, `i` has the value `3`, which is why the loop terminated. So when the function is called, JavaScript looks `i` up in its enclosing environment (its  closure, obviously), and gets the value `3`. That's not what we want at all.
 
 The error wouldn't exist at all if we'd used `let` in the first place
 
     let introductions = [],
         names = ['Karl', 'Friedrich', 'Gauss'];
-      
+
     for (let i = 0; i < 3; i++) {
       introductions[i] = (soAndSo) =>
         `Hello, ${soAndSo}, my name is ${names[i]}`
     }
     introductions[1]('Raganwald')
       //=> 'Hello, Raganwald, my name is Friedrich'
-    
+
 This small error was a frequent cause of confusion, and in the days when there was no block-scoped `let`, programmers would need to know how to fake it, usually with an IIFE:
 
     var introductions = [],
         names = ['Karl', 'Friedrich', 'Gauss'];
-      
-    for (let i = 0; i < 3; i++) {
+
+    for (var i = 0; i < 3; i++) {
       ((i) => {
         introductions[i] = (soAndSo) =>
           `Hello, ${soAndSo}, my name is ${names[i]}`
@@ -354,7 +354,7 @@ This small error was a frequent cause of confusion, and in the days when there w
     }
     introductions[1]('Raganwald')
       //=> 'Hello, Raganwald, my name is Friedrich'
-    
+
 Now we're creating a new inner parameter, `i` and binding it to the value of the outer `i`. This works, but `let` is so much simpler and cleaner that it was added to the language in the ECMAScript 2015 specification.
 
 In this book, we will use function declarations sparingly, and not use `var` at all. That does not mean that you should follow the exact same practice in your own code: The purpose of this book is to illustrate certain principles of programming. The purpose of your own code is to get things done. The two goals are often, but not always, aligned.
