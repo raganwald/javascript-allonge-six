@@ -88,7 +88,7 @@ We've found another way to express the principle of separating traversing a data
 
 Folding is a universal operation, and with care we can accomplish any tak with folds that could be accomplished with that stalwart of structured programming, the `for` loop. Nevertheless, there is some value in being able to express some algorithms as iteration.
 
-JavaScript has a particularly low-level verison of `for` loop that mimics the semantics of the `C` language. Summing the elements of an array can be accomplished with:
+JavaScript has a particularly low-level version of `for` loop that mimics the semantics of the `C` language. Summing the elements of an array can be accomplished with:
 
 {:lang="js"}
 ~~~~~~~~
@@ -409,7 +409,7 @@ const firstInArray = (fn, array) =>
   array.filter(fn)[0];
 ~~~~~~~~
 
-JavaScript would apply `fn` to every element. If `array` was very large, and `fn` very slow, this would consume a lot of unnecessary time. And if `fn` had some sort fo side-effect, the program could be buggy.
+JavaScript would apply `fn` to every element. If `array` was very large, and `fn` very slow, this would consume a lot of unnecessary time. And if `fn` had some sort of side-effect, the program could be buggy.
 
 ### caveat
 
