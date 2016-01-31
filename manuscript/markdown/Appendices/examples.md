@@ -38,7 +38,7 @@ If we make it even more idiomatic, we could write:
             return method.apply(this, args)
           };
           
-And it wold be "transpiled" into:
+And it would be "transpiled" into:
 
     var before = function (decoration) {
       return function (method) {

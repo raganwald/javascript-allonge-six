@@ -281,7 +281,7 @@ const badFib = badFibonacciIterator();
 
 When we call `badFibonacciIterator()`, we get an iterator that is also an iterable, but when you call `[Symbol.iterator]`, you are calling `badFibonacciIterator()` all over again, and getting a brand-new iterator that has brand-new state all over again, so our five calls to `[...takeFromCollection(5, badFib)]` all return the first five elements of the sequence.
 
-When an iterator is also an iterable that returns itself, we say that it is a *self-iterable*. This is, as we see, quite useful for taking advantage of JavaScript's support for iterables while maintining state.
+When an iterator is also an iterable that returns itself, we say that it is a *self-iterable*. This is, as we see, quite useful for taking advantage of JavaScript's support for iterables while maintaining state.
 
 Let's compare our hand-written self-iterable to a generator function:
 
@@ -415,7 +415,7 @@ const EvenNumbers = filterCollectionWith((x) => x % 2 === 0, Numbers);
 
 `Numbers` and `EvenNumbers` are used as collections of numbers. If we want the first ten even numbers, can just `takeFromCollection(10, EvenNumbers)` and always get the first ten. Things that are intended to behave like collections should be proper iterables, so that when we iterate over them, we always get a fresh iterator, rather than continuing where we left off.
 
-However, we don't alway want to do that. Sometimes we want a stateful iterator. Maybe we want to make a five-by-five matric of numbers. In that case, we want a function that returns a self-iterable:
+However, we don't always want to do that. Sometimes we want a stateful iterator. Maybe we want to make a five-by-five matrix of numbers. In that case, we want a function that returns a self-iterable:
 
 {:lang="js"}
 ~~~~~~~~

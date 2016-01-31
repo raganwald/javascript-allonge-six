@@ -266,7 +266,7 @@ In that way, `var` is a little like `const` and `let`, we should always declare 
 
 ### why `const` and `let` were invented
 
-`const` and `let` are receent additions to JavaScript. For nearly twenty years, variables were declared with `var` (not counting parameters and function declarations, of course). However, its functional scope was a problem.
+`const` and `let` are recent additions to JavaScript. For nearly twenty years, variables were declared with `var` (not counting parameters and function declarations, of course). However, its functional scope was a problem.
 
 We haven't looked at it yet, but JavaScript provides a `for` loop for your iterating pleasure and convenience. It looks a lot like the `for` loop in C. Here it is with `var`:
 
@@ -328,7 +328,7 @@ What went wrong? Why didn't it give us 'Hello, Raganwald, my name is Friedrich'?
   
 Now, at the time we created each function, `i` had a sensible value, like `0`, `1`, or `2`. But at the time we *call* one of the functions, `i` has the value `3`, which is why the loop terminated. So when the function is called, JavaScript looks `i` up in its enclosing environment (its  closure, obviously), and gets the value `3`. That's not what we want at all.
 
-The error wouldnt exist at all if we'd used `let` in the first place
+The error wouldn't exist at all if we'd used `let` in the first place
 
     let introductions = [],
         names = ['Karl', 'Friedrich', 'Gauss'];
