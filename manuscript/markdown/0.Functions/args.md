@@ -57,7 +57,7 @@ What happened internally is that the expression `1 + 1` was evaluated first, res
 
 [^f2f]: We said that you can't apply a function to an expression. You *can* apply a function to one or more functions. Functions are values! This has interesting applications, and they will be explored much more thoroughly in [Functions That Are Applied to Functions](#consumers).
 
-We'll see [below](#call-by-sharing) that while JavaScript always calls by value, the notion of a "value" has additonal subtlety. But before we do, let's look at variables.
+We'll see [below](#call-by-sharing) that while JavaScript always calls by value, the notion of a "value" has additional subtlety. But before we do, let's look at variables.
 
 ### variables and bindings
 

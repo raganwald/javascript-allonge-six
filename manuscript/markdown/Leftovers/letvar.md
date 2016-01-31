@@ -24,7 +24,7 @@ What do we put inside our new function that binds `3.14159265` to the name `PI` 
       (diameter) => diameter * PI
     )(3.14159265)
 
-This expression, when evaluated, returns a function that calculates circumferences. That sounds bad, but when we think about it, `(diameter) => diameter * 3.14159265` is also an expression, that when evaluated, returns a function that calculates circumferences. All of our "functions" are epxressions. This one has a few more moving parts, that's all. But we can use it just like `(diameter) => diameter * 3.14159265`.
+This expression, when evaluated, returns a function that calculates circumferences. That sounds bad, but when we think about it, `(diameter) => diameter * 3.14159265` is also an expression, that when evaluated, returns a function that calculates circumferences. All of our "functions" are expressions. This one has a few more moving parts, that's all. But we can use it just like `(diameter) => diameter * 3.14159265`.
 
 Let's test it:
 
@@ -291,9 +291,9 @@ Yes. Binding values to names with `let` works just like binding values to names 
 
 ### shadowy lets from a shadowy planet
 
-We just saw that values bound with `let` use lexical scope, just like values bound with parameters. They are looked up in the environment where they are declared. And we know that functions create environments. Parameters are declared when we create functions, so it makes sense that parameters are bound to envirnoments created when we invoke functions.
+We just saw that values bound with `let` use lexical scope, just like values bound with parameters. They are looked up in the environment where they are declared. And we know that functions create environments. Parameters are declared when we create functions, so it makes sense that parameters are bound to environments created when we invoke functions.
 
-But `let` statements can appear inside blocks, and we saw that blocks can appear inside of other blocks, including function bodies. So where are `let` variables bound? In the function environment? Or in an environment correspodning to the block?
+But `let` statements can appear inside blocks, and we saw that blocks can appear inside of other blocks, including function bodies. So where are `let` variables bound? In the function environment? Or in an environment corresponding to the block?
 
 We can test this by creating another conflict. But instead of binding two different variables to the same name in two different places, we'll bind two different values to the same name, but one environment will be completely enclosed by the other.
 
@@ -399,7 +399,7 @@ This is enormously important. Consider the alternative: What if `let` could be d
     })(2)
       //=> would return 6 if let had function scope
       
-If `let` always bound its value to the name defined in the function's environment, placing a `let` statement inside of a block would merely rebind the existing name, ovewriting its old contents. That would be super-confusing. And this code would "work:"
+If `let` always bound its value to the name defined in the function's environment, placing a `let` statement inside of a block would merely rebind the existing name, overwriting its old contents. That would be super-confusing. And this code would "work:"
 
     ((diameter) => {
       if (true) {
@@ -409,7 +409,7 @@ If `let` always bound its value to the name defined in the function's environmen
     })(2)
       //=> would return 6.2831853 if let had function scope
 
-Again, confusing. Typically, we want to bind our names as close to where we need them as possible. This design rule is called the [Principle of Least Privilege][plp], and it has both quality and security implications. Being able to bind a name insid eof a block means that if the name is only needed in the block, we are not "leaking" its binding to other parts of the code that do not need to interact with it.
+Again, confusing. Typically, we want to bind our names as close to where we need them as possible. This design rule is called the [Principle of Least Privilege][plp], and it has both quality and security implications. Being able to bind a name inside of a block means that if the name is only needed in the block, we are not "leaking" its binding to other parts of the code that do not need to interact with it.
 
 [plp]: https://en.wikipedia.org/wiki/Principle_of_least_privilege
     
@@ -427,7 +427,7 @@ Again, confusing. Typically, we want to bind our names as close to where we need
     })(2)
       //=> returns 6
       
-If `let` always bound its value to the name defined in the function's environment, placing a `let` statement inside of a block would merely rebind the existing name, ovewriting its old contents. That would be super-confusing. And this code would "work:"
+If `let` always bound its value to the name defined in the function's environment, placing a `let` statement inside of a block would merely rebind the existing name, overwriting its old contents. That would be super-confusing. And this code would "work:"
 
     ((diameter) => {
       if (true) {

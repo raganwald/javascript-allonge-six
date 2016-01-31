@@ -391,7 +391,7 @@ Mapping and filtering iterators allows us to compose the parts we already have, 
 
 ### bonus
 
-Many programmers coming to JavaScript from other languages are familiar with three "canoncial" operations on collections: folding, filtering, and finding. In Smalltalk, for example, they are known as `collect`, `select`, and `detect`.
+Many programmers coming to JavaScript from other languages are familiar with three "canonical" operations on collections: folding, filtering, and finding. In Smalltalk, for example, they are known as `collect`, `select`, and `detect`.
 
 We haven't written anything that finds the first element of an iteration that meets a certain criteria. Or have we?
 
@@ -401,7 +401,7 @@ const firstInIteration = (fn, iterator) =>
   take(filterIteratorWith(fn, iterator), 1);
 ~~~~~~~~
 
-This is interesting, because it is lazy: It doesnt apply `fn` to every element in an iteration, just enough to find the first that passes the test. Whereas if we wrote something like:
+This is interesting, because it is lazy: It doesn't apply `fn` to every element in an iteration, just enough to find the first that passes the test. Whereas if we wrote something like:
 
 {:lang="js"}
 ~~~~~~~~
@@ -409,7 +409,7 @@ const firstInArray = (fn, array) =>
   array.filter(fn)[0];
 ~~~~~~~~
 
-JavaScript would apply `fn` to every element. If `array` was very large, and `fn` very slow, this would consume a lot of unecessary time. And if `fn` had some sort fo side-effect, the program could be buggy.
+JavaScript would apply `fn` to every element. If `array` was very large, and `fn` very slow, this would consume a lot of unnecessary time. And if `fn` had some sort fo side-effect, the program could be buggy.
 
 ### caveat
 
