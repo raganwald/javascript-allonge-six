@@ -86,7 +86,7 @@ We've found another way to express the principle of separating traversing a data
 
 ### iterating
 
-Folding is a universal operation, and with care we can accomplish any tak with folds that could be accomplished with that stalwart of structured programming, the `for` loop. Nevertheless, there is some value in being able to express some algorithms as iteration.
+Folding is a universal operation, and with care we can accomplish any task with folds that could be accomplished with that stalwart of structured programming, the `for` loop. Nevertheless, there is some value in being able to express some algorithms as iteration.
 
 JavaScript has a particularly low-level version of `for` loop that mimics the semantics of the `C` language. Summing the elements of an array can be accomplished with:
 
@@ -127,7 +127,7 @@ arraySum([1, 4, 9, 16, 25])
   //=> 55
 ~~~~~~~~
 
-Notice that buried inside our loop, we have bound the names `done` and `value`. We can put those into a POJO. It'll be a little awkward, but we'll be patient:
+Notice that buried inside our loop, we have bound the names `done` and `value`. We can put those into a POJO (a [Plain Old JavaScript Object](#pojos)). It'll be a little awkward, but we'll be patient:
 
 {:lang="js"}
 ~~~~~~~~
@@ -172,12 +172,12 @@ const arrayIterator = (array) => {
 
 const iteratorSum = (iterator) => {
   let eachIteration,
-      sum = 0;;
+      sum = 0;
 
   while ((eachIteration = iterator(), !eachIteration.done)) {
     sum += eachIteration.value;
   }
-  return sum
+  return sum;
 }
 
 iteratorSum(arrayIterator([1, 4, 9, 16, 25]))
