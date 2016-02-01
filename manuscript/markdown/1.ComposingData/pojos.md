@@ -125,7 +125,7 @@ Or named function expressions:
           .map( code => String.fromCharCode(code) )
           .join('');
       },
-      decode: function encode (cyphertext) {
+      decode: function decode (cyphertext) {
         return cyphertext
           .split('')
           .map( char => char.charCodeAt() )
@@ -288,7 +288,7 @@ slowcopy(OneTwoThree)
   //=> {"first":1,"rest":{"first":2,"rest":{"first":3,"rest":{}}}}
 ~~~~~~~~
 
-The problem here is that linked lists are constructed bask-to-front, but we iterate over them front-to-back. So to copy a list, we have to save all the bits on the call stack and then construct the list from back-to-front as all the recursive calls return.
+The problem here is that linked lists are constructed back-to-front, but we iterate over them front-to-back. So to copy a list, we have to save all the bits on the call stack and then construct the list from back-to-front as all the recursive calls return.
 
 We could follow the strategy of delaying the work. Let's write that naively:
 
