@@ -16,7 +16,7 @@ Choices in software development must also consider the question of consistency. 
 
 {:lang="js"}
 ~~~~~~~~
-const mapIterableWith = (iterable, fn) =>
+const mapWith = (iterable, fn) =>
   ({
     [Symbol.iterator]: function* () {
       for (let element of iterable) {
@@ -30,7 +30,7 @@ Then it can be jarring to add new helpers written that place the verb first, lik
 
 {:lang="js"}
 ~~~~~~~~
-const filterIterableWith = (fn, iterable) =>
+const filterWith = (fn, iterable) =>
   ({
     [Symbol.iterator]: function* () {
       for (let element of iterable) {

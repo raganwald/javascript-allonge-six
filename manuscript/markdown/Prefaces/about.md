@@ -55,7 +55,7 @@ Working around the missing features was a necessary evil.
 
 But now, JavaScript is gaining many important features, in part because the governing body behind JavaScript has observed that programmers are constantly working around the same set of limitations. With ECMASCript 2015, we can write:
 
-    for (let i = 0; i < array.length; ++i) {
+    for (const i = 0; i < array.length; ++i) {
       // ...
     }
 

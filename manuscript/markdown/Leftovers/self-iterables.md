@@ -387,7 +387,7 @@ const FirstFiveFibs = takeFromCollection(5, Fibonacci);
 
 We keep getting the first five fibnacci numbers when we gather `FirstFiveFibs` into arrays, because the way `takeFromCollection` is written, it returns an iterable that generates a brand new iterator every time you call `[Symbol.iterator]`.
 
-This is exactly the behaviour we desire if we want `FirstFiveFibs` to behave like an iterable collection. Every time we iterate over it, we want to iterate over the whole thing. It's the same thing with other operations, like `flterIterableWith`:
+This is exactly the behaviour we desire if we want `FirstFiveFibs` to behave like an iterable collection. Every time we iterate over it, we want to iterate over the whole thing. It's the same thing with other operations, like `flterWith`:
 
 {:lang="js"}
 ~~~~~~~~
@@ -404,7 +404,7 @@ const filterCollectionWith = (fn, iterable) =>
   
 const Numbers = {
   [Symbol.iterator]: function* () {
-    for (let i = 0; ++i; true) {
+    for (const i = 0; ++i; true) {
       yield i;
     }
   }
@@ -420,7 +420,7 @@ However, we don't always want to do that. Sometimes we want a stateful iterator.
 {:lang="js"}
 ~~~~~~~~
 const numbers = function* () {
-  for (let i = 0; ++i; true) {
+  for (const i = 0; ++i; true) {
     yield i;
   }
 };
