@@ -119,7 +119,7 @@ The statement `const [something] = wrapped;` *destructures* the array represente
       return last;
     }
     
-    surname["Reginald", "Braithwaite"])
+    surname(["Reginald", "Braithwaite"])
       //=> "Braithwaite"
       
 We could do the same thing with `(name) => name[1]`, but destructuring is code that resembles the data it consumes, a valuable coding style.
