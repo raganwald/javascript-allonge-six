@@ -9,11 +9,11 @@ A> Most programmers are perfectly familiar with arguments (often called "paramet
 Let's make a function with an argument:
 
     (room) => {}
-  
+
 This function has one argument, `room`, and an empty body. Here's a function with two arguments and an empty body:
 
     (room, board) => {}
-  
+
 I'm sure you are perfectly comfortable with the idea that this function has two arguments, `room`, and `board`. What does one do with the arguments? Use them in the body, of course. What do you think this is?
 
     (diameter) => diameter * 3.14159265
@@ -24,12 +24,12 @@ Remember that to apply a function with no arguments, we wrote `(() => {})()`. To
 
     ((diameter) => diameter * 3.14159265)(2)
       //=> 6.2831853
-      
+
 You won't be surprised to see how to write and apply a function to two arguments:
 
     ((room, board) => room + board)(800, 150)
       //=> 950
-      
+
 T> ### a quick summary of functions and bodies
 T>
 T> How arguments are used in a body's expression is probably perfectly obvious to you from the examples, especially if you've used any programming language (except for the dialect of BASIC--which I recall from my secondary school--that didn't allow parameters when you called a procedure).
@@ -64,11 +64,11 @@ We'll see [below](#call-by-sharing) that while JavaScript always calls by value,
 Right now everything looks simple and straightforward, and we can move on to talk about arguments in more detail. And we're going to work our way up from `(diameter) => diameter * 3.14159265` to functions like:
 
     (x) => (y) => x
-    
+
 A> `(x) => (y) => x` just looks crazy, as if we are learning English as a second language and the teacher promises us that soon we will be using words like *antidisestablishmentarianism*. Besides a desire to use long words to sound impressive, this is not going to seem attractive until we find ourselves wanting to discuss the role of the Church of England in 19th century British politics.
 A>
 A> But there's another reason for learning the word *antidisestablishmentarianism*: We might learn how prefixes and postfixes work in English grammar. It's the same thing with `(x) => (y) => x`. It has a certain important meaning in its own right, and it's also an excellent excuse to learn about functions that make functions, environments, variables, and more.
-    
+
 In order to talk about how this works, we should agree on a few terms (you may already know them, but let's check-in together and "synchronize our dictionaries"). The first `x`, the one in `(x) => ...`, is an *argument*. The `y` in `function (y) ...` is another argument. The second `x`, the one in `=> x`, is not an argument, *it's an expression referring to a variable*. Arguments and variables work the same way whether we're talking about `(x) => (y) => x`  or just plain `(x) => x`.
 
 Every time a function is invoked ("invoked" means "applied to zero or more arguments"), a new *environment* is created. An environment is a (possibly empty) dictionary that maps variables to values by name. The `x` in the expression that we call a "variable" is itself an expression that is evaluated by looking up the value in the environment.
@@ -110,7 +110,6 @@ Because many references can share the same value, and because JavaScript passes 
 And with that, we're ready to look at *closures*. When we combine our knowledge of value types, reference types, arguments, and closures, we'll understand why this function always evaluates to `true` no matter what argument[^NaNPedantry] you apply it to:
 
     (value) =>
-      (copy) =>
-        copy === value
+      ((ref1, ref2) => ref1 === ref2)(value)
 
 [^NaNPedantry]: Unless the argument is `NaN`, which isn't equal to anything, *including itself*. `NaN` in JavaScript behaves a lot like `NULL` in SQL.
