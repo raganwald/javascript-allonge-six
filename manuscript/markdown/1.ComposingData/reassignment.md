@@ -333,7 +333,7 @@ The error wouldn't exist at all if we'd used `let` in the first place
     let introductions = [],
         names = ['Karl', 'Friedrich', 'Gauss'];
 
-    for (const i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       introductions[i] = (soAndSo) =>
         `Hello, ${soAndSo}, my name is ${names[i]}`
     }

@@ -85,7 +85,7 @@ const teleportingTurtle = (list) => {
       turtle = rabbit;
   
   while (true) {
-    for (const i = 0; i <= speed; i += 1) {
+    for (let i = 0; i <= speed; i += 1) {
       rabbit = rabbit.rest;
       if (rabbit == null) {
         return false;
