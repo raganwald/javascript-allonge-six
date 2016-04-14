@@ -95,7 +95,7 @@ JavaScript has a particularly low-level version of `for` loop that mimics the se
 const arraySum = (array) => {
   let sum = 0;
 
-  for (const i = 0; i < array.length; ++i) {
+  for (let i = 0; i < array.length; ++i) {
     sum += array[i];
   }
   return sum

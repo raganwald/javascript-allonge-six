@@ -404,7 +404,7 @@ const filterCollectionWith = (fn, iterable) =>
   
 const Numbers = {
   [Symbol.iterator]: function* () {
-    for (const i = 0; ++i; true) {
+    for (let i = 0; ++i; true) {
       yield i;
     }
   }
@@ -420,7 +420,7 @@ However, we don't always want to do that. Sometimes we want a stateful iterator.
 {:lang="js"}
 ~~~~~~~~
 const numbers = function* () {
-  for (const i = 0; ++i; true) {
+  for (let i = 0; ++i; true) {
     yield i;
   }
 };
