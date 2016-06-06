@@ -110,6 +110,6 @@ Because many references can share the same value, and because JavaScript passes 
 And with that, we're ready to look at *closures*. When we combine our knowledge of value types, reference types, arguments, and closures, we'll understand why this function always evaluates to `true` no matter what argument[^NaNPedantry] you apply it to:
 
     (value) =>
-      ((ref1, ref2) => ref1 === ref2)(value)
+      ((ref1, ref2) => ref1 === ref2)(value, value)
 
 [^NaNPedantry]: Unless the argument is `NaN`, which isn't equal to anything, *including itself*. `NaN` in JavaScript behaves a lot like `NULL` in SQL.
