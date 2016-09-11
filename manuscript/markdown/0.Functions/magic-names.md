@@ -82,9 +82,8 @@ To give a contrived example, this function takes a number and returns an array r
 ~~~~~~~~
 const row = function () {
   return mapWith(
-    (column) => column * arguments[0],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-  )
+    (column) => column * arguments[0]
+  )([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
 }
 
 row(3)
@@ -95,9 +94,8 @@ This works just fine, because `arguments[0]` refers to the `3` we passed to the 
 
     const row = function () {
       return mapWith(
-        function (column) { return column * arguments[0] },
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-      )
+        function (column) { return column * arguments[0] }
+      )([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
     }
 
     row(3)
