@@ -218,7 +218,7 @@ And if there aren't any items to assign with `...`, JavaScript assigns an empty 
     they
       //=> []
 
-From its very inception, JavaScript has striven to avoid catastrophic errors. As a result, it often coerces values, passes `undefined` around, or does whatever it can to keep executing without failing. This often means that we must write our own code to detect failure conditions, as we cannot reply on the language to point out when we are doing semantically meaningless things.
+From its very inception, JavaScript has striven to avoid catastrophic errors. As a result, it often coerces values, passes `undefined` around, or does whatever it can to keep executing without failing. This often means that we must write our own code to detect failure conditions, as we cannot rely on the language to point out when we are doing semantically meaningless things.
 
 ### destructuring and return values
 
