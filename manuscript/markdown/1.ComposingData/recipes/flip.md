@@ -7,7 +7,7 @@ We wrote [mapWith](#mapWith) like this:
 const mapWith = (fn) => (list) => list.map(fn);
 ~~~~~~~~
 
-Let's consider the case whether we have a `map` function of our own, perhaps from the [allong.es](http://allong.es) library, perhaps from [Underscore](http://underscorejs.org). We could write our function something like this:
+Let's consider the case whether we have a `map` function of our own, perhaps from the [allong.es](https://github.com/raganwald/allong.es) library, perhaps from [Underscore](http://underscorejs.org). We could write our function something like this:
 
     const mapWith = (fn) => (list) => map(list, fn);
 

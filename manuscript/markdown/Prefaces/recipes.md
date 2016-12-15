@@ -18,7 +18,7 @@ As well as how it works and how to refactor it when you need. This style of prog
 
 But given that there are other resources out there, and that programmers are curious creatures with an unslakable thirst for personal growth, we choose to provide recipes that you are unlikely to find anywhere else in anything like this concentration. The recipes reinforce the lessons taught in the book about functions in JavaScript.
 
-You'll find all of the recipes collected online at [http://allong.es](http://allong.es). They're free to share under the MIT license.
+You'll find all of the recipes collected online at [https://github.com/raganwald/allong.es](https://github.com/raganwald/allong.es). They're free to share under the MIT license.
 
 [Reginald Braithwaite](http://braythwayt.com)  
 reg@braythwayt.com  
