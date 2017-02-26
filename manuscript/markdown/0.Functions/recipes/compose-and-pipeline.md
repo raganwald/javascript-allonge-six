@@ -28,7 +28,7 @@ If we wanted to implement a `compose3`, we could write:
 
 Or observe that it is really:
 
-    const compose3 = (a, b, c) => compose(a(compose(b, c)))
+    const compose3 = (a, b, c) => compose(a, (compose(b, c)))
 
 Once we get to `compose4`, we ask ourselves if there is a better way. For example, if we had a *variadic* compose, we could write `compose(a, b)`, `compose(a, b, c)`, or `compose(a, b, c, d)`.
 
