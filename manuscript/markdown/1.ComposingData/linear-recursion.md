@@ -117,7 +117,7 @@ Our `length` function is *recursive*, it calls itself. This makes sense because 
 
 > Once again, there is a card that reads, "boil water." But this time, the beaker is on the stand over the burner, as left behind by the previous student. The engineers light the burner immediately. Whereas the mathematicians take the beaker off the stand and empty it, thus reducing the situation to a problem they have already solved.
 
-There is more to recursive solutions that simply functions that invoke themselves. Recursive algorithms follow the "divide and conquer" strategy for solving a problem:
+There is more to recursive solutions than simply functions that invoke themselves. Recursive algorithms follow the "divide and conquer" strategy for solving a problem:
 
 0. Divide the problem into smaller problems
 0. If a smaller problem is solvable, solve the small problem
