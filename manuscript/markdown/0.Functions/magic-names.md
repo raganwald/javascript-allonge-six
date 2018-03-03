@@ -76,13 +76,12 @@ Although it seems quixotic for the two syntaxes to have different semantics, it 
 
 To give a contrived example, this function takes a number and returns an array representing a row in a hypothetical multiplication table. It uses `mapWith`, which we discussed in [Building Blocks](#buildingblocks).[^mapWith] We'll use `arguments` just to show the difference between using a fat arrow and the function keyword:
 
-[^mapWith]: We can also write the following: `const mapWith = (fn, a) => a.map(fn);`, and trust that it works even though we haven't discussed methods yet.
+[^mapWith]: We can also write the following: `const mapWith = (fn) => array => array.map(fn);`, and trust that it works even though we haven't discussed methods yet.
 
 {:lang="js"}
 ~~~~~~~~
 const row = function () {
-  return mapWith(
-    (column) => column * arguments[0],
+  return mapWith((column) => column * arguments[0])(
     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
   )
 }
@@ -94,8 +93,7 @@ row(3)
 This works just fine, because `arguments[0]` refers to the `3` we passed to the function `row`. Our "fat arrow" function `(column) => column * arguments[0]` doesn't bind `arguments` when it's invoked. But if we rewrite `row` to use the `function` keyword, it stops working:
 
     const row = function () {
-      return mapWith(
-        function (column) { return column * arguments[0] },
+      return mapWith(function (column) { return column * arguments[0] })(
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
       )
     }
