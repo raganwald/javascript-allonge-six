@@ -10,45 +10,57 @@ There are two separate rules for these "magic" names, one for when you invoke a 
 
 The first magic name is  `this`, and it is bound to something called the function's [context](#context). We will explore `this` in more detail when we start discussing objects and classes. The second magic name is very interesting, it's called `arguments`, and the most interesting thing about it is that it contains a list of arguments passed to a function:
 
-    const plus = function (a, b) {
-      return arguments[0] + arguments[1];
-    }
+{:lang="js"}
+~~~~~~~~
+const plus = function (a, b) {
+  return arguments[0] + arguments[1];
+}
 
-    plus(2,3)
-      //=> 5
+plus(2,3)
+  //=> 5
+~~~~~~~~
 
 Although `arguments` looks like an array, it isn't an array: It's more like an object[^pojo] that happens to bind some values to properties with names that look like integers starting with zero:
 
-    const args = function (a, b) {
-      return arguments;
-    }
+{:lang="js"}
+~~~~~~~~
+const args = function (a, b) {
+  return arguments;
+}
 
-    args(2,3)
-      //=> { '0': 2, '1': 3 }
+args(2,3)
+  //=> { '0': 2, '1': 3 }
+~~~~~~~~
 
 `arguments` always contains all of the arguments passed to a function, regardless of how many are declared. Therefore, we can write `plus` like this:
 
-    const plus = function () {
-      return arguments[0] + arguments[1];
-    }
+{:lang="js"}
+~~~~~~~~
+const plus = function () {
+  return arguments[0] + arguments[1];
+}
 
-    plus(2,3)
-      //=> 5
+plus(2,3)
+  //=> 5
+~~~~~~~~
 
 When discussing objects, we'll discuss properties in more depth. Here's something interesting about `arguments`:
 
-    const howMany = function () {
-      return arguments['length'];
-    }
+{:lang="js"}
+~~~~~~~~
+const howMany = function () {
+  return arguments['length'];
+}
 
-    howMany()
-      //=> 0
+howMany()
+  //=> 0
 
-    howMany('hello')
-      //=> 1
+howMany('hello')
+  //=> 1
 
-    howMany('sharks', 'are', 'apex', 'predators')
-      //=> 4
+howMany('sharks', 'are', 'apex', 'predators')
+  //=> 4
+~~~~~~~~
 
 The most common use of the `arguments` binding is to build functions that can take a variable number of arguments. We'll see it used in many of the recipes, starting off with [partial application](#simple-partial) and [ellipses](#ellipses).
 
@@ -60,17 +72,23 @@ The magic names `this` and `arguments` have a different behaviour when you invok
 
 For example, when this expression's inner function is defined with `function`, `arguments[0]` refers to its only argument, `"inner"`:
 
-    (function () {
-      return (function () { return arguments[0]; })('inner');
-    })('outer')
-      //=> "inner"
+{:lang="js"}
+~~~~~~~~
+(function () {
+  return (function () { return arguments[0]; })('inner');
+})('outer')
+  //=> "inner"
+~~~~~~~~
 
 But if we use a fat arrow, `arguments` will be defined in the outer environment, the one defined with `function`. And thus `arguments[0]` will refer to `"outer"`, not to `"inner"`:
 
-    (function () {
-      return (() => arguments[0])('inner');
-    })('outer')
-      //=> "outer"
+{:lang="js"}
+~~~~~~~~
+(function () {
+  return (() => arguments[0])('inner');
+})('outer')
+  //=> "outer"
+~~~~~~~~
 
 Although it seems quixotic for the two syntaxes to have different semantics, it makes sense when you consider the design goal: Fat arrow functions are designed to be very lightweight and are often used with constructs like mapping or callbacks to emulate syntax.
 
@@ -87,19 +105,22 @@ const row = function () {
 }
 
 row(3)
-  //=> [3,6,9,12,15,18,21,24,27,30,33,36]
+  //=> [3,6,9,12,15,18,21,24,27,30,33,36
 ~~~~~~~~
 
 This works just fine, because `arguments[0]` refers to the `3` we passed to the function `row`. Our "fat arrow" function `(column) => column * arguments[0]` doesn't bind `arguments` when it's invoked. But if we rewrite `row` to use the `function` keyword, it stops working:
 
-    const row = function () {
-      return mapWith(function (column) { return column * arguments[0] })(
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-      )
-    }
+{:lang="js"}
+~~~~~~~~
+const row = function () {
+  return mapWith(function (column) { return column * arguments[0] })(
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  )
+}
 
-    row(3)
-      //=> [1,4,9,16,25,36,49,64,81,100,121,144]
+row(3)
+  //=> [1,4,9,16,25,36,49,64,81,100,121,144]
+~~~~~~~~
 
 Now our inner function binds `arguments[0]` every time it is invoked, so we get the same result as if we'd written
 `function (column) { return column * column }`.
