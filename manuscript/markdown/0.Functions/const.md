@@ -76,7 +76,7 @@ Everything else is encapsulated in its body. That's how it should be, naming `PI
       // ...
     )(3.14159265)
 
-"Exposes" naming `PI` first, and we have to look inside to find out why we care. So, should we should always write this?
+"Exposes" naming `PI` first, and we have to look inside to find out why we care. So, should we always write this?
 
     (diameter) =>
       ((PI) =>
