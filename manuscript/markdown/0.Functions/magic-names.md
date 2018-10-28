@@ -129,4 +129,4 @@ Although this example is clearly unrealistic, there is a general design principl
 
 But sometimes, a function is a small-f function. It's a simple representation of an expression to be computed. In our example above, `row` is a Big-F function, but `(column) => column * arguments[0]` is a small-f function, it exists just to give `mapWith` something to apply.
 
-Having magic variables apply to Big-F functions but not to small-G functions makes it much easier to use small-F functions as syntax, treating them as expressions or blocks that can be passed to functions like `mapWith`.
+Having magic variables apply to Big-F functions but not to small-f functions makes it much easier to use small-f functions as syntax, treating them as expressions or blocks that can be passed to functions like `mapWith`.
