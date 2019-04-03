@@ -42,7 +42,7 @@ We can call `mapWith` in one step:
 
 If we didn't use `mapWith`, we'd could have also used `callRight` with `map` to accomplish the same result:
 
-    const squaresOf = callRight(map, (n => n * n);
+    const squaresOf = callRight(map, n => n * n);
 
     squaresOf([1, 2, 3, 4, 5])
       //=> [1, 4, 9, 16, 25]
