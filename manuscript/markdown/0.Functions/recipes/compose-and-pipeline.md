@@ -56,7 +56,7 @@ So let's substitute `compose(b)` for `b`:
 
 Now substitute `...rest` for `b`:
 
-    compose(a, ...rest) === (c) => a(compose(...rest)(c))
+    compose(a, compose(...rest)) === (c) => a(compose(...rest)(c))
 
 This is our solution:
 
