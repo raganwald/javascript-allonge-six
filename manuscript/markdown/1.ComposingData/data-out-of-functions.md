@@ -404,7 +404,7 @@ const rest = (list) => list(
 
 const length = (list) => list(
     () => 0,
-    (aPair) => 1 + length(aPair(pairRest)))
+    (aPair) => 1 + length(aPair(pairRest))
   );
 ~~~~~~~~
 
