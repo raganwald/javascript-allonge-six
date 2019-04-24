@@ -275,7 +275,7 @@ We haven't looked at it yet, but JavaScript provides a `for` loop for your itera
       sum = sum + i
     }
     sum
-      #=> 5050
+      //=> 5050
 
 Hopefully, you can think of a faster way to calculate this sum.[^gauss] And perhaps you have noticed that `var i = 1` is tucked away instead of being at the top as we prefer. But is this ever a problem?
 
