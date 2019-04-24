@@ -36,8 +36,6 @@ Code is easier than words for this. The [Underscore] library provides a higher-o
 
 We don't want to fool around writing `_.`, so we can use it by writing:[^_map]
 
-[^_map]: If we don't want to sort out [Underscore], we can also write the following: `const map = (a, fn) => a.map(fn);`, and trust that it works even though we haven't discussed methods yet.
-
     const map = _.map;
       
 This code implements a partial application of the map function by applying the function `(n) => n * n` as its second argument:
@@ -66,5 +64,7 @@ We generalized composition with the `compose` combinator. Partial application al
 [^bind]: Modern JavaScript provides a limited form of partial application through the `Function.prototype.bind` method. This will be discussed in greater length when we look at function contexts.
 
 [^headache]: Modern JavaScript implementations provide a map method for arrays, but Underscore's implementation also works with older browsers if you are working with that headache.
+
+[^_map]: If we don't want to sort out [Underscore], we can also write the following: `const map = (a, fn) => a.map(fn);`, and trust that it works even though we haven't discussed methods yet.
 
 [Underscore]: http://underscorejs.org
