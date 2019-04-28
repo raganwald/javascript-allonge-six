@@ -421,7 +421,7 @@ By default, JavaScript permits us to *rebind* new values to names bound with a p
       if (n === 0) {
         return true;
       }
-      else if (n == 1) {
+      else if (n === 1) {
         return false;
       }
       else {
@@ -439,7 +439,7 @@ The line `n = n - 2;` *rebinds* a new value to the name `n`. We will discuss thi
       if (n === 0) {
         return true;
       }
-      else if (n == 1) {
+      else if (n === 1) {
         return false;
       }
       else {
