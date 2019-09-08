@@ -79,7 +79,7 @@ Success! Our `mixin` function makes functional mixins. A final refinement is to 
     function mixin (decoration) {
 
       return function decorate () {
-        if (arguments[0] !=== void 0) {
+        if (arguments[0] !== void 0) {
           return decorate.call(arguments[0]);
         }
         else {
